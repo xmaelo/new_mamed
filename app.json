@@ -1,0 +1,12 @@
+{
+  "name": "ScannBook",
+  "displayName": "ScannBook",
+  "expo": {
+    "name": "ScannBook",
+    "slug": "ScannBook",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
