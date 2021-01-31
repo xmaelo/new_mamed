@@ -3,15 +3,21 @@ import { View, StyleSheet, Text, TextInput } from 'react-native';
 import AppText from './AppText';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
-//import { Icon } from 'react-native-elements';
 
-function AppTextInput ({ title='Title',  placeholder= 'Text'}){
+function AppTextInput ({ title='Title',  placeholder= 'Text', username, defineUsername}){
     return(
         <View style={styles.container}>
             <AppText style={{fontWeight: '700', fontSize: hp('2.8%')}} > {title} </AppText>
             <View>
-                {/**<Icon name='eye' type='font-awesome-5' size={20} /> **/}
-                <TextInput style={styles.textInput} placeholder={placeholder}/>
+                <TextInput 
+                    style={styles.textInput} 
+                    placeholder={placeholder}
+                    onChangeText={(text) => {
+                        defineUsername(text);
+                        console.log(text);
+                    }}
+                    value = {username} 
+                />
             </View>
             <View style={styles.divider} />
         </View>

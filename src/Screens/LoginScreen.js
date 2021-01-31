@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState }from 'react';
 import { View, StyleSheet, SafeAreaView, StatusBar, Image } from 'react-native';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
@@ -17,14 +17,17 @@ import color from '../themes/Color'
 const img = require('../Images/TextLogo.jpg')
 const { defaultColor, appWhite } = Color;
 function LoginScreen (props){
+
+    const [password, setPassword] = useState("");
+    const [username, defineUsername] = useState("");
+
     const pressed = (text) =>{
         console.log('Text pressed');
     }
     return(
         <>
-            <StatusBar backgroundColor={defaultColor}/>
             <SafeAreaView style={styles.container}>
-                <AppText style={{fontSize: 20, fontWeight:'200',color: 'grey', fontFamily:'Roboto'}}> Welcome Back </AppText>
+                <AppText style={{fontSize: 20, fontWeight:'200',color: 'grey', fontFamily:'Roboto'}}> Bienvenue ! </AppText>
                 <View style={styles.imgContainer}>
                     <Image
                         source={img}
@@ -32,23 +35,33 @@ function LoginScreen (props){
                     />
                 </View>
                 <View style={styles.textEntries}>
-                    <AppTextInput title='Email' placeholder="Enter Your Email Or UserName"/>
-                    <AppPasswordEntry title='Password' placeholder="Enter Your Password"/>
+                    <AppTextInput 
+                        title='Email' 
+                        placeholder="Entrez votre email/nom d'utilisateur"
+                        username={username}
+                        defineUsername={defineUsername}
+                    />
+                    <AppPasswordEntry 
+                        title='Password' 
+                        placeholder="Entrez votre mot de passe"
+                        password={password}
+                        setPassword={setPassword}
+                    />
                 </View>
                 <View style={styles.forgotPass}>
                     <AppTouchableText
                         onPress={() => console.log('Text Pressed')} 
-                        textStyle={{color:'grey'}}>Forgot Password?</AppTouchableText>
+                        textStyle={{color:'grey'}}>Mot de passe oublié?</AppTouchableText>
                 </View>
                 <AppButton 
                     onPress={() => console.log('App Pressed')} 
-                    title='Login'
+                    title='Me connecter'
                 />
                 <View style={styles.signup}>
                     <AppTouchableText 
                         onPress={(text) => {() => console.log('Text Pressed!')}} 
-                        textStyle={{color: defaultColor}}
-                        >Sign Up</AppTouchableText>
+                        textStyle={{color: defaultColor, marginTop: hp("2%")}}
+                        >Me créé un compte</AppTouchableText>
                 </View>
             </SafeAreaView>
         </>
