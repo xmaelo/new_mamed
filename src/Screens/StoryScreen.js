@@ -2,21 +2,15 @@ import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-import AppTextInput from './src/Components/AppTextInput';
-import LoginScreen from './src/Screens/LoginScreen';
-import AppButton from './src/Components/AppButton';
 
-import themes from './src/themes';
-
-
-export default function App() {
+export default function HomeScreen() {
   return (
     <View style={styles.container}>
-      <StatusBar style="auto" />
-      <LoginScreen />
+    	<Text>HomeScreen Run</Text>
     </View>
   );
-}
+} 
+
 
 const styles = StyleSheet.create({
   container: {
