@@ -5,9 +5,6 @@ import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-nativ
 // import { FontAwesome } from '@expo/vector-icons'; 
 import AppText from '../Components/AppText';
 
-
-
-
 function AppPasswordEntry ({ title='Title',  placeholder= 'Text'}){
     const [showPassword, setShowPassword] = useState(false);
     const [password, setPassword] = useState('');
@@ -31,17 +28,17 @@ function AppPasswordEntry ({ title='Title',  placeholder= 'Text'}){
 
 const styles = StyleSheet.create({
     container: {
-        width: wp('90%'),
+        width: wp('80%'),
     },
     divider:{
         backgroundColor: 'black',
         height: hp('0.1%'),
-        width: wp('100%'),
+        width: wp('90%'),
         marginBottom: hp("4%")
     },
     textInput:{
         height: hp("7%"),
-        fontSize: hp('2.9%'),
+        fontSize: hp('2.5%'),
         marginLeft: wp('3%'),
     }
 })

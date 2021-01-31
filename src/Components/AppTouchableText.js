@@ -8,12 +8,12 @@ function AppTouchableText ({
         children, 
         textStyle={}, 
         touchStyle={}},
-        onPress
+        onPress,
         ){
     return(
         <TouchableOpacity 
             style={[styles.container, {...touchStyle}]}
-            onPress={() => console.log('Text Preesed')}
+            onPress={onPress}
         >
             <AppText style={textStyle}>{children}</AppText>
         </TouchableOpacity>

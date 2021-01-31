@@ -14,7 +14,6 @@ const styles = StyleSheet.create({
     text: {
         color: blackText,
         fontSize: 17,
-        fontWeight: '700',
     }
 })
 
