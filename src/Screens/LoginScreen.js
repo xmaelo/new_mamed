@@ -31,7 +31,7 @@ function LoginScreen (props){
                 <View style={styles.imgContainer}>
                     <Image
                         source={img}
-                        style={styles.img}
+                        style={styles.img} 
                     />
                 </View>
                 <View style={styles.textEntries}>
@@ -54,7 +54,7 @@ function LoginScreen (props){
                         textStyle={{color:'grey'}}>Mot de passe oublié?</AppTouchableText>
                 </View>
                 <AppButton 
-                    onPress={() => console.log('App Pressed')} 
+                    onPress={() => props.navigation.navigate("Main")} 
                     title='Me connecter'
                 />
                 <View style={styles.signup}>
