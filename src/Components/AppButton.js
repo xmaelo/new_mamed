@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
     container: {
         justifyContent: 'center',
         alignItems: 'center',
-        width: wp("90%"),
+        width: wp("65%"),
         height: hp("6%"),
         borderRadius: 10,
     }

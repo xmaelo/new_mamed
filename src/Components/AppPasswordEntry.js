@@ -2,10 +2,11 @@ import React, { useState } from 'react';
 import { View, StyleSheet, TextInput, Text, TouchableOpacity } from 'react-native';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-// import { FontAwesome } from '@expo/vector-icons'; 
+import { FontAwesome, Feather } from '@expo/vector-icons'; 
+
 import AppText from '../Components/AppText';
 import color from '../themes/Color'
-const { defaultColor } = color;
+const { defaultColor, greyText } = color;
 
 function AppPasswordEntry ({ title='Title',  placeholder= 'Text', setPassword, password}){
     const [visibilityPassword, setVisibilityPassword] = useState(false);
@@ -13,6 +14,7 @@ function AppPasswordEntry ({ title='Title',  placeholder= 'Text', setPassword, p
         <View style={styles.container}>
             <AppText style={{fontWeight: '700', fontSize: hp('2.8%')}} > {title} </AppText>
             <View style={{display: 'flex', flexDirection:'row', justifyContent: 'space-between'}}>
+            <Feather style={{paddingTop: 10}} name="lock" size={24} color={greyText} />
                 <TextInput 
                     onChangeText={(text) => {
                         setPassword(text);
@@ -45,7 +47,7 @@ const styles = StyleSheet.create({
     divider:{
         backgroundColor: 'black',
         height: hp('0.1%'),
-        width: wp('90%'),
+        width: wp('85%'),
         marginBottom: hp("4%")
     },
     textInput:{
