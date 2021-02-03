@@ -24,6 +24,9 @@ function LoginScreen (props){
     const pressed = (text) =>{
         console.log('Text pressed');
     }
+    const handlePress = () =>{
+        console.log('Pressed')
+    }
     return(
         <>
             <SafeAreaView style={styles.container}>
@@ -50,7 +53,7 @@ function LoginScreen (props){
                 </View>
                 <View style={styles.forgotPass}>
                     <AppTouchableText
-                        onPress={() => console.log('Text Pressed')} 
+                        onPress={handlePress} 
                         textStyle={{color:'grey'}}>Mot de passe oublié?</AppTouchableText>
                 </View>
                 <AppButton 
@@ -59,7 +62,7 @@ function LoginScreen (props){
                 />
                 <View style={styles.signup}>
                     <AppTouchableText 
-                        onPress={(text) => {() => console.log('Text Pressed!')}} 
+                        onPress={() => {() => console.log('Text Pressed!')}} 
                         textStyle={{color: defaultColor, marginTop: hp("2%")}}
                         >Me créé un compte</AppTouchableText>
                 </View>
@@ -76,7 +79,8 @@ const styles = StyleSheet.create({
         backgroundColor: appWhite,
     },
     img: {
-        height: hp('15%'),
+        marginTop: 10,
+        height: hp('9.2%'),
         width: wp('60%')
     },
     imgContainer:{

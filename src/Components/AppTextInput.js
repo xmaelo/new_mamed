@@ -2,13 +2,17 @@ import React, { useState } from 'react';
 import { View, StyleSheet, Text, TextInput } from 'react-native';
 import AppText from './AppText';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import color from "../themes/Color"
+import { Feather } from "@expo/vector-icons"
 
 
+const { greyText } = color;
 function AppTextInput ({ title='Title',  placeholder= 'Text', username, defineUsername}){
     return(
         <View style={styles.container}>
-            <AppText style={{fontWeight: '700', fontSize: hp('2.8%')}} > {title} </AppText>
-            <View>
+            <AppText style={styles.title} > {title} </AppText>
+            <View style={{flexDirection: 'row'}}>
+                <Feather style={{paddingTop: 10}} name="user" size={24} color={greyText} />
                 <TextInput 
                     style={styles.textInput} 
                     placeholder={placeholder}
@@ -31,13 +35,17 @@ const styles = StyleSheet.create({
     divider:{
         backgroundColor: 'black',
         height: hp('0.1%'),
-        width: wp('90%'),
+        width: wp('85%'),
         marginBottom: hp("4%"),
     },
     textInput:{
         height: hp("7%"),
         fontSize: hp('2.5%'),
         marginLeft: wp('3%'),
+    },
+    title: {
+        fontWeight: '700', 
+        fontSize: hp('2.8%')
     }
 })
 
