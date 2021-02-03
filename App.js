@@ -14,11 +14,12 @@ import SettingScreen from './src/Screens/SettingScreen';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
+import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 
 import themes from './src/themes';
 
 
-const Tabs = createBottomTabNavigator();
+const Tabs = createMaterialBottomTabNavigator();
 const RootStack = createStackNavigator();
 
 function BottomTap(){
@@ -29,6 +30,10 @@ function BottomTap(){
           inactiveTintColor: themes.color.blackText,
         }}
 
+      initialRouteName="HomeScreen"
+      activeColor={themes.color.redFair}
+      barStyle={{ backgroundColor: "#F6F8FA" }}
+
     >
           <Tabs.Screen 
             name="HomeScreen" 
@@ -37,7 +42,7 @@ function BottomTap(){
               title: 'Accueil' ,
               tabBarIcon: ({ focused, color, size }) => {
                 let iconName = focused ? 'home' : 'home-outline';
-                return <Ionicons  name={iconName} size={size} color={color} />;
+                return <Ionicons  name={iconName} size={26} color={color} />;
               },
             })}
           />
@@ -47,8 +52,8 @@ function BottomTap(){
             options={({ route }) => ({
               title: 'Messages' ,
               tabBarIcon: ({ focused, color, size }) => {
-                let iconName = focused ? 'chatbox-ellipses' : 'chatbox-ellipses-outline';
-                return <Ionicons  name={iconName} size={size} color={color} />;
+                let iconName = focused ? 'chatbubble-ellipses' : 'chatbubble-ellipses-outline';
+                return <Ionicons  name={iconName} size={26} color={color} />;
               },
             })}
           />
@@ -60,7 +65,7 @@ function BottomTap(){
               title: 'Notifications' ,
               tabBarIcon: ({ focused, color, size }) => {
                 let iconName = focused ? 'notifications' : 'notifications-outline';
-                return <Ionicons  name={iconName} size={size} color={color} />;
+                return <Ionicons  name={iconName} size={26} color={color} />;
               },
             })}
           />
@@ -71,7 +76,7 @@ function BottomTap(){
               title: 'Réglages' ,
               tabBarIcon: ({ focused, color, size }) => {
                 let iconName = focused ? 'settings' : 'settings-outline';
-                return <Ionicons  name={iconName} size={size} color={color} />;
+                return <Ionicons  name={iconName} size={26} color={color} />;
               },
             })}
           />
@@ -79,7 +84,7 @@ function BottomTap(){
     )
 }
 export default function App() {
-  return (
+  return (  
     <>
       <StatusBar style="auto" />
       <NavigationContainer>
