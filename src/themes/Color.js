@@ -4,6 +4,7 @@ const color = {
 	blackText: "black",  // to set later 
 	greyText: "grey",  // to set later
 	appWhite: 'white', // to set later
+	barColor: '#E2E1DD', // to set later
 }
 
 
