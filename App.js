@@ -10,7 +10,8 @@ export default function App() {
     <>
       <StatusBar style="auto" />
       {/**<TabBar barColor="#F6F7EB">**/}
-      <AuthNavigation />
+      {/**<AuthNavigation /> */}
+      <TabBar/>
     </>
   );
 } 

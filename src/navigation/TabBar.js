@@ -12,7 +12,7 @@ import HomeScreen from '../Screens/HomeScreen';
 import MessageScreen from '../Screens/MessageScreen';
 import NotificationScreen from '../Screens/NotificationScreen';
 import SettingScreen from '../Screens/SettingScreen';
-
+import ChatScreen from '../Screens/ChatScreen'
 
 
 import { createStackNavigator } from '@react-navigation/stack';
@@ -126,8 +126,13 @@ export default function TabBar ({ barColor }){
 	          <RootStack.Screen
 	            name="Main" 
 	            component={BottomTap}
-	            options={{ headerShown: false }} 
+	           options={{ headerShown: false }} 
 	          />
+            <RootStack.Screen
+            name="ChatScreen" 
+            component={ChatScreen}
+           options={{ headerShown: false }} 
+          />
 	          <RootStack.Screen name="LoginScreen" component={LoginScreen} 
 	            options={{
 	              headerShown: false,
