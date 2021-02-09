@@ -16,8 +16,9 @@ import Search from '../Components/Search';
 import RoundedImage from '../Components/RoundedImage';
 import AppText from '../Components/AppText';
 import PostCard from '../Components/PostCard';
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
-export default function HomeScreen() {
+export default function HomeScreen(props) {
   const [searchValue, setSearchValue] = useState("");
   const [currentUser] = useState({
     profile_image: 'https://randomuser.me/api/portraits/women/11.jpg',
@@ -36,12 +37,12 @@ export default function HomeScreen() {
             </View>
           </View>
           <View style={{...styles.postsView, ...styles.postsViewSec}}>
-                <PostCard post={"post"}/>
-                <PostCard post={"post"}/>
+                <PostCard post={"post"} navigation={props.navigation} home/>
+                <PostCard post={"post"} navigation={props.navigation} home/>
           </View>
-          <View style={{...styles.postsView, ...styles.postsViewSec}}>
-                <PostCard post={"post"}/>
-                <PostCard post={"post"}/>
+          <View style={{...styles.postsView, ...styles.postsViewSec}} home>
+                <PostCard post={"post"} navigation={props.navigation} home/>
+                <PostCard post={"post"} navigation={props.navigation} home/>
           </View>
           <View style={{height: 70}}>
           </View>
@@ -61,7 +62,7 @@ const styles = StyleSheet.create({
     height: 50,
     alignItems: 'center',
     flexDirection: 'row',
-    paddingHorizontal: 10,
+    paddingHorizontal: wp("3%"),
   },
   
   userProfileImage: {
@@ -70,7 +71,7 @@ const styles = StyleSheet.create({
     borderRadius: 100,
   },
   headerPost: {
-    paddingHorizontal: 10,
+    paddingHorizontal: wp("3%"),
     marginTop: 10,
   },
   headerPostTitleView: {
@@ -95,7 +96,7 @@ const styles = StyleSheet.create({
     borderRadius: 100,
   },
   storyUserProfileImage: { width: 60, height: 60, borderRadius: 100 },
-  postsView: { paddingHorizontal: 10, marginTop: 10},
+  postsView: { paddingHorizontal: wp("3%"), marginTop: 10},
   postsViewSec: { justifyContent: 'space-between', flex: 1, flexDirection: 'row' },
   postView: {
     paddingVertical: 10,
@@ -114,7 +115,7 @@ const styles = StyleSheet.create({
   postHeader: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 10,
+    paddingHorizontal: wp("3%"),
   },
   postStatsOpacity: {
     backgroundColor: '#222',

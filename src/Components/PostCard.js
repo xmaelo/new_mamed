@@ -29,13 +29,13 @@ export default function PostCard(props){
 	              }}
 	            />
 	          </View>
-	          <View style={{ flex: 1, paddingHorizontal: 10 }}>
+	          <View style={{ flex: 1, paddingHorizontal: wp("3%") }}>
 	            <Text style={{ color: color.blackText,  fontSize: 15 }}>
 	              {"Van dark"}
 	            </Text>
 	          </View>
 	          <TouchableOpacity>
-	            <Feather name='more-horizontal' color={color.blackText} size={28} />
+	            <Feather name='more-vertical' color={color.blackText} size={28} />
 	          </TouchableOpacity>
 	        </View>
 	        {/* Post Content */}
@@ -44,10 +44,10 @@ export default function PostCard(props){
 	              style={{ width: '100%', height: 250, marginTop: 10 }}
 	              source={require("../../assets/imgs/demo.jpg")}
 	            />
-	        </View>
+	        </View>  
 	        {/* Post Stats */}
 	        <View
-	          style={{ marginTop: 0, flexDirection: 'row', paddingHorizontal: 10 }}
+	          style={{ marginTop: 0, flexDirection: 'row', paddingHorizontal: wp("3%") }}
 	        >
 	          <TouchableOpacity style={styles.postStatsOpacity}>
 	            <Ionicons name='heart' color={color.redFair} size={21} />
@@ -64,6 +64,9 @@ export default function PostCard(props){
 	            style={{
 	              ...styles.postStatsOpacity,
 	              marginLeft: 10,
+	            }}
+	            onPress={()=>{
+	            	props.home ? props.navigation.navigate("PostView") : null
 	            }}
 	          >
 	            <Feather name='message-circle' color={color.redFair} size={21} />
@@ -83,7 +86,7 @@ export default function PostCard(props){
 
 
 const styles = StyleSheet.create({
-  postsView: { paddingHorizontal: 10, marginTop: 10 },
+  postsView: { paddingHorizontal: wp("3%"), marginTop: 10 },
   postView: {
     paddingVertical: 10,
     marginTop: 10,
@@ -103,7 +106,7 @@ const styles = StyleSheet.create({
   postHeader: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 10,
+    paddingHorizontal: wp("3%"),
   },
   postStatsOpacity: {
     backgroundColor: "white",

@@ -9,8 +9,7 @@ export default function App() {
   return (  
     <>
       <StatusBar style="auto" />
-      {/**<TabBar barColor="#F6F7EB">**/}
-      <AuthNavigation />
+      <TabBar barColor="#F6F7EB"/>
     </>
   );
 } 

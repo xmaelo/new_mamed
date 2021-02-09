@@ -12,6 +12,9 @@ import HomeScreen from '../Screens/HomeScreen';
 import MessageScreen from '../Screens/MessageScreen';
 import NotificationScreen from '../Screens/NotificationScreen';
 import SettingScreen from '../Screens/SettingScreen';
+import RegistrationScreen from "../Screens/RegisterScreen"
+import ForgotPasswordScreen from "../Screens/ForgotPasswordScreen"
+import PostView from "../Screens/PostView"
 
 
 
@@ -128,11 +131,10 @@ export default function TabBar ({ barColor }){
 	            component={BottomTap}
 	            options={{ headerShown: false }} 
 	          />
-	          <RootStack.Screen name="LoginScreen" component={LoginScreen} 
-	            options={{
-	              headerShown: false,
-	            }}
-	          />
+            <RootStack.Screen name="LoginScreen" component={LoginScreen} options={{headerTransparent: true, title: ""}}/>
+            <RootStack.Screen name="RegistrationScreen" component={RegistrationScreen} options={{headerTransparent: true, title: ""}}/>
+            <RootStack.Screen name="ForgotPasswordScreen" component={ForgotPasswordScreen} options={{headerTransparent: true, title: ""}}/>
+            <RootStack.Screen name="PostView" component={PostView} options={{headerTransparent: false, title: "Commentaires"}}/>
 	        </RootStack.Navigator>
 	  	</NavigationContainer>
   	)

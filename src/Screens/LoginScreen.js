@@ -60,7 +60,7 @@ function LoginScreen ({ navigation }){
                         textStyle={{color:'grey'}}>Mot de passe oublié?</AppTouchableText>
                 </View>
                 <AppButton 
-                    onPress={() => console.log("Me Connecter!")} 
+                    onPress={() => navigation.navigate("Main")} 
                     title='Me connecter'
                 />
                 <View style={styles.signup}>
