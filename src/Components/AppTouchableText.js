@@ -7,13 +7,14 @@ import AppText from '../Components/AppText';
 function AppTouchableText ({ 
         children, 
         textStyle={}, 
-        touchStyle={}},
-        onPress,
-        ){
+        touchStyle={},
+        onPress
+    
+ }){
     return(
         <TouchableOpacity 
             style={[styles.container, {...touchStyle}]}
-            onPress={() => {onPress}}
+            onPress={onPress}
         >
             <AppText style={textStyle}>{children}</AppText>
         </TouchableOpacity>

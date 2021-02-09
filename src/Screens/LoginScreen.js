@@ -1,7 +1,8 @@
 import React, { useState }from 'react';
-import { View, StyleSheet, SafeAreaView, StatusBar, Image } from 'react-native';
+import { View, StyleSheet, SafeAreaView, Image } from 'react-native';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
+import { StatusBar } from 'expo-status-bar';
 
 import AppTextInput from '../Components/AppTextInput' ;
 import AppButton from '../Components/AppButton';
@@ -16,7 +17,7 @@ import color from '../themes/Color'
 
 const img = require('../Images/TextLogo.jpg')
 const { defaultColor, appWhite } = Color;
-function LoginScreen (props){
+function LoginScreen ({ navigation }){
 
     const [password, setPassword] = useState("");
     const [username, defineUsername] = useState("");
@@ -30,6 +31,7 @@ function LoginScreen (props){
     return(
         <>
             <SafeAreaView style={styles.container}>
+                <StatusBar style="auto" />
                 <AppText style={{fontSize: 20, fontWeight:'200',color: 'grey', fontFamily:'Roboto'}}> Bienvenue ! </AppText>
                 <View style={styles.imgContainer}>
                     <Image
@@ -39,6 +41,7 @@ function LoginScreen (props){
                 </View>
                 <View style={styles.textEntries}>
                     <AppTextInput 
+                        
                         title='Email' 
                         placeholder="Entrez votre email/nom d'utilisateur"
                         username={username}
@@ -53,16 +56,16 @@ function LoginScreen (props){
                 </View>
                 <View style={styles.forgotPass}>
                     <AppTouchableText
-                        onPress={handlePress} 
+                        onPress={() => navigation.navigate('ForgotPasswordScreen')} 
                         textStyle={{color:'grey'}}>Mot de passe oublié?</AppTouchableText>
                 </View>
                 <AppButton 
-                    onPress={() => props.navigation.navigate("Main")} 
+                    onPress={() => console.log("Me Connecter!")} 
                     title='Me connecter'
                 />
                 <View style={styles.signup}>
                     <AppTouchableText 
-                        onPress={() => {() => console.log('Text Pressed!')}} 
+                        onPress={() => navigation.navigate('RegistrationScreen')} 
                         textStyle={{color: defaultColor, marginTop: hp("2%")}}
                         >Me créé un compte</AppTouchableText>
                 </View>
@@ -80,8 +83,8 @@ const styles = StyleSheet.create({
     },
     img: {
         marginTop: 10,
-        height: hp('9.2%'),
-        width: wp('60%')
+        height: hp('5.2%'),
+        width: wp('40%')
     },
     imgContainer:{
         paddingBottom: wp('30%%')

@@ -3,7 +3,10 @@ import { View, StyleSheet, Text, TextInput } from 'react-native';
 import AppText from './AppText';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import color from "../themes/Color"
-import { Feather } from "@expo/vector-icons"
+import { 
+    Feather,
+    
+} from "@expo/vector-icons"
 
 
 const { greyText } = color;
@@ -12,12 +15,14 @@ function AppTextInput ({ title='Title',  placeholder= 'Text', username, defineUs
         <View style={styles.container}>
             <AppText style={styles.title} > {title} </AppText>
             <View style={{flexDirection: 'row'}}>
-                <Feather style={{paddingTop: 10}} name="user" size={24} color={greyText} />
+                <View style={{ justifyContent: 'flex-end', paddingBottom: wp('1%')}}>
+                    <Feather style={{paddingTop: 10}} name="user" size={24} color={greyText} />
+                </View>
                 <TextInput 
                     style={styles.textInput} 
                     placeholder={placeholder}
                     onChangeText={(text) => {
-                        defineUsername(text);
+                        // defineUsername(text);
                         console.log(text);
                     }}
                     value = {username} 
@@ -39,9 +44,10 @@ const styles = StyleSheet.create({
         marginBottom: hp("4%"),
     },
     textInput:{
-        height: hp("7%"),
-        fontSize: hp('2.5%'),
+        height: hp("6%"),
+        fontSize: hp('2.2%'),
         marginLeft: wp('3%'),
+        paddingBottom: 0
     },
     title: {
         fontWeight: '700', 

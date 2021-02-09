@@ -14,7 +14,9 @@ function AppPasswordEntry ({ title='Title',  placeholder= 'Text', setPassword, p
         <View style={styles.container}>
             <AppText style={{fontWeight: '700', fontSize: hp('2.8%')}} > {title} </AppText>
             <View style={{display: 'flex', flexDirection:'row', justifyContent: 'space-between'}}>
-            <Feather style={{paddingTop: 10}} name="lock" size={24} color={greyText} />
+            <View style={{justifyContent: 'flex-end', paddingBottom: wp('1%')}}>
+                <Feather style={{paddingTop: 10}} name="lock" size={24} color={greyText} />
+            </View>
                 <TextInput 
                     onChangeText={(text) => {
                         setPassword(text);
@@ -25,6 +27,7 @@ function AppPasswordEntry ({ title='Title',  placeholder= 'Text', setPassword, p
                     style={styles.textInput} 
                     placeholder={placeholder}/>
                     <TouchableOpacity
+                    style={{ justifyContent: 'flex-end', paddingBottom: wp('1%')}}
                         onPress={()=>setVisibilityPassword(!visibilityPassword)}
                     >
                         <Icon 
@@ -48,12 +51,13 @@ const styles = StyleSheet.create({
         backgroundColor: 'black',
         height: hp('0.1%'),
         width: wp('85%'),
-        marginBottom: hp("4%")
+        marginBottom: hp("3%")
     },
     textInput:{
-        height: hp("7%"),
-        fontSize: hp('2.5%'),
+        height: hp("6%"),
+        fontSize: hp('2.2%'),
         marginLeft: wp('3%'),
+        paddingBottom: 0
     }
 })
 
