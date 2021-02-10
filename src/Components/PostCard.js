@@ -23,7 +23,7 @@ export default function PostCard(props){
 	        <View style={styles.postHeader}>
 	          <View>
 	            <Image
-	              style={{ width: 30, height: 30, borderRadius: 100 }}
+	              style={{ width: wp("10%"), height: hp("5%"), borderRadius: 100 }}
 	              source={{
 	                uri: "https://randomuser.me/api/portraits/women/11.jpg",
 	              }}
@@ -35,25 +35,25 @@ export default function PostCard(props){
 	            </Text>
 	          </View>
 	          <TouchableOpacity>
-	            <Feather name='more-vertical' color={color.blackText} size={28} />
+	            <Feather name='more-vertical' color={color.blackText} size={20} />
 	          </TouchableOpacity>
 	        </View>
 	        {/* Post Content */}
 	        <View style={{ marginTop: 0 }}>
 	            <Image
-	              style={{ width: '100%', height: 250, marginTop: 10 }}
+	              style={{ width: wp("46.4%"), height: hp("38%"), marginTop: hp("1%") }}
 	              source={require("../../assets/imgs/demo.jpg")}
 	            />
 	        </View>  
 	        {/* Post Stats */}
 	        <View
-	          style={{ marginTop: 0, flexDirection: 'row', paddingHorizontal: wp("3%") }}
+	          style={{ height: hp("6%"), flexDirection: 'row', paddingHorizontal: wp("3%") }}
 	        >
 	          <TouchableOpacity style={styles.postStatsOpacity}>
 	            <Ionicons name='heart' color={color.redFair} size={21} />
 	            <Text 
 	              style={{
-	                marginLeft: 6,
+	                marginLeft: wp("2%"),
 	                color: color.blackText,
 	              }}
 	            >
@@ -63,16 +63,16 @@ export default function PostCard(props){
 	          <TouchableOpacity
 	            style={{
 	              ...styles.postStatsOpacity,
-	              marginLeft: 10,
+	              marginLeft: wp("6%"),
 	            }}
 	            onPress={()=>{
-	            	props.home ? props.navigation.navigate("PostView") : null
+	            	props.home ? props.navigation.navigate("PostViewScreen") : null
 	            }}
 	          >
 	            <Feather name='message-circle' color={color.redFair} size={21} />
 	            <Text
 	              style={{
-	                marginLeft: 6,
+	                marginLeft: wp("2%"),
 	                color: color.blackText,
 	              }}
 	            >
@@ -88,8 +88,8 @@ export default function PostCard(props){
 const styles = StyleSheet.create({
   postsView: { paddingHorizontal: wp("3%"), marginTop: 10 },
   postView: {
-    paddingVertical: 10,
-    marginTop: 10,
+    paddingVertical: hp("1%"),
+    marginTop: hp("1%"),
     backgroundColor: "white",
     borderRadius: 10,
     shadowColor: '#1e1e1e',
@@ -116,3 +116,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 });
+
+

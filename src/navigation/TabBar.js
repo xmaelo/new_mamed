@@ -12,10 +12,12 @@ import HomeScreen from '../Screens/HomeScreen';
 import MessageScreen from '../Screens/MessageScreen';
 import NotificationScreen from '../Screens/NotificationScreen';
 import SettingScreen from '../Screens/SettingScreen';
+
 import RegistrationScreen from "../Screens/RegisterScreen"
 import ForgotPasswordScreen from "../Screens/ForgotPasswordScreen"
-import PostView from "../Screens/PostView"
+import PostViewScreen from "../Screens/PostViewScreen"
 
+import ChatScreen from '../Screens/ChatScreen'
 
 
 import { createStackNavigator } from '@react-navigation/stack';
@@ -129,12 +131,23 @@ export default function TabBar ({ barColor }){
 	          <RootStack.Screen
 	            name="Main" 
 	            component={BottomTap}
-	            options={{ headerShown: false }} 
-	          />
-            <RootStack.Screen name="LoginScreen" component={LoginScreen} options={{headerTransparent: true, title: ""}}/>
+	           options={{ headerShown: false }} 
+	          /> 
             <RootStack.Screen name="RegistrationScreen" component={RegistrationScreen} options={{headerTransparent: true, title: ""}}/>
             <RootStack.Screen name="ForgotPasswordScreen" component={ForgotPasswordScreen} options={{headerTransparent: true, title: ""}}/>
-            <RootStack.Screen name="PostView" component={PostView} options={{headerTransparent: false, title: "Commentaires"}}/>
+
+            <RootStack.Screen
+              name="ChatScreen" 
+              component={ChatScreen}
+             options={{ headerShown: false }} 
+            />
+	          <RootStack.Screen name="PostViewScreen" component={PostViewScreen} 
+	            options={{
+                title: "Commentaires",
+	              headerShown: true,
+                headerTransparent: false,
+	            }}
+	          />
 	        </RootStack.Navigator>
 	  	</NavigationContainer>
   	)
