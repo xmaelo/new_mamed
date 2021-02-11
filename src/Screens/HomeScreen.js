@@ -12,14 +12,15 @@ import {
 } from 'react-native';
 import Ionicons  from 'react-native-vector-icons/Ionicons';
 import color from '../themes/Color'
-import Search from '../Components/Search';
+//import Search from '../Components/Search';
+import Header from '../Components/Header';
 import RoundedImage from '../Components/RoundedImage';
 import AppText from '../Components/AppText';
 import PostCard from '../Components/PostCard';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 export default function HomeScreen(props) {
-  const [searchValue, setSearchValue] = useState("");
+  
   const [currentUser] = useState({
     profile_image: 'https://randomuser.me/api/portraits/women/11.jpg',
   });
@@ -27,10 +28,9 @@ export default function HomeScreen(props) {
     <View style={{ ...styles.container }}>
       <ScrollView>
         <View style={{ ...styles.searchBarView }}>
-          <Search searchValue={searchValue} setSearchValue={setSearchValue}/>
-          <RoundedImage profile_image={currentUser.profile_image}/>
+            <Header profile_image={currentUser.profile_image} navigation={props.navigation}/>
         </View>
-
+        <View style={{height: 2, backgroundColor: color.barColor, marginTop: 1}}/>
          <View style={{ ...styles.headerPost }}>
             <View style={styles.headerPostTitleView}>
               <AppText children={"Documents partargés"} style={{ ...styles.titlePost }}/>
@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
     height: 50,
     alignItems: 'center',
     flexDirection: 'row',
-    paddingHorizontal: wp("3%"),
+    //paddingHorizontal: wp("3%"),
   },
   
   userProfileImage: {

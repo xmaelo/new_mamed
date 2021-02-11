@@ -18,6 +18,7 @@ import ForgotPasswordScreen from "../Screens/ForgotPasswordScreen"
 import PostViewScreen from "../Screens/PostViewScreen"
 
 import ChatScreen from '../Screens/ChatScreen'
+import SearchScreen from '../Screens/SearchScreen'
 
 
 import { createStackNavigator } from '@react-navigation/stack';
@@ -135,6 +136,8 @@ export default function TabBar ({ barColor }){
 	          /> 
             <RootStack.Screen name="RegistrationScreen" component={RegistrationScreen} options={{headerTransparent: true, title: ""}}/>
             <RootStack.Screen name="ForgotPasswordScreen" component={ForgotPasswordScreen} options={{headerTransparent: true, title: ""}}/>
+            <RootStack.Screen name="LoginScreen" component={LoginScreen} options={{headerTransparent: true, title: ""}}/>
+            <RootStack.Screen name="SearchScreen" component={SearchScreen} options={{headerTransparent: true, title: ""}}/>
 
             <RootStack.Screen
               name="ChatScreen" 
