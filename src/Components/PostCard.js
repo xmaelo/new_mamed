@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import Feather   from 'react-native-vector-icons/Feather';
 import Ionicons   from 'react-native-vector-icons/Ionicons';
+import ReactNativeTooltipMenu from 'react-native-tooltip-menu';
 import color from '../themes/Color'
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
@@ -34,9 +35,33 @@ export default function PostCard(props){
 	              {"Van dark"}
 	            </Text>
 	          </View>
-	          <TouchableOpacity>
-	            <Feather name='more-vertical' color={color.blackText} size={20} />
-	          </TouchableOpacity>
+
+	          <ReactNativeTooltipMenu
+		          buttonComponent={
+		            <View
+		              style={{
+		                backgroundColor: 'purple',
+		                padding: 10,
+		                borderRadius: 25
+		              }}
+		            >
+		            	<TouchableOpacity>
+				            <Feather name='more-vertical' color={color.blackText} size={20} />
+				        </TouchableOpacity>
+		            </View>
+		          }
+		          items={[
+		            {
+		              label: 'Label #1',
+		              onPress: () => console.log('action 1')
+		            },
+		            {
+		              label: 'Label #2',
+		              onPress: () => console.log('action 2')
+		            },
+		          ]}
+		        />
+	          
 	        </View>
 	        {/* Post Content */}
 	        <View style={{ marginTop: 0 }}>
