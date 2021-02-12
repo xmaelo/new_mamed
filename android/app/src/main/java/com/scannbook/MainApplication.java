@@ -70,6 +70,10 @@ public class MainApplication extends Application implements ReactApplication {
     }
   };
 
+  // @Override    
+  // public boolean canOverrideExistingModule() {        
+  //   return true;    
+  // }
   @Override
   public ReactNativeHost getReactNativeHost() {
     return mReactNativeHost;

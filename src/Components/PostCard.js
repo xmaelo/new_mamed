@@ -15,9 +15,16 @@ import Ionicons   from 'react-native-vector-icons/Ionicons';
 import ReactNativeTooltipMenu from 'react-native-tooltip-menu';
 import color from '../themes/Color'
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
-
+import Menu, { MenuItem, MenuDivider } from 'react-native-material-menu';
 
 export default function PostCard(props){
+	const [_menu, setVisibleMenu] = useState(null);
+
+	const onAction = () => {
+		console.log('onAction run');
+		_menu = _menu.hide();
+		setVisibleMenu(_menu);
+	}
 	return(
 		<View style={styles.postView}>
 	        {/* Post Header */}
@@ -36,32 +43,31 @@ export default function PostCard(props){
 	            </Text>
 	          </View>
 
-	          <ReactNativeTooltipMenu
-		          buttonComponent={
-		            <View
-		              style={{
-		                backgroundColor: 'purple',
-		                padding: 10,
-		                borderRadius: 25
-		              }}
-		            >
-		            	<TouchableOpacity>
-				            <Feather name='more-vertical' color={color.blackText} size={20} />
-				        </TouchableOpacity>
-		            </View>
+	          <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+		        <Menu
+		          ref={_menu}
+		          button={
+			          <TouchableOpacity
+			          	onPress={
+			          		()=>{
+			          			_menu = _menu.show();
+			          			setVisibleMenu(_menu);
+			          		}
+			          	}
+			          >
+			            <Feather name='more-vertical' color={color.blackText} size={20} />
+			          </TouchableOpacity>
 		          }
-		          items={[
-		            {
-		              label: 'Label #1',
-		              onPress: () => console.log('action 1')
-		            },
-		            {
-		              label: 'Label #2',
-		              onPress: () => console.log('action 2')
-		            },
-		          ]}
-		        />
-	          
+		        >
+		          <MenuItem onPress={onAction}>Partager</MenuItem>
+		          <MenuDivider />
+		          <MenuItem onPress={onAction}>Suprimer</MenuItem>
+		          <MenuDivider />
+		          <MenuItem onPress={onAction}>Activer les notifictions</MenuItem>
+		          <MenuDivider />
+		          <MenuItem onPress={onAction}>Savegarder dans ma bibliothèque</MenuItem>
+		        </Menu>
+		      </View>
 	        </View>
 	        {/* Post Content */}
 	        <View style={{ marginTop: 0 }}>
