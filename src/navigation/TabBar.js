@@ -16,6 +16,8 @@ import SettingScreen from '../Screens/SettingScreen';
 import RegistrationScreen from "../Screens/RegisterScreen"
 import ForgotPasswordScreen from "../Screens/ForgotPasswordScreen"
 import PostViewScreen from "../Screens/PostViewScreen"
+import BookCoverView from "../Screens/BookCoverView"
+import AnswerCommentScreen from "../Screens/AnswerCommentScreen"
 
 import ChatScreen from '../Screens/ChatScreen'
 import SearchScreen from '../Screens/SearchScreen'
@@ -113,7 +115,7 @@ function BottomTap(){
             name="Setting" 
             component={SettingScreen} 
             options={({ route }) => ({
-              title: ({focused}) => RenderTitle(focused, "Réglages"),
+              title: ({focused}) => RenderTitle(focused, "Preference"),
               tabBarIcon: ({ focused, color, size }) => {
               	color = focused ? col.redFair : col.blackText;
                 let iconName = focused ? 'settings' : 'settings-outline';
@@ -151,6 +153,20 @@ export default function TabBar ({ barColor }){
                 headerTransparent: false,
 	            }}
 	          />
+            <RootStack.Screen name="AnswerCommentScreen" component={AnswerCommentScreen} 
+              options={{
+                title: "Réponses",
+                headerShown: true,
+                headerTransparent: false,
+              }}
+            />
+            <RootStack.Screen name="BookCoverView" component={BookCoverView} 
+              options={{
+                title: "",
+                headerShown: true,
+                headerTransparent: false,
+              }}
+            />
 	        </RootStack.Navigator>
 	  	</NavigationContainer>
   	)

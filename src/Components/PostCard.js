@@ -14,17 +14,12 @@ import Feather   from 'react-native-vector-icons/Feather';
 import Ionicons   from 'react-native-vector-icons/Ionicons';
 import ReactNativeTooltipMenu from 'react-native-tooltip-menu';
 import color from '../themes/Color'
+import PostOptions from './PostOptions'
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import Menu, { MenuItem, MenuDivider } from 'react-native-material-menu';
 
 export default function PostCard(props){
-	const [_menu, setVisibleMenu] = useState(null);
-
-	const onAction = () => {
-		console.log('onAction run');
-		_menu = _menu.hide();
-		setVisibleMenu(_menu);
-	}
+	
 	return(
 		<View style={styles.postView}>
 	        {/* Post Header */}
@@ -43,38 +38,20 @@ export default function PostCard(props){
 	            </Text>
 	          </View>
 
-	          <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-		        <Menu
-		          ref={_menu}
-		          button={
-			          <TouchableOpacity
-			          	onPress={
-			          		()=>{
-			          			_menu = _menu.show();
-			          			setVisibleMenu(_menu);
-			          		}
-			          	}
-			          >
-			            <Feather name='more-vertical' color={color.blackText} size={20} />
-			          </TouchableOpacity>
-		          }
-		        >
-		          <MenuItem onPress={onAction}>Partager</MenuItem>
-		          <MenuDivider />
-		          <MenuItem onPress={onAction}>Suprimer</MenuItem>
-		          <MenuDivider />
-		          <MenuItem onPress={onAction}>Activer les notifictions</MenuItem>
-		          <MenuDivider />
-		          <MenuItem onPress={onAction}>Savegarder dans ma bibliothèque</MenuItem>
-		        </Menu>
-		      </View>
+	          <PostOptions/>
 	        </View>
 	        {/* Post Content */}
 	        <View style={{ marginTop: 0 }}>
-	            <Image
-	              style={{ width: wp("46.4%"), height: hp("38%"), marginTop: hp("1%") }}
-	              source={require("../../assets/imgs/demo.jpg")}
-	            />
+	        	<TouchableOpacity
+	        		onPress={
+	        			()=>props.navigation.navigate("BookCoverView")
+	        		}
+	        	>
+		            <Image
+		              style={{ width: wp("46.4%"), height: hp("38%"), marginTop: hp("1%") }}
+		              source={require("../../assets/imgs/demo.jpg")}
+		            />
+		        </TouchableOpacity>
 	        </View>  
 	        {/* Post Stats */}
 	        <View
@@ -147,5 +124,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 });
+
+
+
 
 

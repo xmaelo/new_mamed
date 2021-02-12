@@ -1,13 +1,14 @@
-import React from 'react';
+import React, { useState }  from 'react';
 import { StyleSheet, Text, View, FlatList,SafeAreaView, TouchableHighlight} from 'react-native';
 import UserContainer from '../Composants_Messagerie.js/Composants_Complets/UserContainer'
 import Data from '../Data/Data_Message'
 //importation de la library pour le responsive design
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-
+import Header from '../Components/Header';
 
 const MessagItems = ({ item, movechatScreen}) => (
   <View style={styles.container_card}>
+
       <TouchableHighlight onPress={movechatScreen}
           underlayColor="#9DA7B5"
           activeOpacity={1}
@@ -27,6 +28,10 @@ const MessagItems = ({ item, movechatScreen}) => (
 
 
 export default function MessageScreen({navigation}) {
+  const [currentUser] = useState({
+    profile_image: 'https://randomuser.me/api/portraits/women/11.jpg',
+  });
+
   const renderItems = ({item}) =>{
     return(
       <MessagItems
@@ -38,14 +43,18 @@ export default function MessageScreen({navigation}) {
     )
   }
   return (
-    <SafeAreaView style={styles.container}>
-       <FlatList
-       data={Data}
-       keyExtractor={(item, index) =>String(index)}
-       renderItem={renderItems}
-       contentContainerStyle={{paddingBottom:hp('2%')}}
-       />
-    </SafeAreaView>
+    <View style={{ ...styles.container }}>
+      <Header profile_image={currentUser.profile_image} navigation={navigation}/>
+      <SafeAreaView style={{...styles.container, paddingTop: 0}}>
+         <FlatList
+         data={Data}
+         keyExtractor={(item, index) =>String(index)}
+         renderItem={renderItems}
+         contentContainerStyle={{paddingBottom:hp('2%')}}
+         />
+      </SafeAreaView>
+      <View style={{height: hp("8%")}}></View>
+    </View>
   );
 } 
 

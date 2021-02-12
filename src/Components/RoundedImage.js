@@ -7,11 +7,11 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
-export default function RoundedImage({profile_image}){
+export default function RoundedImage({profile_image, style}){
 	return(
 		<TouchableOpacity>
           <Image
-            style={{ ...styles.userProfileImage }}
+            style={{ ...styles.userProfileImage, ...style}}
             source={{ uri: profile_image }}
           />
         </TouchableOpacity>

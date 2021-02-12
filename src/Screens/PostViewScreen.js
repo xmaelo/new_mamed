@@ -20,9 +20,11 @@ import RoundedImage from '../Components/RoundedImage';
 import AppText from '../Components/AppText';
 import PostCard from '../Components/PostCard';
 import color from '../themes/Color'
+import {Comments, SendComment} from '../Components/CommentSection'
+
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
-export default function PostViewScreen(){
+export default function PostViewScreen(props){
 
 	const [messages, setMessages] = useState([
 	    { sender: 'John Doe', message: 'Hey there!', time: '6:01 PM' },
@@ -32,16 +34,16 @@ export default function PostViewScreen(){
     const [currentUser] = useState({
 	    name: 'XXXX',
 	  });
-
+  
 	return(
 		<View style={{ ...styles.container }}>
 			<ScrollView showsVerticalScrollIndicator={false} vertical={true}>
         		<View style={{ paddingHorizontal: 10 }}>
 		        	<View style={styles.post}>
 			          <View style={styles.postHeader}>
-			            <Image
+			            <RoundedImage
 			              style={{ width: 50, height: 50, borderRadius: 100 }}
-			              source={{ uri: "https://randomuser.me/api/portraits/women/11.jpg"}}
+			              profile_image={"https://randomuser.me/api/portraits/women/11.jpg"}
 			            />
 			            <View style={{ flex: 1, paddingHorizontal: wp("3%") }}>
 			              <Text style={{ color: color.blackText, fontSize: 18 }}>
@@ -64,7 +66,11 @@ export default function PostViewScreen(){
 			            <ScrollView horizontal={true} vertical={false} showsHorizontalScrollIndicator={false}>
 			            	<View style={styles.postImg}>
 			            		<View style={styles.singleImg}>
-			            			<TouchableOpacity>
+			            			<TouchableOpacity
+			            				onPress={
+						        			()=>props.navigation.navigate("BookCoverView")
+						        		}
+			            			>
 							            <Image
 							              style={styles.postContentImage}
 							              source={require("../../assets/imgs/demo.jpg")}
@@ -72,7 +78,11 @@ export default function PostViewScreen(){
 							        </TouchableOpacity>
 						        </View>
 						        <View style={styles.singleImg}>
-						        	<TouchableOpacity>
+						        	<TouchableOpacity
+						        		onPress={
+						        			()=>props.navigation.navigate("BookCoverView")
+						        		}
+						        	>
 							            <Image
 							              style={styles.postContentImage}
 							              source={require("../../assets/imgs/demo.jpg")}
@@ -80,7 +90,11 @@ export default function PostViewScreen(){
 						            </TouchableOpacity>
 						        </View>
 						        <View style={styles.singleImg}>
-						        	<TouchableOpacity>
+						        	<TouchableOpacity
+						        		onPress={
+						        			()=>props.navigation.navigate("BookCoverView")
+						        		}
+						        	>
 							            <Image
 							              style={styles.postContentImage}
 							              source={require("../../assets/imgs/demo.jpg")}
@@ -114,7 +128,7 @@ export default function PostViewScreen(){
 					</View>
         		</View>
         
-		        <Comments comments={messages}/>
+		        <Comments comments={messages} navigation={props.navigation} post={true}/>
         	</ScrollView>
 
 	        <SendComment />
@@ -122,98 +136,8 @@ export default function PostViewScreen(){
 	)
 }
 
-function SendComment(){
-	return(
-		<View style={{ paddingVertical: hp("1%") }}>
-          <View style={styles.messageInputView}>
-            <TextInput
-              defaultValue={""}
-              style={styles.messageInput}
-              placeholder='Message'
-              onChangeText={(text) => {/*setInputMessage(text)*/}}
-              onSubmitEditing={() => {
-                //sendMessage();
-              }}
-            />
-            <TouchableOpacity
-              style={styles.messageSendView}
-              onPress={() => {
-                //sendMessage();
-              }}
-            >
-              <Ionicons name='send' />
-            </TouchableOpacity>
-          </View>
-        </View>
-		)
-}
-function Comments({comments}){
-	return(
-		  <>
-		  	{comments.map((item, index)=> 
-		        	(
-		        	<TouchableWithoutFeedback key={index}>
-		        		<>
-			              <View style={{ marginTop: hp("2%"), flex: 1, flexDirection: 'row', marginHorizontal: wp("3%")}}>
-			              	<Image
-				              style={{ width: 40, height: 40, borderRadius: 100 }}
-				              source={{ uri: "https://randomuser.me/api/portraits/women/11.jpg"}}
-				            />
-			                <View
-			                  style={{
-			                    backgroundColor: color.barColor,
-			                    alignSelf: "flex-start",
-			                    marginHorizontal: wp("3%"),
-			                    padding: 10,
-			                    borderRadius: 8,
-			                    borderBottomLeftRadius: 0,
-			                    borderBottomRightRadius: 8,
-			                  }}
-			                >
-			                  <Text
-			                    style={{
-			                      color: 'black',
-			                      fontSize: 16,
-			                    }}
-			                  >
-			                    {item.message}
-			                  </Text>
-			                  <Text
-			                    style={{
-			                      color: 'black',
-			                      fontSize: 14,
-			                      alignSelf: 'flex-start',
-			                    }}
-			                  >
-			                    {item.time}
-			                  </Text>
-			                </View> 
-			              </View>
-			              <View style={{
-			              		flex: 1, 
-			              		flexDirection: "row", 
-			              		marginTop: hp("1%")
-			              	}}>
-			              	<View style={{flex: 1, flexDirection: 'row', marginLeft: wp("20%")}}>
-			              		<Text>4 </Text>
-			              		<TouchableOpacity>  
-			              			<Ionicons name={index%2==0?'heart': 'heart-outline'} color={color.redFair} size={21} />
-			              		</TouchableOpacity>
-			              	</View>
-			              	<View style={{ marginRight: wp("45%")}}>
-			              		<TouchableOpacity>
-			              			<Text style={{color: color.blackText}}>Repondre</Text>
-			              		</TouchableOpacity>
-			              	</View>
-			              </View>
-			            </>
-		            </TouchableWithoutFeedback>
-		        	))
-		        }
-		  </>
-		)
 
-}
+
 
 const styles = StyleSheet.create({
   container: {
@@ -272,23 +196,6 @@ const styles = StyleSheet.create({
     paddingVertical: hp("1%"),
   },
 
-
-  messageInputView: {
-    display: 'flex',
-    flexDirection: 'row',
-    marginHorizontal: wp("3%"),
-    backgroundColor: color.barColor,
-    borderRadius: 10,
-  },
-  messageInput: {
-    height: hp("7%"),
-    flex: 1,
-    paddingHorizontal: wp("3%"),
-  },
-  messageSendView: {
-    paddingHorizontal: wp("3%"),
-    justifyContent: 'center',
-  },
 });
 
 
