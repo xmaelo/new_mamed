@@ -22,7 +22,7 @@ import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-nativ
 export default function HomeScreen(props) {
   
   const [currentUser] = useState({
-    profile_image: 'https://randomuser.me/api/portraits/women/11.jpg',
+    profile_image: 'https://randomuser.me/api/portraits/women/11.jpg'
   });
   return (
     <View style={{ ...styles.container }}>

@@ -15,6 +15,7 @@ function AppTouchableText ({
         <TouchableOpacity 
             style={[styles.container, {...touchStyle}]}
             onPress={onPress}
+            activeOpacity={0.7}
         >
             <AppText style={textStyle}>{children}</AppText>
         </TouchableOpacity>

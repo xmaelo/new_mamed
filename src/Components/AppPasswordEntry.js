@@ -12,11 +12,10 @@ function AppPasswordEntry ({ title='Title',  placeholder= 'Text', setPassword, p
     const [visibilityPassword, setVisibilityPassword] = useState(false);
     return(
         <View style={styles.container}>
-            <AppText style={{fontWeight: '700', fontSize: hp('2.8%')}} > {title} </AppText>
-            <View style={{display: 'flex', flexDirection:'row', justifyContent: 'space-between'}}>
-            <View style={{justifyContent: 'flex-end', paddingBottom: wp('1%')}}>
-                <Feather style={{paddingTop: 10}} name="lock" size={24} color={greyText} />
-            </View>
+            <AppText style={{fontWeight: '700', fontSize: hp('2.3%')}} > {title} </AppText>
+            <View style={{display: 'flex', flexDirection:'row'}}>
+            <View style={{flexDirection: 'row', justifyContent: 'flex-start', paddingBottom: wp('1%')}}>
+                <Feather style={{paddingTop: 15}} name="lock" size={24} color={greyText} />
                 <TextInput 
                     onChangeText={(text) => {
                         setPassword(text);
@@ -25,17 +24,19 @@ function AppPasswordEntry ({ title='Title',  placeholder= 'Text', setPassword, p
                     value = {password} 
                     secureTextEntry={!visibilityPassword}
                     style={styles.textInput} 
-                    placeholder={placeholder}/>
-                    <TouchableOpacity
+                    placeholder={placeholder}
+                />
+            </View>
+                <TouchableOpacity
                     style={{ justifyContent: 'flex-end', paddingBottom: wp('1%')}}
-                        onPress={()=>setVisibilityPassword(!visibilityPassword)}
+                    onPress={()=>setVisibilityPassword(!visibilityPassword)}
                     >
                         <Icon 
-                            style={{marginTop: hp("1%")}}
+                            style={{marginTop: hp("1%"), paddingLeft: wp('1%')}}
                             name="visibility" 
                             size={25}   
                             color={visibilityPassword ? defaultColor: "#1F252A"} 
-                        />
+                            />
                     </TouchableOpacity>
             </View>
             <View style={styles.divider}></View> 
@@ -45,7 +46,7 @@ function AppPasswordEntry ({ title='Title',  placeholder= 'Text', setPassword, p
 
 const styles = StyleSheet.create({
     container: {
-        width: wp('80%'),
+        width: wp('90%'),
     },
     divider:{
         backgroundColor: 'black',
@@ -57,7 +58,8 @@ const styles = StyleSheet.create({
         height: hp("6%"),
         fontSize: hp('2.2%'),
         marginLeft: wp('3%'),
-        paddingBottom: 0
+        paddingBottom: 0,
+        width: '80%'
     }
 })
 

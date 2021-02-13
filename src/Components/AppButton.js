@@ -2,7 +2,7 @@ import React from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 
 import AppText from './AppText';
-import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import {widthPercentageToDP as wp, heightPercentageToDP as hp, widthPercentageToDP} from 'react-native-responsive-screen';
 
 
 import Color from '../themes/Color';
@@ -17,9 +17,12 @@ function AppButton ({
     return(
         <TouchableOpacity 
             style={[styles.container, {backgroundColor}]}
-            onPress={onPress} >
+            onPress={onPress}
+            activeOpacity={0.9}
+         >
+
             <View >
-                <AppText style={{color: 'white', fontSize: 20, fontWeight:'bold'}}> {title} </AppText>
+                <AppText style={{color: 'white', fontSize: widthPercentageToDP('4%'), fontWeight:'bold'}}> {title} </AppText>
             </View>
         </TouchableOpacity>
     );

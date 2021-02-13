@@ -5,6 +5,7 @@ import AppButton from '../Components/AppButton';
 
 import AppText from '../Components/AppText';
 import AppTextInput from '../Components/AppTextInput';
+import AppPasswordEntry from '../Components/AppPasswordEntry';
 
 
 function RegisterScreen (props){
@@ -14,8 +15,9 @@ function RegisterScreen (props){
             <AppText style={{fontSize: widthPercentageToDP('5%'), paddingBottom: widthPercentageToDP('10%')}}>S'il vous Plait</AppText> 
             <AppTextInput title="Prenom" placeholder="Entrez votre Prenom"/>
             <AppTextInput title="Nom" placeholder="Entrez votre Nom"/>
-            <AppTextInput title="Email" placeholder="Entrez votre Email"/>
-            <AppTextInput title="Num Telephone" placeholder="Votre Numero de Telephone"/>
+            <AppPasswordEntry title='Password' placeholder="Creer un mot de passe" />
+            <AppPasswordEntry title='Password' placeholder="Confirmer le mot de passe" />
+
             <AppButton
                 title="s'Inscrirre"
                 onPress={() => console.log('Inscription')}

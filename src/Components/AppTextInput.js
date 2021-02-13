@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
     },
     title: {
         fontWeight: '700', 
-        fontSize: hp('2.8%')
+        fontSize: hp('2.3%')
     }
 })
 

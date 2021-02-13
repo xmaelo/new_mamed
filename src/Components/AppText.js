@@ -1,5 +1,6 @@
 import React, { Children } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
+import { widthPercentageToDP } from 'react-native-responsive-screen';
 import color from '../themes/Color';
 
 
@@ -13,7 +14,7 @@ function AppText ({ children, style={} }){
 const styles = StyleSheet.create({
     text: {
         color: blackText,
-        fontSize: 17,
+        fontSize: widthPercentageToDP('3%'),
     }
 })
 

@@ -21,7 +21,7 @@ function ForgotPasswordScreen (props){
                     paddingTop: widthPercentageToDP('5%'), 
                     padding: widthPercentageToDP('5%'),
                     textAlign: 'center'
-                 }}>Entrer un Email auquel vous allez recevoir un message pour continuer votre changement de mot de passe</AppText>
+                 }}>Entrer un email valid pour recevoir un nouveau mot de passe</AppText>
         </View>
     );
 }
