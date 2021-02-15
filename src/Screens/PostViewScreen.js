@@ -20,6 +20,7 @@ import RoundedImage from '../Components/RoundedImage';
 import AppText from '../Components/AppText';
 import PostCard from '../Components/PostCard';
 import color from '../themes/Color'
+import PostOptions from '../Components/PostOptions'
 import {Comments, SendComment} from '../Components/CommentSection'
 
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
@@ -50,9 +51,7 @@ export default function PostViewScreen(props){
 			                {"nom prenom"}
 			              </Text>
 			            </View>
-			            <TouchableOpacity style={{ paddingHorizontal: 6 }}>
-			              <Feather name='more-horizontal' size={24} />
-			            </TouchableOpacity>
+			            <PostOptions name='more-horizontal' size={24}/>
 			          </View>
 
 			          {/* Post Content */}
@@ -73,7 +72,7 @@ export default function PostViewScreen(props){
 			            			>
 							            <Image
 							              style={styles.postContentImage}
-							              source={require("../../assets/imgs/demo.jpg")}
+							              source={require("../../assets/imgs/1.jpeg")}
 							            />
 							        </TouchableOpacity>
 						        </View>
@@ -85,7 +84,7 @@ export default function PostViewScreen(props){
 						        	>
 							            <Image
 							              style={styles.postContentImage}
-							              source={require("../../assets/imgs/demo.jpg")}
+							              source={require("../../assets/imgs/2.jpeg")}
 							            />
 						            </TouchableOpacity>
 						        </View>
@@ -97,7 +96,31 @@ export default function PostViewScreen(props){
 						        	>
 							            <Image
 							              style={styles.postContentImage}
-							              source={require("../../assets/imgs/demo.jpg")}
+							              source={require("../../assets/imgs/3.jpeg")}
+							            />
+							        </TouchableOpacity>
+						        </View>
+						        <View style={styles.singleImg}>
+						        	<TouchableOpacity
+						        		onPress={
+						        			()=>props.navigation.navigate("BookCoverView")
+						        		}
+						        	>
+							            <Image
+							              style={styles.postContentImage}
+							              source={require("../../assets/imgs/4.jpeg")}
+							            />
+							        </TouchableOpacity>
+						        </View>
+						        <View style={styles.singleImg}>
+						        	<TouchableOpacity
+						        		onPress={
+						        			()=>props.navigation.navigate("BookCoverView")
+						        		}
+						        	>
+							            <Image
+							              style={styles.postContentImage}
+							              source={require("../../assets/imgs/5.jpeg")}
 							            />
 							        </TouchableOpacity>
 						        </View>

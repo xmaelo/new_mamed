@@ -38,7 +38,7 @@ export default function PostCard(props){
 	            </Text>
 	          </View>
 
-	          <PostOptions/>
+	          <PostOptions name='more-vertical' color={color.blackText} size={20}/>
 	        </View>
 	        {/* Post Content */}
 	        <View style={{ marginTop: 0 }}>
@@ -49,7 +49,7 @@ export default function PostCard(props){
 	        	>
 		            <Image
 		              style={{ width: wp("46.4%"), height: hp("38%"), marginTop: hp("1%") }}
-		              source={require("../../assets/imgs/demo.jpg")}
+		              source={require("../../assets/imgs/1.jpeg")}
 		            />
 		        </TouchableOpacity>
 	        </View>  
