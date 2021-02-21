@@ -75,7 +75,7 @@ function LoginScreen ({ navigation }){
                        onChangeText={value => {}}
                       />
                 </View>
-                <View>
+                <View> 
                     <Button
                       buttonStyle={{backgroundColor: "red", borderRadius: 20}}
                       icon={{
@@ -83,6 +83,7 @@ function LoginScreen ({ navigation }){
                         size: 15,
                         color: "white"
                       }}
+                      onPress={()=>navigation.navigate("Main")}
                       title="Sign In"
                     />
                     <View style={{alignItems: "center", marginTop: hp("1%")}}>
