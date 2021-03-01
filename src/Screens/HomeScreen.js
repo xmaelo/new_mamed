@@ -13,41 +13,31 @@ export default function HomeScreen(props){
 	const [search, updateSearch] = useState("");
 	return(
         <SafeAreaView >
-			<StatusBar style="auto" backgroundColor="#019CD9" />
-				<SearchBar
-			        placeholder="Type Here..."
-			        onChangeText={updateSearch}
-			        value={search}
-			        cancelIcon 
-			        containerStyle={{backgroundColor: null, borderWidth: 0, height: 0}}
-			        inputContainerStyle={{backgroundColor: "#D9DADF", height: 40, color: "black"}}
-			        inputStyle={{color: "black"}}
-			        cancelButtonTitle={"Cancel"}
-			      />
+			<StatusBar style="auto" backgroundColor="white" />
 			<View style={styles.container}>
 				<View style={styles.imgBloc}>
-                    <Image
-                        style={{ width: wp("23%"), height: hp("10%"), borderRadius: 100 }}
-                        source={img}
-                    />
-                    <Text style={{marginTop: -hp('2%'), ...styles.slogan}}>Bonjour Martial !</Text>
+                    <Text style={{marginTop: -hp('12%'), ...styles.slogan}}>Bonjour Martial !</Text>
                 </View>
                 <View style={styles.notif}>
                     <Text h4 style={{marginTop: -hp('2%'), ...styles.slogan}}>Notifications</Text>
                 </View>
                 <View style={styles.card}>
-                    <Text style={{marginTop: -hp('2%'), ...styles.slogan}}>Hi! Nice to see you again</Text>
+                    <Text style={{marginTop: -hp('0%'), ...styles.slogan}}>Hi! Nice to see you again</Text>
                     
 
                     <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
 	                    <View style={styles.cardContent}>
+	                    	<TouchableOpacity
+	                    		onPress={()=>props.navigation.navigate("DashbordScreen")}
+	                    	>
 		                    
-		                    <View style={styles.cardContentSub}>
-		                    	<View>
-		                    		<Icon name="stethoscope" size={30} style={{marginTop: -hp("1%")}}/>
-		                    	</View>
-		                    	<Text style={{...styles.slogan, textAlign: "center"}}> Analyse de vos symptomes </Text>
-		                    </View>
+			                    <View style={styles.cardContentSub}>
+			                    	<View>
+			                    		<Icon name="stethoscope" size={30} style={{marginTop: -hp("1%")}}/>
+			                    	</View>
+			                    	<Text style={{...styles.slogan, textAlign: "center"}}> Analyse de vos symptomes </Text>
+			                    </View>
+			                </TouchableOpacity>
 	                    </View>
 	                    <View style={styles.cardContent}>
 		                    <View style={{...styles.cardContentSub}}>
@@ -69,12 +59,16 @@ export default function HomeScreen(props){
 		                    </View>
 	                    </View>
 	                    <View style={styles.cardContent2}>
-		                    <View style={{...styles.cardContentSub}}>
-		                    	<View>
-		                    		<Ionicons name="calendar" size={40} style={{marginTop: -hp("1%")}}/>
-		                    	</View>
-		                    	<Text style={{...styles.slogan, textAlign: "center"}}> Mes rendez-vous </Text>
-		                    </View>
+	                    	<TouchableOpacity
+	                    		onPress={() => props.navigation.navigate('RendezVousScreen')}
+	                    	>
+			                    <View style={{...styles.cardContentSub}}>
+			                    	<View>
+			                    		<Ionicons name="calendar" size={40} style={{marginTop: -hp("1%")}}/>
+			                    	</View>
+			                    	<Text style={{...styles.slogan, textAlign: "center"}}> Mes rendez-vous </Text>
+			                    </View>
+			                </TouchableOpacity>
 	                    </View>
 	                </View>
                 </View>
@@ -123,7 +117,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     notif: {
-        marginTop: hp("11%"),
+        marginTop: hp("0%"),
         height: hp("17%"),
     },
     card: {
