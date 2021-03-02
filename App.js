@@ -23,7 +23,9 @@ import SymtomeScreen from './src/Screens/SymtomeScreen';
 import RegisterScreen from './src/Screens/RegisterScreen';
 import HomeScreen from './src/Screens/HomeScreen';
 import DiabeteScreen from './src/Screens/DiabeteScreen';
+import CasContactScreen from './src/Screens/CasContactScreen';
 import NewMeasureScreen from './src/Screens/NewMeasureScreen';
+import CovidDashBordScreen from './src/Screens/CovidDashBordScreen';
 import MessageScreen from './src/Screens/MessageScreen';
 import SettingScreen from './src/Screens/SettingScreen';
 import ProfileScreen from './src/Screens/ProfileScreen';
@@ -126,6 +128,8 @@ const App: () => React$Node = () => {
           <Stack.Screen name="DashbordScreen" component={DashbordScreen} options={{headerTransparent: false,  title: "Mon suivie Medical"}}/>
           <Stack.Screen name="DiabeteScreen" component={DiabeteScreen} options={{headerTransparent: false,  title: "Diabète: M"}}/>
           <Stack.Screen name="NewMeasureScreen" component={NewMeasureScreen} options={{headerTransparent: false,  title: "Nouvelle Mesure"}}/>
+          <Stack.Screen name="CovidDashBordScreen" component={CovidDashBordScreen} options={{headerTransparent: true,  title: ""}}/>
+          <Stack.Screen name="CasContactScreen" component={CasContactScreen} options={{headerTransparent: true,  title: ""}}/>
         </Stack.Navigator>
       </NavigationContainer>
     </>

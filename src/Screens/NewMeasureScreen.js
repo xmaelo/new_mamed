@@ -340,3 +340,26 @@ const styles = StyleSheet.create({
 	}
 });
 
+
+
+// AKIBA: usernae: @kib@
+// password: K1z)eUmlx1ZDUxbPr4
+
+
+// 1. PDF canal 2 augmenter la taill de la pdf du numero de devis.
+// 2. Design AKIBA => templates proposition => Squellet AKIBA
+
+
+// Feedbaack du 01/03/2021
+
+// 	Fait:
+// 		Fixe un bug au niveau de la creation du ticket et des notification dans matermost
+// 		Sur le projet AKIBA	
+// 			Prend connaisance de son cahier de charge
+// 			Install wordpress
+// 			Configure le ssl
+// 			Rechercheles meilleur theme gratuit pour proposer pour son website
+// 			Commence a travailler sur les la structure menu front page content etc....
+// 	Demain:
+// 		Continu avec avec AKIBA et travai sur les pdf de canal 2
+

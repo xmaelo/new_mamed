@@ -17,7 +17,11 @@ export default function DashbordScreen(props){
 	return(
 		<View>
 			<ButtonGroup
-		      onPress={(index)=>index==0 ? props.navigation.navigate("DiabeteScreen") : updateIndex(index)}
+		      onPress={(index)=>
+		      		{
+		      			index==0 ? props.navigation.navigate("DiabeteScreen") : 
+		      		 		      		index == 3 ? props.navigation.navigate("CovidDashBordScreen") :
+		      		 		      		updateIndex(index)}  }
 		      selectedIndex={index}
 		      buttons={buttons}
 		      containerStyle={{height: 35}} 

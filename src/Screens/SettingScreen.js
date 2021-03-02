@@ -1,5 +1,5 @@
 import React, { useState }from 'react';
-import { View, StyleSheet, SafeAreaView, Image, Picker, Switch, StatusBar, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, SafeAreaView, ScrollView, Image, Picker, Switch, StatusBar, TouchableOpacity } from 'react-native';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -12,7 +12,7 @@ export default function SettingScreen(){
 	const [switchVal, setSwitchVal] = useState(false);
 	const [selectedValue, setSelectedValue] = useState("java");
 	return(
-		<View style={styles.container}>
+		<ScrollView style={styles.container}>
 			<View>
 				<View style={{...styles.blueBack}}>
 					<Text style={styles.texxt}>Paramètre de facturation</Text>
@@ -183,7 +183,7 @@ export default function SettingScreen(){
 					</View>
 				</View>
 			</View>
-		</View>
+		</ScrollView>
 	)
 }
 
