@@ -71,15 +71,23 @@ function CovidDashBordScreen ({ navigation }){
 				    </View>
 			        <View style={{...styles.row, justifyContent: 'space-around',}}>
 			        	<View style={{alignItems: "center"}}>
-			        		<Image style={{ width: 70, height: 70,}} 
-			           			source={require('../../assets/imgs/check1.png')} 
-			            	/>
+			        		<TouchableOpacity
+					        	onPress={()=>navigation.navigate("CheckCovidScreen")}
+					        >
+				        		<Image style={{ width: 70, height: 70,}} 
+				           			source={require('../../assets/imgs/check1.png')} 
+				            	/>
+				            </TouchableOpacity>
 			            	<Text style={styles.slogan}>Check Covid</Text>
 			        	</View>
 			        	<View style={{alignItems: "center"}}>
-			        		<Image style={{ width: 70, height: 70,}} 
-			           			source={require('../../assets/imgs/covid1.png')} 
-			            	/>
+			        		<TouchableOpacity
+					        	onPress={()=>navigation.navigate("BonAsavoirScreen")}
+					        >
+				        		<Image style={{ width: 70, height: 70,}} 
+				           			source={require('../../assets/imgs/covid1.png')} 
+				            	/>
+				            </TouchableOpacity>
 			            	<Text style={styles.slogan}>Bon à Savoir</Text>
 			        	</View>	
 			        </View>

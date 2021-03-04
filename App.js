@@ -24,6 +24,8 @@ import RegisterScreen from './src/Screens/RegisterScreen';
 import HomeScreen from './src/Screens/HomeScreen';
 import DiabeteScreen from './src/Screens/DiabeteScreen';
 import CasContactScreen from './src/Screens/CasContactScreen';
+import BonAsavoirScreen from './src/Screens/BonAsavoirScreen';
+import CheckCovidScreen from './src/Screens/CheckCovidScreen';
 import NewMeasureScreen from './src/Screens/NewMeasureScreen';
 import CovidDashBordScreen from './src/Screens/CovidDashBordScreen';
 import MessageScreen from './src/Screens/MessageScreen';
@@ -130,6 +132,8 @@ const App: () => React$Node = () => {
           <Stack.Screen name="NewMeasureScreen" component={NewMeasureScreen} options={{headerTransparent: false,  title: "Nouvelle Mesure"}}/>
           <Stack.Screen name="CovidDashBordScreen" component={CovidDashBordScreen} options={{headerTransparent: true,  title: ""}}/>
           <Stack.Screen name="CasContactScreen" component={CasContactScreen} options={{headerTransparent: true,  title: ""}}/>
+          <Stack.Screen name="BonAsavoirScreen" component={BonAsavoirScreen} options={{headerTransparent: true,  title: ""}}/>
+          <Stack.Screen name="CheckCovidScreen" component={CheckCovidScreen} options={{headerTransparent: true,  title: ""}}/>
         </Stack.Navigator>
       </NavigationContainer>
     </>
