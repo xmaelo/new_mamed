@@ -16,17 +16,6 @@ export default function DashbordScreen(props){
 	const buttons = [{ element: component1 }, { element: component2 }, { element: component3 }, { element: component4 }]
 	return(
 		<View>
-			<ButtonGroup
-		      onPress={(index)=>
-		      		{
-		      			index==0 ? props.navigation.navigate("DiabeteScreen") : 
-		      		 		      		index == 3 ? props.navigation.navigate("CovidDashBordScreen") :
-		      		 		      		updateIndex(index)}  }
-		      selectedIndex={index}
-		      buttons={buttons}
-		      containerStyle={{height: 35}} 
-		      selectedTextStyle={{color: "white", fontSize: 39}}
-		    />
 		</View>
 	)
 }

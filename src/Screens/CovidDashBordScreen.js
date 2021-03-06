@@ -25,10 +25,12 @@ function CovidDashBordScreen ({ navigation }){
             <StatusBar style="auto" backgroundColor="white" />
             <SafeAreaView>
 	                <View style={styles.imgBloc}>
-	                    <Image
-	                        style={{ width: wp("35%"), height: hp("8%"), borderRadius: 100 }}
-	                        source={img}
-	                    />
+	                	{
+	                    // <Image
+	                    //     style={{ width: wp("35%"), height: hp("8%"), borderRadius: 100 }}
+	                    //     source={img}
+	                    // />
+	                    }
 	                </View>
 	                <View style={styles.container_card_profile}>
 				        <View style={styles.centerContent}>

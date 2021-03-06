@@ -5,24 +5,84 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { SearchBar } from 'react-native-elements';
 import { Text, Input, Button, CheckBox } from 'react-native-elements';
-
+import Carousel from 'react-native-snap-carousel';
 
  const img = require('../../assets/imgs/logo.png')
 
+
+const carouselItems = [
+  {
+      title:"Item 1",
+      text: "Text 1",
+  },
+  {
+      title:"Item 2",
+      text: "Text 2",
+  },
+  {
+      title:"Item 3",
+      text: "Text 3",
+  },
+  {
+      title:"Item 4",
+      text: "Text 4",
+  },
+  {
+      title:"Item 5",
+      text: "Text 5",
+  },
+]
+function _renderItem({item,index}){
+    return (
+      <View style={{
+          backgroundColor:'floralwhite',
+          borderRadius: 5,
+          height: 250,
+          padding: 50,
+          marginLeft: 25,
+          marginRight: 25, }}>
+        <Text style={{fontSize: 30}}>{item.title}</Text>
+        <Text>{item.text}</Text>
+      </View>
+
+    )
+}
+
 export default function HomeScreen(props){
 	const [search, updateSearch] = useState("");
+    const [carousel, setCarousel] = useState(null);
+    const [activeIndex, setActiveIndex] = useState(null);
 	return(
         <SafeAreaView >
 			<StatusBar style="auto" backgroundColor="white" />
 			<View style={styles.container}>
 				<View style={styles.imgBloc}>
-                    <Text style={{marginTop: -hp('12%'), ...styles.slogan}}>Bonjour Martial !</Text>
+                    <Text h4 style={{...styles.slogan}}>Notifications</Text>
                 </View>
                 <View style={styles.notif}>
-                    <Text h4 style={{marginTop: -hp('2%'), ...styles.slogan}}>Notifications</Text>
+                    
+                    <View>
+                        <Carousel
+                          layout={"stack"}
+                          ref={ref => setCarousel(ref)}
+                          data={carouselItems}
+                          sliderWidth={300}
+                          layoutCardOffset={25}
+                          itemWidth={300}
+                          loop={true}
+                          autoplay={true}
+                          enableMomentum ={false}
+                          lockScrollWhileSnapping ={true}
+                          autoplayInterval={2000}
+                          autoplayDelay={100}
+                          renderItem={_renderItem}
+                          onSnapToItem = { index => setActiveIndex(index) } 
+                        />
+                    </View>
+
                 </View>
                 <View style={styles.card}>
-                    <Text style={{marginTop: -hp('0%'), ...styles.slogan}}>Hi! Nice to see you again</Text>
+                    <Text style={{marginTop: hp('10%'), ...styles.slogan}}>Hi! Nice to see you again</Text>
                     
 
                     <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
@@ -81,7 +141,7 @@ export default function HomeScreen(props){
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        marginTop: hp('9%'),
+        marginTop: hp('4%'),
         paddingHorizontal: wp("6%"),
     },
     cardContent: {
@@ -114,7 +174,8 @@ const styles = StyleSheet.create({
     },
     imgBloc: {
         justifyContent: 'center',
-        alignItems: 'center',
+        alignItems: "center",
+        paddingBottom: 23
     },
     notif: {
         marginTop: hp("0%"),
