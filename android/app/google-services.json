@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "273623971549",
+    "project_id": "mamed-7686b",
+    "storage_bucket": "mamed-7686b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:273623971549:android:757db46eceb236249c0d34",
+        "android_client_info": {
+          "package_name": "com.scannbook"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "273623971549-jqmrpmfcm681p2h58of7bdv26vb6bios.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBiBErldkxKTUCVgZMj2eY1ufmO81vltoY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "273623971549-jqmrpmfcm681p2h58of7bdv26vb6bios.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

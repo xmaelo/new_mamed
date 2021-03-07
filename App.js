@@ -16,21 +16,25 @@ import {
   Image,
   StatusBar,
 } from 'react-native';
+import { Provider } from "react-native-redux"
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
 import LoginScreen from './src/Screens/LoginScreen';
 import SymtomeScreen from './src/Screens/SymtomeScreen';
+import SearchDoctorScreen from './src/Screens/SearchDoctorScreen';
 import RegisterScreen from './src/Screens/RegisterScreen';
 import HomeScreen from './src/Screens/HomeScreen';
+import CodeVerificationScreen from './src/Screens/CodeVerificationScreen';
 import DiabeteScreen from './src/Screens/DiabeteScreen';
 import PatientListScreen from './src/Screens/PatientListScreen';
 import CasContactScreen from './src/Screens/CasContactScreen';
+import PatientDataScreen from './src/Screens/PatientDataScreen';
 import BonAsavoirScreen from './src/Screens/BonAsavoirScreen';
 import CheckCovidScreen from './src/Screens/CheckCovidScreen';
 import NewMeasureScreen from './src/Screens/NewMeasureScreen';
 import HomeMedScreen from './src/Screens/HomeMedScreen';
 import CovidDashBordScreen from './src/Screens/CovidDashBordScreen';
-import MessageScreen from './src/Screens/MessageScreen';
+import MessagePatScreen from './src/Screens/MessagePatScreen';
 import SettingScreen from './src/Screens/SettingScreen';
 import ProfileScreen from './src/Screens/ProfileScreen';
 import DashbordScreen from './src/Screens/DashbordScreen';
@@ -115,8 +119,8 @@ function TabBar(){
           }}
         />
         <Tab.Screen 
-          name="MessageScreen" 
-          component={SymtomeScreen}
+          name="MessagePatScreen" 
+          component={MessagePatScreen}
           options={{
             tabBarLabel: 'Message',
             tabBarIcon: ({ color }) => (
@@ -205,10 +209,16 @@ const Logo = ({dontShow}) => <View style={{flexDirection: 'row',  alignItems: 'c
                           Bonjour Martial !
                         </Text>
                       }
-                    </View>
+                </View>
+
+const myInitialState = {
+
+}
 const App: () => React$Node = () => {
   return (
-    <> 
+    <Provider 
+     initialState={myInitialState} 
+    > 
       <StatusBar backgroundColor="#019CD9" />
       <NavigationContainer>
         <Stack.Navigator
@@ -244,10 +254,11 @@ const App: () => React$Node = () => {
                 backgroundColor: 'white',
                 height: 45
               }
-            }}
+            }} 
           />
           <Stack.Screen name="LoginScreen" component={LoginScreen} options={{headerTransparent: true,  title: ""}}/>
           <Stack.Screen name="RegisterScreen" component={RegisterScreen} options={{headerTransparent: true,  title: ""}}/>
+          <Stack.Screen name="CodeVerificationScreen" component={CodeVerificationScreen} options={{headerTransparent: true,  title: ""}}/>
           <Stack.Screen name="RendezVousScreen" component={RendezVousScreen} options={{headerTransparent: false,  title: "Mes rendez-vous"}}/>
           <Stack.Screen name="DashbordScreen" component={TopNavs} 
             options={{
@@ -261,11 +272,14 @@ const App: () => React$Node = () => {
           />
           <Stack.Screen name="NewMeasureScreen" component={NewMeasureScreen} options={{headerTransparent: false,  title: "Nouvelle Mesure"}}/>
           <Stack.Screen name="CasContactScreen" component={CasContactScreen} options={{headerTransparent: true,  title: ""}}/>
+          <Stack.Screen name="PatientDataScreen" component={PatientDataScreen} options={{headerTransparent: true,  title: "Informations du Patient"}}/>
           <Stack.Screen name="BonAsavoirScreen" component={BonAsavoirScreen} options={{headerTransparent: true,  title: ""}}/>
           <Stack.Screen name="CheckCovidScreen" component={CheckCovidScreen} options={{headerTransparent: true,  title: ""}}/>
+          <Stack.Screen name="SymtomeScreen" component={SymtomeScreen} options={{headerTransparent: true,  title: ""}}/>
+          <Stack.Screen name="SearchDoctorScreen" component={SearchDoctorScreen} options={{headerTransparent: true,  title: ""}}/>
         </Stack.Navigator>
       </NavigationContainer>
-    </>
+    </Provider>
   );
 };
 

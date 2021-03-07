@@ -88,9 +88,9 @@ export default function HomeScreen(props){
                     <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
 	                    <View style={styles.cardContent}>
 	                    	<TouchableOpacity
-	                    		onPress={()=>props.navigation.navigate("DashbordScreen")}
+	                    		onPress={()=>props.navigation.navigate("SymtomeScreen")}
 	                    	>
-		                    
+		                     
 			                    <View style={styles.cardContentSub}>
 			                    	<View>
 			                    		<Icon name="stethoscope" size={30} style={{marginTop: -hp("1%")}}/>
@@ -100,23 +100,31 @@ export default function HomeScreen(props){
 			                </TouchableOpacity>
 	                    </View>
 	                    <View style={styles.cardContent}>
-		                    <View style={{...styles.cardContentSub}}>
-		                    	<View>
-		                    		<Icon name="user-md" size={40} style={{marginTop: -hp("1%")}}/>
-		                    	</View>
-		                    	<Text style={{...styles.slogan, textAlign: "center"}}> Mon suivi Médical </Text>
-		                    </View>
+                            <TouchableOpacity
+                                onPress={() => props.navigation.navigate('DashbordScreen')}
+                            >
+		                      <View style={{...styles.cardContentSub}}>
+    		                    	<View>
+    		                    		<Icon name="user-md" size={40} style={{marginTop: -hp("1%")}}/>
+    		                    	</View>
+		                    	     <Text style={{...styles.slogan, textAlign: "center"}}> Mon suivi Médical </Text>
+		                        </View>
+                            </TouchableOpacity>
 	                    </View>
 	                </View>
                     <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
 	                    <View style={styles.cardContent2}>
 		                    
-		                    <View style={styles.cardContentSub}>
-		                    	<View>
-		                    		<Ionicons name="search" size={30} style={{marginTop: -hp("1%")}}/>
-		                    	</View>
-		                    	<Text style={{...styles.slogan, textAlign: "center"}}> Rechercher médecin et pharmacies </Text>
-		                    </View>
+                            <TouchableOpacity
+                                onPress={() => props.navigation.navigate('SearchDoctorScreen')}
+                            >
+    		                    <View style={styles.cardContentSub}>
+        		                    	<View>
+        		                    		<Ionicons name="search" size={30} style={{marginTop: -hp("1%")}}/>
+        		                    	</View>
+    		                    	<Text style={{...styles.slogan, textAlign: "center"}}> Rechercher médecin et pharmacies </Text>
+    		                    </View>
+                            </TouchableOpacity>
 	                    </View>
 	                    <View style={styles.cardContent2}>
 	                    	<TouchableOpacity

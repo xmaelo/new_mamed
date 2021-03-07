@@ -1,17 +1,21 @@
-import React, { useState }from 'react';
-import { View, StyleSheet, SafeAreaView, Image, StatusBar, TouchableOpacity } from 'react-native';
+import React, { useState, useEffect }from 'react';
+import { View, StyleSheet, KeyboardAvoidingView,SafeAreaView, Image, StatusBar, TouchableOpacity } from 'react-native';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Text, Input, Button, CheckBox } from 'react-native-elements';
+import auth from '@react-native-firebase/auth';
 
-
+import { connect } from "react-native-redux"
+import { setStateForKey } from "react-native-redux"
 
 const img = require('../../assets/imgs/logo.png')
 function RegisterScreen ({ navigation }){
-
+    const [initializing, setInitializing] = useState(true);
     const [password, setPassword] = useState("");
-    const [username, defineUsername] = useState("");
+    const [name, defineName] = useState("");
+    const [phone, setPhone] = useState("");
+    const [email, setEmail] = useState("");
 
     const pressed = (text) =>{
         console.log('Text pressed');
@@ -20,10 +24,70 @@ function RegisterScreen ({ navigation }){
         console.log('Pressed')
     }
     const [pinSecure, setPinSecure] = useState(false);
+
+    function onAuthStateChanged(user) {
+    //setUser(user);
+    if (initializing) setInitializing(false);
+  }
+
+  useEffect(() => {
+    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+    return subscriber; 
+  }, []);
+
+  // Handle create account button press
+  async function createAccount() {
+    try {
+      await auth().createUserWithEmailAndPassword(
+        email,
+        password
+      );
+      console.log('User account created & signed in!');
+      verifyPhoneNumber(phone);
+    } catch (error) {
+      if (error.code === 'auth/email-already-in-use') {
+        console.log('That email address is already in use!');
+      }
+
+      if (error.code === 'auth/invalid-email') {
+        console.log('That email address is invalid!');
+      }
+      console.error(error);
+    }
+  }
+
+  // Handle the verify phone button press
+  async function verifyPhoneNumber(phoneNumber) {
+    const confirmation = await auth().verifyPhoneNumber("+237"+phoneNumber);
+     setStateForKey("user.confirmation", confirmation);
+    navigation.navigate('CodeVerificationScreen');
+    //setConfirm(confirmation);
+  }
+
+  // Handle confirm code button press
+  async function confirmCode() {
+    try {
+      const credential = auth.PhoneAuthProvider.credential(
+        confirm.verificationId,
+        code,
+      );
+      let userData = await auth().currentUser.linkWithCredential(credential);
+      //setUser(userData.user);
+    } catch (error) {
+      if (error.code == 'auth/invalid-verification-code') {
+        console.log('Invalid code.');
+      } else {
+        console.log('Account linking error');
+      }
+    }
+  }
+
+
+
     return(
         <>
             <StatusBar style="auto" backgroundColor="white" />
-            <SafeAreaView style={styles.container}>
+            <KeyboardAvoidingView behavior='padding' style={styles.container}>
                 <View style={styles.imgBloc}>
                     <Image
                         style={{ width: wp("40%"), height: hp("10%"), borderRadius: 100 }}
@@ -39,21 +103,24 @@ function RegisterScreen ({ navigation }){
                        label="Nom de famille"
                        containerStyle={{marginTop: -20, marginBottom: -10, marginBottom: -10}}
                        labelStyle={{color: "red", transform: [{ translateY: 20 }]}}
-                       onChangeText={value => {}}
+                       onChangeText={value => defineName(value)}
+                       value={name}
                       />
                       <Input
                        inputStyle={{marginTop: 5}}
                        containerStyle={{marginTop: -20, marginBottom: -10}}
                        label="Numéro de teléphone"
                        labelStyle={{color: "red", transform: [{ translateY: 20 }]}}
-                       onChangeText={value => {}}
+                       onChangeText={value => setPhone(value)}
+                       value={phone}
                       />
                       <Input
                        inputStyle={{marginTop: 5}}
                        containerStyle={{marginTop: -20, marginBottom: -10}}
                        label="Email"
                        labelStyle={{color: "red",transform: [{ translateY: 20 }]}}
-                       onChangeText={value => {}}
+                       onChangeText={value => setEmail(value)}
+                       value={email}
                       />
                       <Input
                        containerStyle={{marginTop: -20, marginBottom: -10}}
@@ -61,7 +128,8 @@ function RegisterScreen ({ navigation }){
                        label="Password"
                        labelStyle={{color: "red", transform: [{ translateY: 20 }]}}
                        secureTextEntry={!false}
-                       onChangeText={value => {}}
+                       onChangeText={value => setPassword(value)}
+                       value={password}
                       />
                       <Input
                        containerStyle={{marginTop: -20, marginBottom: -10}}
@@ -69,7 +137,6 @@ function RegisterScreen ({ navigation }){
                        label="Confirm password"
                        labelStyle={{color: "red", transform: [{ translateY: 20 }]}}
                        secureTextEntry={!false}
-                       onChangeText={value => {}}
                       />
                 </View>
                 <View style={{flexDirection: 'row', justifyContent: 'space-between', marginTop: hp('2%')}}>
@@ -97,6 +164,8 @@ function RegisterScreen ({ navigation }){
                         size: 15,
                         color: "white"
                       }}
+                      //navigation.navigate('CodeVerificationScreen')
+                      onPress={()=>createAccount()}
                       title="Continue"
                     />
                 </View>
@@ -112,7 +181,7 @@ function RegisterScreen ({ navigation }){
                             </Text>
                         </TouchableOpacity>
                 </View>
-            </SafeAreaView>
+            </KeyboardAvoidingView>
         </>
     );
 } 
@@ -165,4 +234,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default RegisterScreen;
+export default connect(RegisterScreen);

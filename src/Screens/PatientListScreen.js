@@ -13,9 +13,9 @@ import {
 } from 'react-native';
 import { Icon } from 'react-native-elements';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
-
-export default function PatientListScreen(){
+export default function PatientListScreen(props){
 	const [searchText, setSearchText] = useState('');
     const [users, setUsers] = useState([]);
     const [filteredUsers, setFilteredUsers] = useState([]);
@@ -73,6 +73,7 @@ export default function PatientListScreen(){
 	                key={user}
 	                style={styles.userCard}
 	                onPress={() => {
+	                	props.navigation.navigate('PatientDataScreen');
 	                  // Alert.alert(
 	                  //   `${user.name.first} ${user.name.last}`,
 	                  //   `You can call me at ${user.phone}`
