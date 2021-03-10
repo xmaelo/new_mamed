@@ -6,7 +6,7 @@
  * @flow strict-local
  */
 
-import React from 'react';
+import React, { useState, useEffect }from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -16,7 +16,6 @@ import {
   Image,
   StatusBar,
 } from 'react-native';
-import { Provider } from "react-native-redux"
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
 import LoginScreen from './src/Screens/LoginScreen';
@@ -44,11 +43,32 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import FlashMessage from "react-native-flash-message";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import database from '@react-native-firebase/database';
 
 const Tab = createMaterialBottomTabNavigator();
 const Stack = createStackNavigator();
 const MedNav = createMaterialBottomTabNavigator();
 const Top = createMaterialTopTabNavigator();
+
+
+
+const getData = async () => {
+  console.log('value value getData start')
+  try {
+
+    const value = await AsyncStorage.getItem('@userId')
+    console.log('value value', value)
+    if(value !== null) {
+      return value;
+    }
+  } catch(e) {
+    console.log('error saving data', e)
+    // error reading value
+  }
+}
+
 
 function TopNavs() {
   return (
@@ -215,14 +235,29 @@ const myInitialState = {
 
 }
 const App: () => React$Node = () => {
+
+  const [initialRoute, setInitialRoute] = useState(false);
+  useEffect(() => {
+    (async()  =>{
+      const userId = await getData();
+      if(userId){
+        setInitialRoute('Main')
+      }else{
+        setInitialRoute('LoginScreen')
+      } 
+      })()
+    }, []);
+
+  if(!initialRoute){
+    return<View></View>
+  }
+
   return (
-    <Provider 
-     initialState={myInitialState} 
-    > 
+    <> 
       <StatusBar backgroundColor="#019CD9" />
       <NavigationContainer>
         <Stack.Navigator
-          initialRouteName="LoginScreen"
+          initialRouteName={initialRoute}
         >
           <Stack.Screen
             name="Main"
@@ -279,7 +314,8 @@ const App: () => React$Node = () => {
           <Stack.Screen name="SearchDoctorScreen" component={SearchDoctorScreen} options={{headerTransparent: true,  title: ""}}/>
         </Stack.Navigator>
       </NavigationContainer>
-    </Provider>
+      <FlashMessage position="top" />
+    </>
   );
 };
 

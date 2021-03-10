@@ -5,17 +5,29 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Text, Input, Button, CheckBox } from 'react-native-elements';
 import auth from '@react-native-firebase/auth';
-
-import { connect } from "react-native-redux"
-import { setStateForKey } from "react-native-redux"
+import database from '@react-native-firebase/database';
+import { showMessage, hideMessage } from "react-native-flash-message";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const img = require('../../assets/imgs/logo.png')
+
+
+const storeData = async (value) => {
+  try {
+    await AsyncStorage.setItem('@userId', value)
+  } catch (e) {
+    // saving error
+  }
+}
+
 function RegisterScreen ({ navigation }){
     const [initializing, setInitializing] = useState(true);
     const [password, setPassword] = useState("");
     const [name, defineName] = useState("");
     const [phone, setPhone] = useState("");
     const [email, setEmail] = useState("");
+    const [disabled, setDisabled] = useState(false);
+    const [passwordCheck, setPasswordCheck] = useState("");
 
     const pressed = (text) =>{
         console.log('Text pressed');
@@ -37,51 +49,94 @@ function RegisterScreen ({ navigation }){
 
   // Handle create account button press
   async function createAccount() {
+    if(passwordCheck !== password){
+      const message = {
+        message: "Erreur fatale",
+        description: "Les mots de passe ne correspondents pas !",
+        icon: { icon: "auto", position: "left" },
+        type: 'danger',
+        onPress: () => {
+          hideMessage();
+        },
+      };
+
+     showMessage(message);
+
+      return;
+    }
+    setDisabled(true);
     try {
-      await auth().createUserWithEmailAndPassword(
+      let res = await auth().createUserWithEmailAndPassword(
         email,
         password
       );
+      const userId = auth().currentUser.uid;
       console.log('User account created & signed in!');
-      verifyPhoneNumber(phone);
+
+      database().ref('users').child(userId).set({
+        phone: phone,
+        email: email,
+        nom_complet : name
+      }).then((data) => {
+          console.log('Saved Data', data)
+      })
+      .catch((error) => {
+          console.log('Storing Error', error)
+      })  
+      storeData(userId)
+      setDisabled(false);
+      navigation.navigate('CodeVerificationScreen', {phone: phone});
     } catch (error) {
       if (error.code === 'auth/email-already-in-use') {
+        const message2 = {
+          message: "Erreur fatale",
+          description: "Cet email est déja utilisé!",
+          icon: { icon: "auto", position: "left" },
+          type: 'danger',
+          onPress: () => {
+            hideMessage();
+          },
+        };
+      showMessage(message2);
+      setDisabled(false);
+
+      return;
         console.log('That email address is already in use!');
       }
 
       if (error.code === 'auth/invalid-email') {
         console.log('That email address is invalid!');
+        const message2 = {
+          message: "Erreur fatale",
+          description: "Cet email est invalide !",
+          icon: { icon: "auto", position: "left" },
+          type: 'danger',
+          onPress: () => {
+            hideMessage();
+          },
+        };
+      showMessage(message2);
+      setDisabled(false);
+      return;
       }
+
+      console.log('That email address is invalid!');
+      const message2 = {
+        message: "Erreur fatale",
+        description: "Quelque chose a mal tourné",
+        icon: { icon: "auto", position: "left" },
+        type: 'danger',
+        onPress: () => {
+          hideMessage();
+        },
+      };
+      showMessage(message2);
+      setDisabled(false);
       console.error(error);
     }
   }
 
-  // Handle the verify phone button press
-  async function verifyPhoneNumber(phoneNumber) {
-    const confirmation = await auth().verifyPhoneNumber("+237"+phoneNumber);
-     setStateForKey("user.confirmation", confirmation);
-    navigation.navigate('CodeVerificationScreen');
-    //setConfirm(confirmation);
-  }
-
-  // Handle confirm code button press
-  async function confirmCode() {
-    try {
-      const credential = auth.PhoneAuthProvider.credential(
-        confirm.verificationId,
-        code,
-      );
-      let userData = await auth().currentUser.linkWithCredential(credential);
-      //setUser(userData.user);
-    } catch (error) {
-      if (error.code == 'auth/invalid-verification-code') {
-        console.log('Invalid code.');
-      } else {
-        console.log('Account linking error');
-      }
-    }
-  }
-
+  
 
 
     return(
@@ -137,6 +192,8 @@ function RegisterScreen ({ navigation }){
                        label="Confirm password"
                        labelStyle={{color: "red", transform: [{ translateY: 20 }]}}
                        secureTextEntry={!false}
+                       onChangeText={value => setPasswordCheck(value)}
+                       value={passwordCheck}
                       />
                 </View>
                 <View style={{flexDirection: 'row', justifyContent: 'space-between', marginTop: hp('2%')}}>
@@ -159,12 +216,9 @@ function RegisterScreen ({ navigation }){
                 <View>
                     <Button
                       buttonStyle={{backgroundColor: "red", borderRadius: 20}}
-                      icon={{
-                        name: "arrow-right",
-                        size: 15,
-                        color: "white"
-                      }}
-                      //navigation.navigate('CodeVerificationScreen')
+                      
+                      disabled={disabled}
+                      loading={disabled}
                       onPress={()=>createAccount()}
                       title="Continue"
                     />
@@ -234,4 +288,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default connect(RegisterScreen);
+export default RegisterScreen;

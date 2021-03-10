@@ -1,36 +1,46 @@
 import React, { useState, useEffect }from 'react';
-import { View, Text, StyleSheet, SafeAreaView, Image, KeyboardAvoidingView,ScrollView, StatusBar, TouchableOpacity } from 'react-native';
+import { ActivityIndicator, View, Text, StyleSheet, SafeAreaView, Image, KeyboardAvoidingView,ScrollView, StatusBar, TouchableOpacity } from 'react-native';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
-import { getStateForKey } from "react-native-redux"
 import CodeInput from 'react-native-code-input';
-import { connect } from "react-native-redux"
+import auth from '@react-native-firebase/auth';
+import database from '@react-native-firebase/database';
 
 
+const reference = database().ref('personne');
 
 function CodeVerificationScreen({route, navigation}){
 	const [confirm, setConfirm] = useState(null);
+	const [waitingC, setWaitingC] = useState(true);
 
 	useEffect(() => {
-		(async()  =>{	
-		const confirmation = getStateForKey("user.confirmation");
-		console.log('confirmation confirmation', confirmation)
-		setConfirm(confirmation);
+		(async()  =>{
+			console.log('route.params.phone', route.params.phone);
+			await verifyPhoneNumber(route.params.phone);	
 	    })()
 	  }, []);
 
-	const _onFinishCheckingCode2 = (code) => {
+	async function _onFinishCheckingCode2(code){
 		console.log('code', code);
-		confirmCode(code)
+		await confirmCode(code)
+		
 	}
+
+	  async function verifyPhoneNumber(phoneNumber) {
+	    const confirmation = await auth().verifyPhoneNumber("+237"+phoneNumber);
+	    setConfirm(confirmation);
+	    setWaitingC(false)
+	    
+	  }
+
 	async function confirmCode(code) {
     try {
       const credential = auth.PhoneAuthProvider.credential(
         confirm.verificationId,
         code,
       );
+      console.log('credential credential credential', credential)
       let userData = await auth().currentUser.linkWithCredential(credential);
-      //setUser(userData.user);
-      //set local storage and dispatch user
+      navigation.navigate('Main');
     } catch (error) {
       if (error.code == 'auth/invalid-verification-code') {
         console.log('Invalid code.');
@@ -47,13 +57,21 @@ function CodeVerificationScreen({route, navigation}){
           </View>
   
           <View style={[styles.inputWrapper, {backgroundColor: '#2980C3'}]}>
-            <Text style={[styles.inputLabel, {color: '#fff', textAlign: 'center'}]}>
-              ENTREZ LE CODE DE VERICATION
-            </Text>
+            {waitingC ?
+            	<View style={{alignItems: "center", justifyContent: "center"}}>
+            		<Text style={[styles.inputLabel, {color: '#fff', textAlign: 'center'}]}>En attentedu code de verification</Text>
+            		<ActivityIndicator size="large" color="white" />
+            	</View> :
+	            <Text style={[styles.inputLabel, {color: '#fff', textAlign: 'center'}]}>
+	              ENTREZ LE CODE DE VERICATION
+	            </Text>
+
+            }
             <CodeInput
-              codeLength={5}
+              codeLength={6}
               borderType='circle'
               autoFocus={false}
+              ConfirmationCodeInput={()=>{}}
               codeInputStyle={{ fontWeight: '800' }}
               onFulfill={(code)=>_onFinishCheckingCode2(code)}
             />
@@ -94,4 +112,4 @@ const styles = StyleSheet.create({
 })
 
 
-export default connect(CodeVerificationScreen, ["user"])
+export default CodeVerificationScreen 

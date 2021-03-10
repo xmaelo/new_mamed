@@ -655,13 +655,6 @@
   dependencies:
     regenerator-runtime "^0.13.4"
 
-"@babel/runtime@^7.5.5":
-  version "7.13.9"
-  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.13.9.tgz#97dbe2116e2630c489f22e0656decd60aaa1fcee"
-  integrity sha512-aY2kU+xgJ3dJ1eU6FMB9EH8dIe8dmusF1xEku52joLvw6eAFN0AI+WxCLDnpev2LEejWBAy2sBvBOBAjI3zmvA==
-  dependencies:
-    regenerator-runtime "^0.13.4"
-
 "@babel/template@^7.0.0", "@babel/template@^7.10.4", "@babel/template@^7.12.7", "@babel/template@^7.3.3":
   version "7.12.7"
   resolved "https://registry.yarnpkg.com/@babel/template/-/template-7.12.7.tgz#c817233696018e39fbb6c491d2fb684e05ed43bc"
@@ -1159,6 +1152,11 @@
   version "11.0.0"
   resolved "https://registry.yarnpkg.com/@react-native-firebase/auth/-/auth-11.0.0.tgz#1bf3afd53c88d7c6701440bb2530477fb4ac53ac"
   integrity sha512-N5nsK0S6jWWUSGEzSNkCdlAzEdZRa5xA0VOklKlQ29uYiKwegog+bY0zxmDK+m6hqbLF0IABf4k6goZ/D0P9qg==
+
+"@react-native-firebase/database@^11.0.0":
+  version "11.0.0"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/database/-/database-11.0.0.tgz#5d7a97585ef9abac73a7f7b4f9ecd3ab722e5be1"
+  integrity sha512-n543kpo2LzR4sWVfy360dkuczu5NlARi2CBAZaYU+FlzSalHagmAwAr8qD+RXQcFmn/kVlsFRVCeMd0JDFKUzQ==
 
 "@react-navigation/core@^5.15.1":
   version "5.15.1"
@@ -5854,7 +5852,7 @@ react-devtools-core@^4.6.0:
     shell-quote "^1.6.1"
     ws "^7"
 
-react-is@^16.12.0, react-is@^16.13.0, react-is@^16.7.0, react-is@^16.8.1, react-is@^16.8.4, react-is@^16.8.6, react-is@^16.9.0:
+react-is@^16.12.0, react-is@^16.13.0, react-is@^16.7.0, react-is@^16.8.1, react-is@^16.8.4, react-is@^16.8.6:
   version "16.13.1"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
   integrity sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==
@@ -5894,6 +5892,14 @@ react-native-elements@^3.2.0:
     prop-types "^15.7.2"
     react-native-ratings "^7.3.0"
     react-native-size-matters "^0.3.1"
+
+react-native-flash-message@^0.1.23:
+  version "0.1.23"
+  resolved "https://registry.yarnpkg.com/react-native-flash-message/-/react-native-flash-message-0.1.23.tgz#50a17201a2d9d6b22a2f174a97b22c30bff15638"
+  integrity sha512-T++KNGpIofXRqj3fT+/zJH/su1VgIjGcwiJerSvRsvEXwai1LdUl+O0tX7dz+Lgxi7yzswXKWcUQmY0dZrbG3g==
+  dependencies:
+    prop-types "^15.7.2"
+    react-native-iphone-x-helper "^1.3.0"
 
 react-native-gesture-handler@^1.10.1:
   version "1.10.1"
@@ -5935,16 +5941,6 @@ react-native-reanimated@^1.13.2:
   integrity sha512-O+WhgxSjOIzcVdAAvx+h2DY331Ek1knKlaq+jsNLpC1fhRy9XTdOObovgob/aF2ve9uJfPEawCx8381g/tUJZQ==
   dependencies:
     fbjs "^1.0.0"
-
-react-native-redux@^1.0.10:
-  version "1.0.10"
-  resolved "https://registry.yarnpkg.com/react-native-redux/-/react-native-redux-1.0.10.tgz#7b5b98c29d59bc390e1f16fc41e05d75e42046a4"
-  integrity sha512-8yJcFoS9rvRm17Z4lIBc28InKRQmlmylYha9ULuhComjvWENkA72yTjAGYo637NOfXuMBeQHdrhh1f017mlwoQ==
-  dependencies:
-    react-redux "7.1.3"
-    redux "4.0.5"
-    redux-persist "6.0.0"
-    typescript "^3.7.4"
 
 react-native-responsive-screen@^1.4.2:
   version "1.4.2"
@@ -6031,18 +6027,6 @@ react-native@0.63.4:
     use-subscription "^1.0.0"
     whatwg-fetch "^3.0.0"
 
-react-redux@7.1.3:
-  version "7.1.3"
-  resolved "https://registry.yarnpkg.com/react-redux/-/react-redux-7.1.3.tgz#717a3d7bbe3a1b2d535c94885ce04cdc5a33fc79"
-  integrity sha512-uI1wca+ECG9RoVkWQFF4jDMqmaw0/qnvaSvOoL/GA4dNxf6LoV8sUAcNDvE5NWKs4hFpn0t6wswNQnY3f7HT3w==
-  dependencies:
-    "@babel/runtime" "^7.5.5"
-    hoist-non-react-statics "^3.3.0"
-    invariant "^2.2.4"
-    loose-envify "^1.4.0"
-    prop-types "^15.7.2"
-    react-is "^16.9.0"
-
 react-refresh@^0.4.0:
   version "0.4.3"
   resolved "https://registry.yarnpkg.com/react-refresh/-/react-refresh-0.4.3.tgz#966f1750c191672e76e16c2efa569150cc73ab53"
@@ -6103,19 +6087,6 @@ realpath-native@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/realpath-native/-/realpath-native-2.0.0.tgz#7377ac429b6e1fd599dc38d08ed942d0d7beb866"
   integrity sha512-v1SEYUOXXdbBZK8ZuNgO4TBjamPsiSgcFr0aP+tEKpQZK8vooEUqV6nm6Cv502mX4NF2EfsnVqtNAHG+/6Ur1Q==
-
-redux-persist@6.0.0:
-  version "6.0.0"
-  resolved "https://registry.yarnpkg.com/redux-persist/-/redux-persist-6.0.0.tgz#b4d2972f9859597c130d40d4b146fecdab51b3a8"
-  integrity sha512-71LLMbUq2r02ng2We9S215LtPu3fY0KgaGE0k8WRgl6RkqxtGfl7HUozz1Dftwsb0D/5mZ8dwAaPbtnzfvbEwQ==
-
-redux@4.0.5:
-  version "4.0.5"
-  resolved "https://registry.yarnpkg.com/redux/-/redux-4.0.5.tgz#4db5de5816e17891de8a80c424232d06f051d93f"
-  integrity sha512-VSz1uMAH24DM6MF72vcojpYPtrTUu3ByVWfPL1nPfVRb5mZVTve5GnNCUV53QM/BZ66xfWrm0CTWoM+Xlz8V1w==
-  dependencies:
-    loose-envify "^1.4.0"
-    symbol-observable "^1.2.0"
 
 regenerate-unicode-properties@^8.2.0:
   version "8.2.0"
@@ -6953,11 +6924,6 @@ symbol-observable@1.0.1:
   resolved "https://registry.yarnpkg.com/symbol-observable/-/symbol-observable-1.0.1.tgz#8340fc4702c3122df5d22288f88283f513d3fdd4"
   integrity sha1-g0D8RwLDEi310iKI+IKD9RPT/dQ=
 
-symbol-observable@^1.2.0:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/symbol-observable/-/symbol-observable-1.2.0.tgz#c22688aed4eab3cdc2dfeacbb561660560a00804"
-  integrity sha512-e900nM8RRtGhlV36KGEU9k65K3mPb1WV70OdjfxlG2EAuM1noi/E/BaW/uMhL7bPEssK8QV57vN3esixjUvcXQ==
-
 symbol-tree@^3.2.2:
   version "3.2.4"
   resolved "https://registry.yarnpkg.com/symbol-tree/-/symbol-tree-3.2.4.tgz#430637d248ba77e078883951fb9aa0eed7c63fa2"
@@ -7183,11 +7149,6 @@ typedarray@^0.0.6:
   version "0.0.6"
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
   integrity sha1-hnrHTjhkGHsdPUfZlqeOxciDB3c=
-
-typescript@^3.7.4:
-  version "3.9.9"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.9.9.tgz#e69905c54bc0681d0518bd4d587cc6f2d0b1a674"
-  integrity sha512-kdMjTiekY+z/ubJCATUPlRDl39vXYiMV9iyeMuEuXZh2we6zz80uovNN2WlAxmmdE/Z/YQe+EbOEXB5RHEED3w==
 
 ua-parser-js@^0.7.18:
   version "0.7.23"
