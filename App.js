@@ -14,6 +14,7 @@ import {
   View,
   Text,
   Image,
+  TouchableOpacity,
   StatusBar,
 } from 'react-native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
@@ -21,13 +22,18 @@ import { NavigationContainer } from '@react-navigation/native';
 import LoginScreen from './src/Screens/LoginScreen';
 import SymtomeScreen from './src/Screens/SymtomeScreen';
 import SearchDoctorScreen from './src/Screens/SearchDoctorScreen';
+import AntecedentsMedical from './src/Screens/AntecedentsMedical';
 import RegisterScreen from './src/Screens/RegisterScreen';
 import HomeScreen from './src/Screens/HomeScreen';
 import CodeVerificationScreen from './src/Screens/CodeVerificationScreen';
 import DiabeteScreen from './src/Screens/DiabeteScreen';
 import PatientListScreen from './src/Screens/PatientListScreen';
+import ListCasContact from './src/Screens/ListCasContact'; 
 import CasContactScreen from './src/Screens/CasContactScreen';
+import AddcontactUrgence from './src/Screens/AddcontactUrgence';
 import PatientDataScreen from './src/Screens/PatientDataScreen';
+import JournalCovid from './src/Screens/JournalCovid';
+import EditProfile from './src/Screens/EditProfile';
 import BonAsavoirScreen from './src/Screens/BonAsavoirScreen';
 import CheckCovidScreen from './src/Screens/CheckCovidScreen';
 import NewMeasureScreen from './src/Screens/NewMeasureScreen';
@@ -36,6 +42,8 @@ import CovidDashBordScreen from './src/Screens/CovidDashBordScreen';
 import MessagePatScreen from './src/Screens/MessagePatScreen';
 import SettingScreen from './src/Screens/SettingScreen';
 import ProfileScreen from './src/Screens/ProfileScreen';
+import AddCasContact from './src/Screens/AddCasContact';
+import ContactUrgence from './src/Screens/ContactUrgence';
 import DashbordScreen from './src/Screens/DashbordScreen';
 import RendezVousScreen from './src/Screens/RendezVousScreen';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
@@ -307,11 +315,18 @@ const App: () => React$Node = () => {
           />
           <Stack.Screen name="NewMeasureScreen" component={NewMeasureScreen} options={{headerTransparent: false,  title: "Nouvelle Mesure"}}/>
           <Stack.Screen name="CasContactScreen" component={CasContactScreen} options={{headerTransparent: true,  title: ""}}/>
+          <Stack.Screen name="AddCasContact" component={AddCasContact} options={{headerTransparent: false,  title: "Ajouter un contact d'urgence"}}/>
+          <Stack.Screen name="AddcontactUrgence" component={AddcontactUrgence} options={{headerTransparent: false,  title: "Ajouter un cas contact"}}/>
           <Stack.Screen name="PatientDataScreen" component={PatientDataScreen} options={{headerTransparent: true,  title: "Informations du Patient"}}/>
+          <Stack.Screen name="JournalCovid" component={JournalCovid} options={{headerTransparent: false,  title: "Journal Covid"}}/>
+          <Stack.Screen name="ListCasContact" component={ListCasContact}/>
+          <Stack.Screen name="ContactUrgence" component={ContactUrgence}/>
           <Stack.Screen name="BonAsavoirScreen" component={BonAsavoirScreen} options={{headerTransparent: true,  title: ""}}/>
           <Stack.Screen name="CheckCovidScreen" component={CheckCovidScreen} options={{headerTransparent: true,  title: ""}}/>
           <Stack.Screen name="SymtomeScreen" component={SymtomeScreen} options={{headerTransparent: true,  title: ""}}/>
           <Stack.Screen name="SearchDoctorScreen" component={SearchDoctorScreen} options={{headerTransparent: true,  title: ""}}/>
+          <Stack.Screen name="AntecedentsMedical" component={AntecedentsMedical} options={{headerTransparent: false,  title: "Mes antecedents Médicaux"}}/>
+          <Stack.Screen name="EditProfile" component={EditProfile} options={{headerTransparent: false,  title: "Modifier Mon Profile"}}/>
         </Stack.Navigator>
       </NavigationContainer>
       <FlashMessage position="top" />

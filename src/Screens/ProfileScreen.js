@@ -11,15 +11,18 @@ import auth from '@react-native-firebase/auth';
 const list = [
   {
     title: 'Mes Antécédents Médicaux',
-    icon: 'thermometer'
+    icon: 'thermometer',
+    navigation: "AntecedentsMedical"
   },
   {
     title: "Mes Contacts d'Urgence",
-    icon: "user"
+    icon: "user",
+    navigation: "ContactUrgence"
   },
   {
     title: "Paramètres",
-    icon: "cog"
+    icon: "cog",
+    navigation: "SettingScreen"
   },
 ]
 
@@ -27,17 +30,24 @@ const list = [
 
 
 
-export default function ProfileScreen(){
+export default function ProfileScreen({navigation}){
   const userId = auth().currentUser.uid;
   let users = database().ref('users/'+userId);
   const [name, setName] = useState("");
+  const [profile, setProfile] = useState(null);
+  const [taille, setTaille] = useState(null);
+  const [poids, setPoids] = useState(null);
+  const [date, setDate] = useState(null);
 
   useEffect(() => {
     (async()  =>{
         users.on('value', (snapshot) => {
-            const nom_complet = snapshot.val().nom_complet
-            setName(nom_complet);
-            console.log('task_name ===>', nom_complet)
+            const n = snapshot.val()
+            setName(n.nom_complet);
+            setProfile(n.profile);
+            setPoids(n.poids);
+            setTaille(n.taille);
+            setDate(n.date);
         }); 
       })()
     }, []);
@@ -48,7 +58,7 @@ export default function ProfileScreen(){
 
 	          <View style={[styles.container2, { borderRadius: 50}]}>
 		           <Image style={{ width: 100, height: 100,}} source={{
-		           		uri: "https://randomuser.me/api/portraits/women/11.jpg"
+		           		uri: profile
 		            }} width={100} height={100}/>
 		        </View>
 
@@ -61,23 +71,36 @@ export default function ProfileScreen(){
 	        <View style={styles.container_all_details}>
 	          <View style={styles.details}>
 	            <Text style={styles.title}>Taille</Text>
-	            <Text style={styles.number}>1.67 m</Text>
+	            <Text style={styles.number}>{taille ? taille+" m" : "?"}</Text>
 	          </View>
 
 	          <View style={styles.details}>
 	            <Text style={styles.title}>Poids</Text>
-	            <Text style={styles.number}>63 k.g</Text>
+	            <Text style={styles.number}>{poids ? poids+" K.g" : "?"}</Text>
 	          </View>
 	          <View style={styles.details}>
 	            <Text style={styles.title}>Naissance</Text>
-	            <Text style={styles.number}>12/12/2020</Text>
+	            <Text style={styles.number}>{date ? new Date(date).toISOString().split("T")[0] : "?"}</Text>
 	          </View>
 	        </View>
+
+            <Button
+              icon={
+                <Ionicons
+                  name="create-outline"
+                  size={25}
+                  color="black"
+                /> 
+              }
+              onPress={()=>navigation.navigate('EditProfile')}
+              type="clear"
+              title={" Modifier mon profile"}
+            />
 	      </View>
 	      <View style={{paddingHorizontal: wp("2%"), marginTop: 10}}>
 		      {
 			    list.map((item, i) => (
-			      <ListItem key={i} bottomDivider>
+			      <ListItem key={i} bottomDivider onPress={()=>navigation.navigate(item.navigation)}>
 			        <Icon name={item.icon} size={23}/>
 			        <ListItem.Content>
 			          <ListItem.Title>{item.title}</ListItem.Title>

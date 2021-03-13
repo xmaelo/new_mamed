@@ -1,17 +1,27 @@
-import React, { useState }from 'react';
+import React, { useState, useEffect }from 'react';
 import { View, StyleSheet, SafeAreaView, Image, ScrollView, StatusBar, TouchableOpacity } from 'react-native';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Text, Input, Button, CheckBox } from 'react-native-elements';
 
-
+// https://coronavirus-19-api.herokuapp.com/countries/cameroon
 
 const img = require('../../assets/imgs/logo.png')
 function CovidDashBordScreen ({ navigation }){
 
     const [password, setPassword] = useState("");
     const [username, defineUsername] = useState("");
+    const [coronaState, setCoronaState] = useState({});
+
+    useEffect(() => {
+    (async()  =>{
+        let res = await fetch('https://coronavirus-19-api.herokuapp.com/countries/cameroon', {"method": "GET"});
+      	let json = await res.json();
+      	console.log('corono live ====>>>', json)
+      	setCoronaState(json);
+      })()
+    }, []);
 
     const pressed = (text) =>{
         console.log('Text pressed');
@@ -49,16 +59,16 @@ function CovidDashBordScreen ({ navigation }){
 
 					        	<View style={styles.container_all_details}>
 						          <View style={styles.details}>
-						            <Text style={styles.number}>8700</Text>
+						            <Text style={styles.number}>{coronaState.cases}</Text>
 						            <Text style={styles.title}>Infectés</Text>
 						          </View>
 
 						          <View style={styles.details}>
-						            <Text style={styles.number}>6000</Text>
+						            <Text style={styles.number}>{coronaState.recovered}</Text>
 						            <Text style={styles.title}>Guéris</Text>
 						          </View>
 						          <View style={styles.details}>
-						            <Text style={styles.number}>3</Text>
+						            <Text style={styles.number}>{coronaState.deaths}</Text>
 						            <Text style={styles.title}>Décèdés</Text>
 						          </View>
 						        </View>
@@ -68,6 +78,13 @@ function CovidDashBordScreen ({ navigation }){
 					            	/>
 				            	</View>
 					        </View>
+					        <View style={{marginTop: 2}}> 
+			                    <Button
+			                      onPress={()=>navigation.navigate('JournalCovid')}
+			                      type="clear"
+			                      title="Mon historique"
+			                    />
+			                </View> 
 				        </View>
 
 				    </View>
@@ -110,7 +127,7 @@ function CovidDashBordScreen ({ navigation }){
 			        	</View>
 			        	<View style={{alignItems: "center"}}>
 					        <TouchableOpacity
-					        	onPress={()=>navigation.navigate("CasContactScreen")}
+					        	onPress={()=>navigation.navigate("ListCasContact")}
 					        >
 				        		<Image style={{ width: 70, height: 70,}} 
 				           			source={require('../../assets/imgs/net1.png')} 
@@ -184,7 +201,7 @@ const styles = StyleSheet.create({
     marginLeft: hp('1%'),
     marginRight: hp('1%'),
     borderRadius: 10,
-    height: hp('50%'),
+    height: hp('53.8%'),
     marginTop: hp('2%'),
     shadowColor: "#000",
     shadowOffset: {

@@ -34,18 +34,11 @@ export default function CheckCovidScreen ({ navigation }){
     async function onSave(){
     	setDisabled(true);
     	const userId = auth().currentUser.uid;
-    	let covid = database().ref('typePandemie/covid');
-    	let task_name;
     	let type, message, description;
     	try{
-    		covid.on('value', (snapshot) => {
-    		  task_name = snapshot.val().task_name
-    		  console.log('task_name ===>', task_name)
-			});
 
-    		await database().ref('pandemie').push({
-    			type: task_name,
-    			userId: userId,
+    		await database().ref('pandemie/'+userId+"/covid").push({
+    			date: new Date().toISOString().split("T")[0],
 		        toux: toux,
 		        diarrhe: diarrhe,
 		        ecoullement_nasal: nasal,
@@ -83,7 +76,7 @@ export default function CheckCovidScreen ({ navigation }){
 	      }; 
      	  showMessage(mess);
      	  setDisabled(false)
-          return;
+     	  navigation.navigate('JournalCovid');
     }
     const pressed = (text) =>{
         console.log('Text pressed');
@@ -168,7 +161,7 @@ export default function CheckCovidScreen ({ navigation }){
 										  label=""
 										  labelStyle={{ color: "black", fontWeight: "900" }}
 										  size="small"
-										  onToggle={isOn => setTemperature(isOn)}
+										  onToggle={isOn => setCourbature(isOn)}
 										/>
 									</View>
 									<View style={styles.mt}>
@@ -280,6 +273,7 @@ export default function CheckCovidScreen ({ navigation }){
 						/>
 						<Button
 						  title="Fermer"
+						  onPress={()=>navigation.navigate('JournalCovid')}
 						  buttonStyle={{backgroundColor: "red"}}
 						/>
 	            	</View>

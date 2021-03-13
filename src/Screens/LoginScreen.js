@@ -4,14 +4,25 @@ import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-nativ
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Text, Input, Button } from 'react-native-elements';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import auth from '@react-native-firebase/auth';
+import database from '@react-native-firebase/database';
+import { showMessage, hideMessage } from "react-native-flash-message";
 
-
+const storeData = async (value) => {
+  try {
+    await AsyncStorage.setItem('@userId', value)
+  } catch (e) {
+    // saving error
+  }
+}
 
 const img = require('../../assets/imgs/logo.png')
 function LoginScreen ({ navigation }){
 
     const [password, setPassword] = useState("");
     const [username, defineUsername] = useState("");
+    const [disabled, setDisabled] = useState(false);
 
     const pressed = (text) =>{
         console.log('Text pressed');
@@ -19,6 +30,47 @@ function LoginScreen ({ navigation }){
     const handlePress = () =>{
         console.log('Pressed')
     }
+    async function signInWithPhoneNumber(){
+        try{   
+            if(!username){
+                const message = {
+                message: "Erreur",
+                description: "Entrez correctement votre numero de telephone !",
+                icon: { icon: "auto", position: "left" },
+                type: 'danger',
+                hideStatusBar: true,
+                onPress: () => {
+                  hideMessage();
+                },
+            };
+
+            showMessage(message);
+            return;
+            }
+            setDisabled(true)
+            const confirmation = await auth().signInWithEmailAndPassword(username, password);
+            storeData(auth().currentUser.uid)
+            setDisabled(false)
+            navigation.navigate('Main');
+        }catch(e){
+            setDisabled(false)
+            console.log('error signin', e);
+            const message = {
+                message: "Erreur",
+                description: "Quelque chose a mal tourné !",
+                icon: { icon: "auto", position: "left" },
+                type: 'danger',
+                hideStatusBar: true,
+                onPress: () => {
+                  hideMessage();
+                },
+            };
+
+            showMessage(message);
+            return;
+        }
+    }
+
     const [pinSecure, setPinSecure] = useState(false);
     return(
         <>
@@ -47,7 +99,8 @@ function LoginScreen ({ navigation }){
                             size={24}   
                         />
                        }
-                       onChangeText={value => {}}
+                       value={username}
+                       onChangeText={value => defineUsername(value)}
                       />
 
                       <Input
@@ -60,6 +113,8 @@ function LoginScreen ({ navigation }){
                                 size={24}   
                             />
                         }
+                        value={password}
+                        onChangeText={value => setPassword(value)}
                        rightIcon={
                         <TouchableOpacity
                             style={{padding: 4}}
@@ -72,7 +127,6 @@ function LoginScreen ({ navigation }){
                         </TouchableOpacity>
                        }
                        secureTextEntry={!pinSecure}
-                       onChangeText={value => {}}
                       />
                 </View>
                 <View> 
@@ -83,7 +137,9 @@ function LoginScreen ({ navigation }){
                         size: 15,
                         color: "white"
                       }}
-                      onPress={()=>navigation.navigate("Main")}
+                      onPress={()=>signInWithPhoneNumber()}
+                      disabled={disabled}
+                      loading={disabled}
                       title="Sign In"
                     />
                     <View style={{alignItems: "center", marginTop: hp("1%")}}>
