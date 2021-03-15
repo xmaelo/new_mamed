@@ -1,5 +1,5 @@
 import React, { useState }from 'react';
-import { View, StyleSheet, SafeAreaView, Image, StatusBar, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, SafeAreaView, Image, StatusBar, ScrollView, TouchableOpacity } from 'react-native';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -73,7 +73,7 @@ function LoginScreen ({ navigation }){
 
     const [pinSecure, setPinSecure] = useState(false);
     return(
-        <>
+        <ScrollView style={styles.backrgound}>
             <StatusBar style="auto" backgroundColor="white" />
             <SafeAreaView style={styles.container}>
                 <View style={styles.imgBloc}>
@@ -88,46 +88,48 @@ function LoginScreen ({ navigation }){
                     <Text h4>Sign In</Text>
                     <Text style={styles.slogan}>Hi there! Nice to see you again</Text>
                 </View>
-                <View style={{marginTop: hp("3%")}}>
-                    <Input
-                       placeholder="Username"
-                       label="Email"
-                       labelStyle={{color: "red"}}
-                       leftIcon={
-                        <Ionicons 
-                            name={"person"} 
-                            size={24}   
-                        />
-                       }
-                       value={username}
-                       onChangeText={value => defineUsername(value)}
-                      />
-
-                      <Input
-                       placeholder="Password"
-                       label="Password"
-                       labelStyle={{color: "red"}}
-                       leftIcon={
-                        <Ionicons 
-                                name={"lock-closed"} 
-                                size={24}   
-                            />
-                        }
-                        value={password}
-                        onChangeText={value => setPassword(value)}
-                       rightIcon={
-                        <TouchableOpacity
-                            style={{padding: 4}}
-                            onPress={()=>setPinSecure(!pinSecure)}
-                        >
+                <View style={{marginLeft: -10}}>
+                    <View style={{marginTop: hp("3%")}}>
+                        <Input
+                           placeholder="Username"
+                           label="Email"
+                           labelStyle={{color: "red"}}
+                           leftIcon={
                             <Ionicons 
-                                name={pinSecure ? "eye": "eye-off"} 
+                                name={"person"} 
                                 size={24}   
                             />
-                        </TouchableOpacity>
-                       }
-                       secureTextEntry={!pinSecure}
-                      />
+                           }
+                           value={username}
+                           onChangeText={value => defineUsername(value)}
+                          />
+
+                          <Input
+                           placeholder="Password"
+                           label="Password"
+                           labelStyle={{color: "red"}}
+                           leftIcon={
+                            <Ionicons 
+                                    name={"lock-closed"} 
+                                    size={24}   
+                                />
+                            }
+                            value={password}
+                            onChangeText={value => setPassword(value)}
+                           rightIcon={
+                            <TouchableOpacity
+                                style={{padding: 4}}
+                                onPress={()=>setPinSecure(!pinSecure)}
+                            >
+                                <Ionicons 
+                                    name={pinSecure ? "eye": "eye-off"} 
+                                    size={24}   
+                                />
+                            </TouchableOpacity>
+                           }
+                           secureTextEntry={!pinSecure}
+                          />
+                    </View>
                 </View>
                 <View> 
                     <Button
@@ -160,7 +162,7 @@ function LoginScreen ({ navigation }){
                 </View>
                 <View style={{flexDirection: 'row', justifyContent: 'space-between', marginTop: hp('3.7%')}}>
                     <TouchableOpacity
-                        onPress={()=>navigation.navigate("TabBarMed")}
+                       // onPress={()=>navigation.navigate("TabBarMed")}
                     >
                         <Text style={styles.slogan}>
                           Forgot password ?
@@ -175,16 +177,19 @@ function LoginScreen ({ navigation }){
                     </TouchableOpacity>
                 </View>
             </SafeAreaView>
-        </>
+        </ScrollView>
     );
 } 
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
         marginTop: hp('6%'),
         
         paddingHorizontal: wp("6%"),
+    },
+    backrgound: {
+        flex: 1,
+        backgroundColor: "white"
     },
     imgBloc: {
         justifyContent: 'center',

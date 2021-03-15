@@ -143,7 +143,7 @@ export default function EditProfile({navigation, route}){
                 <TouchableOpacity 
 	                style={styles.edite}
 	                onPress={() =>
-			            launchCamera(
+			            launchImageLibrary(
 			              {
 			                mediaType: 'photo',
 			                includeBase64: false,

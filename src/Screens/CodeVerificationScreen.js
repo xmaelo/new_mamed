@@ -11,6 +11,8 @@ const reference = database().ref('personne');
 function CodeVerificationScreen({route, navigation}){
 	const [confirm, setConfirm] = useState(null);
 	const [waitingC, setWaitingC] = useState(true);
+  const [errorC, setErroC] = useState(false);
+  const [message, setMessage] = useState("En attente du code de verification");
 
 	useEffect(() => {
 		(async()  =>{
@@ -34,6 +36,9 @@ function CodeVerificationScreen({route, navigation}){
 
 	async function confirmCode(code) {
     try {
+      setWaitingC(true)
+      setErroC(false)
+      setMessage("Verification en cours...")
       const credential = auth.PhoneAuthProvider.credential(
         confirm.verificationId,
         code,
@@ -42,6 +47,8 @@ function CodeVerificationScreen({route, navigation}){
       let userData = await auth().currentUser.linkWithCredential(credential);
       navigation.navigate('Main');
     } catch (error) {
+      setErroC(true) 
+      setWaitingC(false)
       if (error.code == 'auth/invalid-verification-code') {
         console.log('Invalid code.');
       } else {
@@ -59,13 +66,18 @@ function CodeVerificationScreen({route, navigation}){
           <View style={[styles.inputWrapper, {backgroundColor: '#2980C3'}]}>
             {waitingC ?
             	<View style={{alignItems: "center", justifyContent: "center"}}>
-            		<Text style={[styles.inputLabel, {color: '#fff', textAlign: 'center'}]}>En attentedu code de verification</Text>
+            		<Text style={[styles.inputLabel, {color: '#fff', textAlign: 'center'}]}>{message}</Text>
             		<ActivityIndicator size="large" color="white" />
             	</View> :
 	            <Text style={[styles.inputLabel, {color: '#fff', textAlign: 'center'}]}>
 	              ENTREZ LE CODE DE VERICATION
 	            </Text>
 
+            }
+            {errorC &&
+              <Text style={[styles.inputLabel, {color: '#fff', textAlign: 'center'}]}>
+                Le code founir est incorrect
+              </Text>
             }
             <CodeInput
               codeLength={6}

@@ -1,4 +1,4 @@
-import React, { useState }from 'react';
+import React, { useState, useEffect }from 'react';
 import { View, StyleSheet, SafeAreaView, Image, StatusBar, TouchableOpacity } from 'react-native';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import Icon from 'react-native-vector-icons/FontAwesome5';
@@ -6,6 +6,9 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import { SearchBar } from 'react-native-elements';
 import { Text, Input, Button, CheckBox } from 'react-native-elements';
 import Carousel from 'react-native-snap-carousel';
+import database from '@react-native-firebase/database';
+import auth from '@react-native-firebase/auth';
+import { useFocusEffect } from '@react-navigation/native';
 
  const img = require('../../assets/imgs/logo.png')
 
@@ -32,6 +35,9 @@ const carouselItems = [
       text: "Text 5",
   },
 ]
+
+const reference = database().ref('users');
+
 function _renderItem({item,index}){
     return (
       <View style={{
@@ -48,10 +54,42 @@ function _renderItem({item,index}){
     )
 }
 
-export default function HomeScreen(props){
+  function Logo({nom_complet}){
+    console.log('lohgooddod)=============>')
+
+    return(
+       <View style={{flexDirection: 'row',  alignItems: 'center'}}>  
+          <Image
+              style={{ width: 90, height: 45 }}
+              source={img}
+          />
+            <Text style={{
+              marginLeft: 12, 
+              marginTop: -10,
+              color: "#5F666D",
+              fontSize: 17
+            }}>
+              Bonjour {nom_complet} !
+            </Text>
+      </View>
+    )
+  }
+
+
+export default function HomeScreen({navigation}){
+  useEffect(() => {
+    (async()  =>{
+      const userId = auth().currentUser.uid;
+      let user = database().ref('users/'+userId);
+      user.on('value', (snapshot) => {})
+    })();
+  }, []);
+
 	const [search, updateSearch] = useState("");
     const [carousel, setCarousel] = useState(null);
     const [activeIndex, setActiveIndex] = useState(null);
+    const [nom_complet, setName] = useState("");
+
 	return(
         <SafeAreaView >
 			<StatusBar style="auto" backgroundColor="white" />
@@ -88,7 +126,7 @@ export default function HomeScreen(props){
                     <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
 	                    <View style={styles.cardContent}>
 	                    	<TouchableOpacity
-	                    		onPress={()=>props.navigation.navigate("SymtomeScreen")}
+	                    		onPress={()=>navigation.navigate("SymtomeScreen")}
 	                    	>
 		                     
 			                    <View style={styles.cardContentSub}>
@@ -101,7 +139,7 @@ export default function HomeScreen(props){
 	                    </View>
 	                    <View style={styles.cardContent}>
                             <TouchableOpacity
-                                onPress={() => props.navigation.navigate('DashbordScreen')}
+                                onPress={() => navigation.navigate('DashbordScreen')}
                             >
 		                      <View style={{...styles.cardContentSub}}>
     		                    	<View>
@@ -116,7 +154,7 @@ export default function HomeScreen(props){
 	                    <View style={styles.cardContent2}>
 		                    
                             <TouchableOpacity
-                                onPress={() => props.navigation.navigate('SearchDoctorScreen')}
+                                onPress={() => navigation.navigate('SearchDoctorScreen')}
                             >
     		                    <View style={styles.cardContentSub}>
         		                    	<View>
@@ -128,7 +166,7 @@ export default function HomeScreen(props){
 	                    </View>
 	                    <View style={styles.cardContent2}>
 	                    	<TouchableOpacity
-	                    		onPress={() => props.navigation.navigate('RendezVousScreen')}
+	                    		onPress={() => navigation.navigate('RendezVousScreen')}
 	                    	>
 			                    <View style={{...styles.cardContentSub}}>
 			                    	<View>

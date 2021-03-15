@@ -1,5 +1,5 @@
 import React, { useState, useEffect }from 'react';
-import { View, StyleSheet, KeyboardAvoidingView,SafeAreaView, Image, StatusBar, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, KeyboardAvoidingView,SafeAreaView, Image, ScrollView, StatusBar, TouchableOpacity } from 'react-native';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -7,18 +7,11 @@ import { Text, Input, Button, CheckBox } from 'react-native-elements';
 import auth from '@react-native-firebase/auth';
 import database from '@react-native-firebase/database';
 import { showMessage, hideMessage } from "react-native-flash-message";
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import storage from '@react-native-firebase/storage';
 
 const img = require('../../assets/imgs/logo.png')
 
 
-const storeData = async (value) => {
-  try {
-    await AsyncStorage.setItem('@userId', value)
-  } catch (e) {
-    // saving error
-  }
-}
 
 function RegisterScreen ({ navigation }){
     const [initializing, setInitializing] = useState(true);
@@ -73,9 +66,12 @@ function RegisterScreen ({ navigation }){
       const userId = auth().currentUser.uid;
       console.log('User account created & signed in!');
 
+        
+
       database().ref('users').child(userId).set({
         phone: phone,
         email: email,
+        profile: "https://randomuser.me/api/portraits/women/11.jpg",
         nom_complet : name
       }).then((data) => {
           console.log('Saved Data', data)
@@ -83,7 +79,6 @@ function RegisterScreen ({ navigation }){
       .catch((error) => {
           console.log('Storing Error', error)
       })  
-      storeData(userId)
       setDisabled(false);
       navigation.navigate('CodeVerificationScreen', {phone: phone});
     } catch (error) {
@@ -132,7 +127,7 @@ function RegisterScreen ({ navigation }){
       };
       showMessage(message2);
       setDisabled(false);
-      console.error(error);
+      console.log(error);
     }
   }
 
@@ -140,9 +135,9 @@ function RegisterScreen ({ navigation }){
 
 
     return(
-        <>
+        <ScrollView style={styles.backrgound}>
             <StatusBar style="auto" backgroundColor="white" />
-            <KeyboardAvoidingView behavior='padding' style={styles.container}>
+            <View style={styles.container}>
                 <View style={styles.imgBloc}>
                     <Image
                         style={{ width: wp("40%"), height: hp("10%"), borderRadius: 100 }}
@@ -235,17 +230,20 @@ function RegisterScreen ({ navigation }){
                             </Text>
                         </TouchableOpacity>
                 </View>
-            </KeyboardAvoidingView>
-        </>
+            </View>
+        </ScrollView>
     );
 } 
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
         marginTop: hp('2%'),
         
         paddingHorizontal: wp("6%"),
+    },
+    backrgound: {
+        flex: 1,
+        backgroundColor: "white"
     },
     imgBloc: {
         justifyContent: 'center',

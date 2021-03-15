@@ -6,16 +6,95 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import { SearchBar } from 'react-native-elements';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Text, Input, Button, CheckBox, ButtonGroup } from 'react-native-elements';
+import database from '@react-native-firebase/database';
+import auth from '@react-native-firebase/auth'; 
+import { showMessage, hideMessage } from "react-native-flash-message";
 
-export default function NewMeasureScreen(props){
+export default function NewMeasureScreen({navigation}){
 	const [showPickerOne, setShowPickerOne] = useState(false);
 	const [showPickerTwo, setShowPickerTwo] = useState(false);
+	const [disabled, setDisabled] = useState(false);
 	const [selectedDate, setSelectedDate] = useState(null);
 	const [selectedTime, setSelectedTime] = useState(null);
 	const [selectedValue, setSelectedValue] = useState(null);
+	const [selectedValue2, setSelectedValue2] = useState(null);
+	const [selectedValue3, setSelectedValue3] = useState(null);
 	const [molL, setMolL] = useState("");
 	const [glucides, setGlucides] = useState("");
 	const [nSpec, setnSpenSpec] = useState("");
+	const [nSpec2, setnSpenSpec2] = useState("");
+
+	const onChangeDate = (event, selectedDate)=>{
+  		if(selectedDate){
+      		setSelectedDate(selectedDate); 
+  		}
+      	setShowPickerOne(false)
+    }
+    async function onSaveMes(){
+
+    	const userId = auth().currentUser.uid;
+    	let type, message, description;
+    	if((!selectedDate 
+    		|| !selectedTime 
+    		|| !selectedValue 
+    		|| !selectedValue2 
+    		|| !selectedValue3 
+    		|| molL&&molL.trim()==="" 
+    		|| glucides&&glucides.trim()==="" 
+    		|| nSpec&&nSpec.trim()==="" 
+    		|| nSpec2&&nSpec2.trim()==="")){
+			const message = {
+	            message: "Erreur",
+	            description: "Tous les champs n'ont pas été fourni !",
+	            icon: { icon: "auto", position: "left" },
+	            type: 'danger',
+	            hideStatusBar: true,
+	            onPress: () => {
+	              hideMessage();
+	            },
+    		}
+    		showMessage(message);
+            return;
+    	}
+    	setDisabled(true)
+
+    	try{
+    		await database().ref('mesures/'+userId).push({
+				date: new Date(selectedDate).toISOString().split("T")[0],
+				time: selectedTime.toLocaleTimeString(),
+				cathegorie: selectedValue,
+				glycemie: molL,
+				glucide: glucides,
+				nSpec: nSpec,
+				nSpec2: nSpec2,
+				medicament: selectedValue2,
+				rapel: selectedValue3
+			})
+    		message = "Succès";
+    		type =  'success';
+    		description="Sauvegarde effectuée !"
+    	}catch(e){
+    		console.log('error saving', e)
+    		message = "Error";
+    		type =  'danger';
+    		description="Erreur inconnue est apparue !"
+			console.log('error saving on firebase');
+    	}
+
+    	const mess = {
+	        message: message,
+	        description: description,
+	        icon: { icon: "auto", position: "left" },
+	        type: type,
+	        hideStatusBar: true,
+	        onPress: () => {
+	          hideMessage();
+	        },
+	    }; 
+     	showMessage(mess);
+     	setDisabled(false)
+     	navigation.navigate('DiabeteScreen');
+    }
 	return(
 		<ScrollView style={styles.container}>
 			<View>
@@ -42,17 +121,11 @@ export default function NewMeasureScreen(props){
 							onPress={()=>setShowPickerOne(true)}
 						/>
 						{showPickerOne && (
-					        <DateTimePicker
-					          testID="dateTimePicker"
+					        <DateTimePicker 
 					          value={new Date()}
 					          mode={"date"}
-					          is24Hour={true}
-					          display="default"
-					          onChange={(event, selectedDate)=>{
-						          	setSelectedDate(selectedDate); 
-						          	setShowPickerOne(false)
-						          }
-					          }
+					          display="spinner"
+					          onChange={onChangeDate}
 					        />
 					    )}
 					    </View>
@@ -94,7 +167,9 @@ export default function NewMeasureScreen(props){
 					          is24Hour={true}
 					          display="default"
 					          onChange={(event, selectedDate2)=>{
-						          	setSelectedTime(selectedDate2); 
+					          		if(selectedDate2){
+						          		setSelectedTime(selectedDate2); 
+					          		}
 						          	setShowPickerTwo(false)
 						          }
 					          }
@@ -218,7 +293,7 @@ export default function NewMeasureScreen(props){
 							buttonStyle={{paddingHorizontal: 20, backgroundColor: "#F0F0F0"}}
 							titleStyle={{color: "black"}}
 							iconRight
-							title="Non spécifique "
+							title="Insuline "
 						/>
 					    </View>
 					</View>
@@ -259,8 +334,8 @@ export default function NewMeasureScreen(props){
 					<View style={{width: wp("38%"), marginTop: hp("2%")}} >
 						<Input
 						   placeholder='000'
-						   value={nSpec}
-						   onChangeText={value => setnSpenSpec(value)}
+						   value={nSpec2}
+						   onChangeText={value => setnSpenSpec2(value)}
 						   rightIcon={
 						    <Text>U</Text>
 						  }
@@ -276,9 +351,9 @@ export default function NewMeasureScreen(props){
 					/>
 					<View style={{ backgroundColor: "#F0F0F0", justifyContent: "flex-start"}}>
 						<Picker
-					        selectedValue={selectedValue}
+					        selectedValue={selectedValue2}
 					        style={{ height: 30, width: wp("80%"), color: "black", padding: "auto" }}
-					        onValueChange={(itemValue, itemIndex) => setSelectedValue(itemValue)}
+					        onValueChange={(itemValue, itemIndex) => setSelectedValue2(itemValue)}
 					      >
 					        <Picker.Item label="Medicament" value={null} />
 					        <Picker.Item label="Avant Repas" value="avant repas" />
@@ -296,9 +371,9 @@ export default function NewMeasureScreen(props){
 					/>
 					<View style={{ backgroundColor: "#F0F0F0", justifyContent: "flex-start"}}>
 						<Picker
-					        selectedValue={selectedValue}
+					        selectedValue={selectedValue3}
 					        style={{ height: 30, width: wp("80%"), color: "black", padding: "auto" }}
-					        onValueChange={(itemValue, itemIndex) => setSelectedValue(itemValue)}
+					        onValueChange={(itemValue, itemIndex) => setSelectedValue3(itemValue)}
 					      >
 					        <Picker.Item label="Rapel" value={null} />
 					        <Picker.Item label="Avant Repas" value="avant repas" />
@@ -307,9 +382,17 @@ export default function NewMeasureScreen(props){
 					      </Picker>
 					</View>
 				</View>
-
-
+				<View style={{marginTop: 15}}> 
+					<Button
+	                  buttonStyle={{backgroundColor: "#009BD9", borderRadius: 20}}
+	                  onPress={()=>onSaveMes()}
+	                  disabled={disabled}
+	                  loading={disabled}
+	                  title="Sauvegarder"
+	                />
+	            </View>
 			</View>
+			<View style={{height: hp('6%')}} />
 		</ScrollView>
 	)
 }

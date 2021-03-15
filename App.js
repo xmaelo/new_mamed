@@ -19,6 +19,7 @@ import {
 } from 'react-native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
+import SplashScreen from 'react-native-splash-screen';
 import LoginScreen from './src/Screens/LoginScreen';
 import SymtomeScreen from './src/Screens/SymtomeScreen';
 import SearchDoctorScreen from './src/Screens/SearchDoctorScreen';
@@ -33,6 +34,8 @@ import CasContactScreen from './src/Screens/CasContactScreen';
 import AddcontactUrgence from './src/Screens/AddcontactUrgence';
 import PatientDataScreen from './src/Screens/PatientDataScreen';
 import JournalCovid from './src/Screens/JournalCovid';
+import JournalDiabeteScreen from './src/Screens/JournalDiabeteScreen';
+import StatistiquesScreen from './src/Screens/StatistiquesScreen';
 import EditProfile from './src/Screens/EditProfile';
 import BonAsavoirScreen from './src/Screens/BonAsavoirScreen';
 import CheckCovidScreen from './src/Screens/CheckCovidScreen';
@@ -54,6 +57,8 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import FlashMessage from "react-native-flash-message";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import database from '@react-native-firebase/database';
+import auth from '@react-native-firebase/auth';
+import { useFocusEffect } from '@react-navigation/native';
 
 const Tab = createMaterialBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -66,15 +71,19 @@ const getData = async () => {
   console.log('value value getData start')
   try {
 
-    const value = await AsyncStorage.getItem('@userId')
-    console.log('value value', value)
-    if(value !== null) {
-      return value;
+      const userId =  auth().currentUser;
+      console.log('userId userId', userId)
+    // const value = await AsyncStorage.getItem('@userId')
+    // console.log('value value', value)
+
+    if(userId && userId.uid) {
+      return userId.uid;
     }
   } catch(e) {
     console.log('error saving data', e)
     // error reading value
   }
+  return null;
 }
 
 
@@ -213,7 +222,7 @@ function TabBarMed(){
 }
 
 const img = require('./assets/imgs/logo.png')
-const Logo = ({dontShow}) => <View style={{flexDirection: 'row',  alignItems: 'center', justifyContent: dontShow ? 'space-between': null}}>
+const Logo = ({dontShow, nom_complet}) => <View style={{flexDirection: 'row',  alignItems: 'center', justifyContent: dontShow ? 'space-between': null}}>
                       {dontShow&&
                         <Text style={{
                           marginLeft: -wp("6%"), 
@@ -234,9 +243,9 @@ const Logo = ({dontShow}) => <View style={{flexDirection: 'row',  alignItems: 'c
                           color: "#5F666D",
                           fontSize: 17
                         }}>
-                          Bonjour Martial !
+                          Bonjour <Text style={{fontWeight: 'bold'}} >{nom_complet}</Text> !
                         </Text>
-                      }
+                      } 
                 </View>
 
 const myInitialState = {
@@ -245,14 +254,32 @@ const myInitialState = {
 const App: () => React$Node = () => {
 
   const [initialRoute, setInitialRoute] = useState(false);
+  const [nom_complet, setNom] = useState("");
   useEffect(() => {
     (async()  =>{
       const userId = await getData();
+
       if(userId){
+        let user = database().ref('users/'+userId);
+        await user.on('value', (snapshot) => {
+            setNom(snapshot.val().nom_complet)
+        });
+
         setInitialRoute('Main')
       }else{
+        let users = database().ref('users');
+         users.once('value', (snapshot) => {
+            const currentUser =  auth().currentUser;
+            if(currentUser && currentUser.uid){
+              let user = database().ref('users/'+currentUser.uid);
+               user.on('value', (snapshot) => {
+                  setNom(snapshot.val().nom_complet)
+              });
+            }
+        });
         setInitialRoute('LoginScreen')
-      } 
+      }
+      SplashScreen.hide();
       })()
     }, []);
 
@@ -272,11 +299,12 @@ const App: () => React$Node = () => {
             component={TabBar}
             options={{ 
               headerShown: true,  
-              headerTitle: () => <Logo dontShow={false}/>,
-              headerStyle: {
+              headerTitle: () => <Logo nom_complet={nom_complet} dontShow={false}/>,
+              headerStyle: { 
                 backgroundColor: 'white',
                 height: 45
               },
+              headerLeft: null,
               headerRight: () => (
                 <View style={{marginRight: 10}}>
                   <Ionicons
@@ -319,6 +347,8 @@ const App: () => React$Node = () => {
           <Stack.Screen name="AddcontactUrgence" component={AddcontactUrgence} options={{headerTransparent: false,  title: "Ajouter un cas contact"}}/>
           <Stack.Screen name="PatientDataScreen" component={PatientDataScreen} options={{headerTransparent: true,  title: "Informations du Patient"}}/>
           <Stack.Screen name="JournalCovid" component={JournalCovid} options={{headerTransparent: false,  title: "Journal Covid"}}/>
+          <Stack.Screen name="JournalDiabeteScreen" component={JournalDiabeteScreen} options={{headerTransparent: false,  title: "Journal"}}/>
+          <Stack.Screen name="StatistiquesScreen" component={StatistiquesScreen} options={{headerTransparent: false,  title: "Statistiques"}}/>
           <Stack.Screen name="ListCasContact" component={ListCasContact}/>
           <Stack.Screen name="ContactUrgence" component={ContactUrgence}/>
           <Stack.Screen name="BonAsavoirScreen" component={BonAsavoirScreen} options={{headerTransparent: true,  title: ""}}/>

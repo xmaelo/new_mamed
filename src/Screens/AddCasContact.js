@@ -90,7 +90,7 @@ export default function AddCasContact({navigation, route}){
     		 description="Sauvegarde effectuée !"
 		}catch(e){
 			message = "Error";
-    		type =  'error';
+    		type =  'danger';
     		description="Erreur inconnue est apparue !"
 			console.log('error saving on firebase');
 		}
