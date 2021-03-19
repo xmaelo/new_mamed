@@ -171,7 +171,6 @@ export default function DiabeteScreen(props){
 					<View style={{ ...styles.row, justifyContent: "space-around", marginTop: hp('1.5%')}}>
 						<View style={{...styles.column2}}>
 							<View><Text style={styles.slogan} >Glu.</Text></View>
-							<View><Text style={styles.slogan} >Calories</Text></View>
 							<View><Text style={styles.slogan} >Non Spéciique</Text></View>
 							<View><Text style={styles.slogan} >Non Spéciique</Text></View>
 						</View>
@@ -194,20 +193,8 @@ export default function DiabeteScreen(props){
 								      color='black'
 								    />
 							</View>
-							<View><Ionicons
-								      name='remove-outline'
-								      size={19}
-								      color='black'
-								    />
-							</View>
 						</View>
 						<View style={{...styles.column2}}>
-							<View><Ionicons
-								      name='remove-outline'
-								      size={19}
-								      color='black'
-								    />
-							</View>
 							<View><Ionicons
 								      name='remove-outline'
 								      size={19}

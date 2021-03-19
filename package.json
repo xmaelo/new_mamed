@@ -3,14 +3,12 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "android": "react-native run-android",
-    "ios": "react-native run-ios",
-    "start": "react-native start",
-    "test": "jest",
-    "lint": "eslint ."
+    "clean:build:android": "rm -rf android/app/build",
+    "prod:android": "npm run clean:build:android  && react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.14.1",
+    "@react-native-community/art": "1.1.0",
     "@react-native-community/datetimepicker": "^3.0.9",
     "@react-native-community/masked-view": "^0.1.10",
     "@react-native-firebase/app": "^11.0.0",
@@ -32,9 +30,9 @@
     "react-native-fusioncharts": "^4.1.2",
     "react-native-gesture-handler": "^1.10.1",
     "react-native-image-picker": "^3.2.1",
+    "react-native-neomorph-shadows": "^1.1.2",
     "react-native-options-button": "^1.0.0",
     "react-native-paper": "^4.7.1",
-    "react-native-pie": "^1.1.2",
     "react-native-reanimated": "^1.13.2",
     "react-native-responsive-screen": "^1.4.2",
     "react-native-safe-area-context": "^3.1.9",
@@ -43,6 +41,7 @@
     "react-native-splash-screen": "^3.2.0",
     "react-native-tab-view": "^2.15.2",
     "react-native-vector-icons": "^8.0.0",
+    "react-native-webview": "^11.2.5",
     "toggle-switch-react-native": "^3.2.0"
   },
   "devDependencies": {

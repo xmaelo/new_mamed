@@ -22,7 +22,7 @@ export default function SettingScreen(){
 						<View style={{width: "40%"}}>
 							<Text style={styles.texxt2}>Votre Abo:{"   "}</Text>
 						</View> 
-						<View style={{ backgroundColor: "blue", justifyContent: "flex-start"}}>
+						<View style={{ backgroundColor: "#009BD9", justifyContent: "flex-start"}}>
 							<Picker
 						        selectedValue={selectedValue}
 						        style={{ height: 30, width: 200, color: "white" }}
@@ -119,8 +119,8 @@ export default function SettingScreen(){
 						</View>
 						<View style={{width: wp("30%")}}>
 							<Switch
-								rackColor={{false: "#0767577", true: "blue"}}
-								thumbColor={switchVal ? 'blue' : "#f4f3f4"}
+								rackColor={{false: "#0767577", true: "#009BD9"}}
+								thumbColor={switchVal ? '#009BD9' : "#f4f3f4"}
 								value={switchVal}
 								onValueChange={()=>setSwitchVal(!switchVal)}
 							/>
@@ -139,8 +139,8 @@ export default function SettingScreen(){
 						</View>
 						<View style={{width: wp("60%")}}>
 							<Switch
-								rackColor={{false: "#0767577", true: "blue"}}
-								thumbColor={switchVal ? 'blue' : "#f4f3f4"}
+								rackColor={{false: "#0767577", true: "#009BD9"}}
+								thumbColor={switchVal ? '#009BD9' : "#f4f3f4"}
 								value={switchVal}
 								onValueChange={()=>setSwitchVal(!switchVal)}
 							/>
@@ -193,7 +193,7 @@ const styles = StyleSheet.create({
 	container: {
 	    flex: 1,
 	    paddingHorizontal: wp('1%'),
-	    backgroundColor: '#fff',
+	    backgroundColor: 'white',
 	 },
 	 center: {
         alignContent: 'center', 
@@ -219,7 +219,7 @@ const styles = StyleSheet.create({
 	 	flexDirection: 'row',
 	 },
 	 blueBack: {
-	 	backgroundColor: "blue",
+	 	backgroundColor: "#009BD9",
 	 	height: hp("5%"),
 	 	marginTop: 5,
 	 	justifyContent: 'center',

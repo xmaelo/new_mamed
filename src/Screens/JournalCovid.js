@@ -9,6 +9,7 @@ import Carousel from 'react-native-snap-carousel';
 import auth from '@react-native-firebase/auth';
 import database from '@react-native-firebase/database';
 import { useFocusEffect } from '@react-navigation/native';
+import FusionCharts from 'react-native-fusioncharts';
 
 
  const string = {
@@ -26,12 +27,74 @@ import { useFocusEffect } from '@react-navigation/native';
     en_contact : "Avez vous été en contact avec un infecté",
  }
 
+let chart = {
+    "type": "spline",
+    "dataFormat": "json",
+    "renderAt": "chart-container",
+    "width": wp("96%"),
+    "height": hp("36.5%"),
+    "dataSource": {
+      "chart": {
+        "theme": "fusion",
+        "caption": "Evolution de la temperature",
+        "subCaption": "",
+        "xAxisName": "Day",
+        "yAxisName": "",
+
+        //Cosmetics
+        "lineThickness": "2",
+        "divlineAlpha": "100",
+        "divlineColor": "#999999",
+        "divlineThickness": "1",
+        "divLineIsDashed": "1",
+        "divLineDashLen": "1",
+        "divLineGapLen": "1",
+        "showXAxisLine": "1",
+        "xAxisLineThickness": "1",
+      },
+      "data": [{
+          "label": "Mon",
+          "value": "37"
+        },
+        {
+          "label": "Tue",
+          "value": "34"
+        },
+        {
+          "label": "Wed",
+          "value": "38"
+        },
+        {
+          "label": "Thu",
+          "value": "32"
+        },
+        {
+          "label": "Fri",
+          "value": "35"
+        },
+        {
+          "label": "Sat",
+          "value": "33"
+        },
+        {
+          "label": "Sun",
+          "value": "42"
+        }
+      ]
+    }
+}
+const libraryPath = Platform.select({
+  android: { uri: 'file:///android_asset/fusioncharts.html' }
+});
+
+const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 export default function JournalCovid(props){
 
 	const [diabete, setDiabete] = useState(false)
 	const [covids, setCovids] = useState([])
 	const [state, setState] = useState(false)
 	const [endIndex, setEndIndex] = useState(2)
+	const [states, setStates] = useState(chart)
 
 	useFocusEffect(
 	    React.useCallback(() => {
@@ -40,14 +103,22 @@ export default function JournalCovid(props){
 				console.log('get start here')
 				const userId =  auth().currentUser.uid;
 				let covid = database().ref('pandemie/'+userId+"/covid");
-
+				let data = [];
 				covid.on('value', (snapshot) => {
 					let i = 0;
 					for (const [key, value] of Object.entries(snapshot.val())) {
 				    	tab.push(value)
+				    	const b = new Date(value.date);
+				    	let small = {label: days[b.getDay()], value: value.temperature, date: value.date}
+				    	data.push(small)
 					}
-					console.log('tabb tab', tab)
+					console.log('tabb tab', data)
+					data = data.sort(function(a,b){
+					  return new Date(b.date) - new Date(a.date);
+					});
+					chart.dataSource.data = data
 					setCovids(tab);
+					setStates(chart);
 				});	
 		    }
 		     get();
@@ -58,53 +129,65 @@ export default function JournalCovid(props){
 
 
 	return(
-		<View> 
+		<ScrollView style={styles.container}>
 			<View> 
-			</View>
-			{covids.length > 0&&
-			    <View style={styles.container_all_profile}>
-					<View style={styles.container_card_profile}>
-						<ScrollView>
-							{covids.slice(0, endIndex).map((val, i)=>{
-								return(
-									<View key={i} style={{paddingTop: 30}}>
-										<View style={{alignItems: "center"}}><Text>{val.date}</Text></View>
-										{Object.keys(val).map((elt, i2) =>
-											<View key={i2}>
-												{val[elt] ===true&&
-													<View> 
-														<CheckBox
-														  title={string[elt]}
-														  
-														  checked={true}
-														/>
-													</View>
-												}
-											</View>
-
-										)}
-									</View>
-								  )
-							 	}
-							  )
-							}
-							<View style={{height: 15}} />
-							<Button
-							  title={endIndex==2?"Afficher 10": "Réduire"}
-							  type="outline"
-							  onPress={()=>{
-							  	if(endIndex==2){
-							  		setEndIndex(10)
-							  	}else {
-							  		setEndIndex(2)
-							  	}
-							  }}
-							/>
-						</ScrollView>
+				<View> 
+					<View style={styles.chartContainer}>
+			          <FusionCharts
+			            type={states.type}
+			            width={states.width}
+			            height={states.height}
+			            dataFormat={states.dataFormat}
+			            dataSource={states.dataSource}
+			            libraryPath={libraryPath} // set the libraryPath property
+			          />
 			        </View>
-		        </View>
-		    }
-		</View>
+				</View>
+				{covids.length > 0&&
+				    <View style={styles.container_all_profile}>
+						<View style={styles.container_card_profile}>
+							<ScrollView>
+								{covids.slice(0, endIndex).map((val, i)=>{
+									return(
+										<View key={i} style={{paddingTop: 30}}>
+											<View style={{alignItems: "center"}}><Text>{val.date}</Text></View>
+											{Object.keys(val).map((elt, i2) =>
+												<View key={i2}>
+													{val[elt] ===true&&
+														<View> 
+															<CheckBox
+															  title={string[elt]}
+															  
+															  checked={true}
+															/>
+														</View>
+													}
+												</View>
+
+											)}
+										</View>
+									  )
+								 	}
+								  )
+								}
+								<View style={{height: 15}} />
+								<Button
+								  title={endIndex==2?"Afficher 10": "Réduire"}
+								  type="outline"
+								  onPress={()=>{
+								  	if(endIndex==2){
+								  		setEndIndex(10)
+								  	}else {
+								  		setEndIndex(2)
+								  	}
+								  }}
+								/>
+							</ScrollView>
+				        </View>
+			        </View>
+			    }
+			</View>
+		</ScrollView>
 	)
 }
 
@@ -113,7 +196,9 @@ export default function JournalCovid(props){
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+  },
+  chartContainer: {
+    height: 230
   },
   container_all_profile: {
     flexDirection: 'row',

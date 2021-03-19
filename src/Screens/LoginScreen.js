@@ -4,18 +4,11 @@ import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-nativ
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Text, Input, Button } from 'react-native-elements';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import auth from '@react-native-firebase/auth';
 import database from '@react-native-firebase/database';
 import { showMessage, hideMessage } from "react-native-flash-message";
 
-const storeData = async (value) => {
-  try {
-    await AsyncStorage.setItem('@userId', value)
-  } catch (e) {
-    // saving error
-  }
-}
+
 
 const img = require('../../assets/imgs/logo.png')
 function LoginScreen ({ navigation }){
@@ -49,7 +42,6 @@ function LoginScreen ({ navigation }){
             }
             setDisabled(true)
             const confirmation = await auth().signInWithEmailAndPassword(username, password);
-            storeData(auth().currentUser.uid)
             setDisabled(false)
             navigation.navigate('Main');
         }catch(e){
@@ -73,7 +65,7 @@ function LoginScreen ({ navigation }){
 
     const [pinSecure, setPinSecure] = useState(false);
     return(
-        <ScrollView style={styles.backrgound}>
+        <ScrollView style={styles.backrgound}> 
             <StatusBar style="auto" backgroundColor="white" />
             <SafeAreaView style={styles.container}>
                 <View style={styles.imgBloc}>

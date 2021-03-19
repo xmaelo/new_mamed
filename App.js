@@ -94,7 +94,7 @@ function TopNavs() {
         initialRouteName: "DashbordScreen",
         indicatorStyle: {
           height: 4,
-          backgroundColor: 'red',
+          backgroundColor: '#009BD9',
           borderRadius: 20,
 
         },
@@ -104,7 +104,7 @@ function TopNavs() {
         style: {
           //elevation:0
         },
-        activeTintColor: "red",
+        activeTintColor: "#009BD9",
         inactiveTintColor: 'gray'
       }}>
       <Top.Screen name="DashbordScreen" 
@@ -141,7 +141,7 @@ function TabBar(){
   return(
       <Tab.Navigator 
         initialRouteName="HomeScreen"
-        activeColor="red"
+        activeColor="#009BD9"
         inactiveColor="black"
         barStyle={{ backgroundColor: "#F5F6F7"}}
       >
@@ -193,7 +193,7 @@ function TabBarMed(){
   return(
       <MedNav.Navigator 
         initialRouteName="HomeMedScreen"
-        activeColor="red"
+        activeColor="#009BD9"
         inactiveColor="black"
         barStyle={{ backgroundColor: "#F5F6F7"}}
       >

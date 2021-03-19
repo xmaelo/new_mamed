@@ -9,7 +9,8 @@ import Carousel from 'react-native-snap-carousel';
 import database from '@react-native-firebase/database';
 import auth from '@react-native-firebase/auth';
 import { useFocusEffect } from '@react-navigation/native';
-
+import { Neomorph } from 'react-native-neomorph-shadows';
+import { Shadow } from 'react-native-neomorph-shadows';
  const img = require('../../assets/imgs/logo.png')
 
 
@@ -77,6 +78,7 @@ function _renderItem({item,index}){
 
 
 export default function HomeScreen({navigation}){
+
   useEffect(() => {
     (async()  =>{
       const userId = auth().currentUser.uid;
@@ -91,107 +93,166 @@ export default function HomeScreen({navigation}){
     const [nom_complet, setName] = useState("");
 
 	return(
-        <SafeAreaView >
-			<StatusBar style="auto" backgroundColor="white" />
-			<View style={styles.container}>
-				<View style={styles.imgBloc}>
-                    <Text h4 style={{...styles.slogan}}>Notifications</Text>
-                </View>
-                <View style={styles.notif}>
-                    
-                    <View>
-                        <Carousel
-                          layout={"stack"}
-                          ref={ref => setCarousel(ref)}
-                          data={carouselItems}
-                          sliderWidth={300}
-                          layoutCardOffset={25}
-                          itemWidth={300}
-                          loop={true}
-                          autoplay={true}
-                          enableMomentum ={false}
-                          lockScrollWhileSnapping ={true}
-                          autoplayInterval={2000}
-                          autoplayDelay={100}
-                          renderItem={_renderItem}
-                          onSnapToItem = { index => setActiveIndex(index) } 
-                        />
+    <SafeAreaView style={{...styles.main}}>
+    			<StatusBar style="auto" backgroundColor="white" />
+    			<View style={styles.container}>
+    				<View style={styles.imgBloc}>
+                        <Text h4 style={{...styles.slogan}}>Notifications</Text>
+                    </View>
+                    <View style={styles.notif}>
+                        
+                        <View>
+                            <Carousel
+                              layout={"stack"}
+                              ref={ref => setCarousel(ref)}
+                              data={carouselItems}
+                              sliderWidth={300}
+                              layoutCardOffset={25}
+                              itemWidth={300}
+                              loop={true}
+                              autoplay={true}
+                              enableMomentum ={false}
+                              lockScrollWhileSnapping ={true}
+                              autoplayInterval={2000}
+                              autoplayDelay={100}
+                              renderItem={_renderItem}
+                              onSnapToItem = { index => setActiveIndex(index) } 
+                            />
+                        </View>
+
                     </View>
 
-                </View>
-                <View style={styles.card}>
-                    <Text style={{marginTop: hp('10%'), ...styles.slogan}}>Hi! Nice to see you again</Text>
                     
 
-                    <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-	                    <View style={styles.cardContent}>
-	                    	<TouchableOpacity
-	                    		onPress={()=>navigation.navigate("SymtomeScreen")}
-	                    	>
-		                     
-			                    <View style={styles.cardContentSub}>
-			                    	<View>
-			                    		<Icon name="stethoscope" size={30} style={{marginTop: -hp("1%")}}/>
-			                    	</View>
-			                    	<Text style={{...styles.slogan, textAlign: "center"}}> Analyse de vos symptomes </Text>
-			                    </View>
-			                </TouchableOpacity>
-	                    </View>
-	                    <View style={styles.cardContent}>
+                    <View style={styles.card}>
+                        <Text style={{marginTop: hp('10%'), ...styles.slogan}}>Hi! Nice to see you again</Text>
+                        
+
+                        <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+                          <View style={styles.cardContent}>
                             <TouchableOpacity
-                                onPress={() => navigation.navigate('DashbordScreen')}
+                              onPress={()=>navigation.navigate("SymtomeScreen")}
                             >
-		                      <View style={{...styles.cardContentSub}}>
-    		                    	<View>
-    		                    		<Icon name="user-md" size={40} style={{marginTop: -hp("1%")}}/>
-    		                    	</View>
-		                    	     <Text style={{...styles.slogan, textAlign: "center"}}> Mon suivi Médical </Text>
-		                        </View>
+                              <Neomorph
+                                  swapShadows
+                                  style={
+                                      {
+                                      ...styles.menuIcons,
+                                          width: wp("43%"),
+                                          borderRadius: 18,
+                                          height: hp('15%'),
+
+                                      }}
+                              >   
+                                <Icon name="stethoscope" size={30} style={{marginTop: -hp("1%")}}/>
+                                
+                                <Text style={{ fontWeight: 'bold', fontSize: 14 }}>Analyse Symptomes</Text>
+
+                              </Neomorph>
                             </TouchableOpacity>
-	                    </View>
-	                </View>
-                    <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-	                    <View style={styles.cardContent2}>
-		                    
+                          </View>
+
+                          <View style={styles.cardContent}>
                             <TouchableOpacity
-                                onPress={() => navigation.navigate('SearchDoctorScreen')}
+                              onPress={()=>navigation.navigate("DashbordScreen")}
                             >
-    		                    <View style={styles.cardContentSub}>
-        		                    	<View>
-        		                    		<Ionicons name="search" size={30} style={{marginTop: -hp("1%")}}/>
-        		                    	</View>
-    		                    	<Text style={{...styles.slogan, textAlign: "center"}}> Rechercher médecin et pharmacies </Text>
-    		                    </View>
+                              <Neomorph
+                                  swapShadows
+                                  style={
+                                      {
+                                      ...styles.menuIcons,
+                                          width: wp("43%"),
+                                          borderRadius: 18,
+                                          height: hp('15%'),
+
+                                      }}
+                              >   
+                                <Icon name="user-md" size={40} style={{marginTop: -hp("1%")}}/>
+                                
+                                <Text style={{ fontWeight: 'bold', fontSize: 14 }}>Mon suivi Médical</Text>
+
+                              </Neomorph>
                             </TouchableOpacity>
-	                    </View>
-	                    <View style={styles.cardContent2}>
-	                    	<TouchableOpacity
-	                    		onPress={() => navigation.navigate('RendezVousScreen')}
-	                    	>
-			                    <View style={{...styles.cardContentSub}}>
-			                    	<View>
-			                    		<Ionicons name="calendar" size={40} style={{marginTop: -hp("1%")}}/>
-			                    	</View>
-			                    	<Text style={{...styles.slogan, textAlign: "center"}}> Mes rendez-vous </Text>
-			                    </View>
-			                </TouchableOpacity>
-	                    </View>
-	                </View>
-                </View>
-			</View>
+                          </View>
+    	                </View>
+                        <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+    	                    <View style={styles.cardContent2}>
+                            <TouchableOpacity
+                              onPress={()=>navigation.navigate("SearchDoctorScreen")}
+                            >
+                              <Neomorph
+                                  swapShadows
+                                  style={
+                                      {
+                                      ...styles.menuIcons,
+                                          width: wp("43%"),
+                                          borderRadius: 18,
+                                          height: hp('15%'),
+
+                                      }}
+                              >   
+                                <Ionicons name="search" size={35} style={{marginTop: -hp("1%")}}/>
+                                <View style={{alignItems: "center", justifyContent: "center"}}>
+                                  <Text style={{ fontWeight: 'bold', fontSize: 14 }}>Recherche</Text>
+                                </View>
+                              </Neomorph>
+                            </TouchableOpacity>
+                          </View>
+
+
+                          <View style={styles.cardContent2}>
+                            <TouchableOpacity
+                              onPress={()=>navigation.navigate("RendezVousScreen")}
+                            >
+                              <Neomorph
+                                  swapShadows
+                                  style={
+                                      {
+                                      ...styles.menuIcons,
+                                          width: wp("43%"),
+                                          borderRadius: 18,
+                                          height: hp('15%'),
+
+                                      }}
+                              >   
+                                <Ionicons name="calendar" size={40} style={{marginTop: -hp("1%")}}/>
+                                
+                                <Text style={{ fontWeight: 'bold', fontSize: 14 }}>Mes rendez-vous</Text>
+
+                              </Neomorph>
+                            </TouchableOpacity>
+                          </View>
+    	                </View>
+                    </View>
+    			</View>
 		</SafeAreaView> 
 	)
 }
 
 
 const styles = StyleSheet.create({
+    main: {
+       flex: 1
+    },
     container: {
-        flex: 1,
-        marginTop: hp('4%'),
-        paddingHorizontal: wp("6%"),
+        paddingTop: hp('4%'),
+        paddingHorizontal: wp("6%")
+    },
+    menuIcons: {
+        height: 50,
+        width: 50,
+        backgroundColor: "white",
+        shadowRadius: 10,
+        borderRadius: 23,
+        marginRight: 10,
+        marginLeft: 10,
+        alignItems: 'center',
+        justifyContent: 'center'
+
+
     },
     cardContent: {
-    	borderColor: "#D9DADF",
+    	borderColor: "white",
     	borderWidth: 2,
     	borderStyle: "solid",
     	width: wp("48%"),
@@ -201,11 +262,10 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     cardContent2: {
-    	borderColor: "#D9DADF",
+    	borderColor: "white",
     	borderWidth: 2,
     	borderStyle: "solid",
     	width: wp("48%"),
-    	marginTop: hp('17%'),
     	height: hp('17%'),
     	borderRadius: 5,
     	justifyContent: 'center',
