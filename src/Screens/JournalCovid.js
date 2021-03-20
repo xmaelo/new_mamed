@@ -116,7 +116,18 @@ export default function JournalCovid(props){
 					data = data.sort(function(a,b){
 					  return new Date(b.date) - new Date(a.date);
 					});
-					chart.dataSource.data = data
+					const result = data.filter((val, i)=>{
+						  let s =  data.filter(vals=>vals.label === val.label);
+						  if(s.length>1){
+						    s = s.sort((a,b) => b.value - a.value)
+						    if(s[0].value === val.value){
+						      return true
+						    }
+						  }else{
+						    return true;
+						  }
+						})
+					chart.dataSource.data = result
 					setCovids(tab);
 					setStates(chart);
 				});	

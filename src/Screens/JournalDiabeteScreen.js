@@ -8,7 +8,7 @@ import { Text, Input, Button, CheckBox, ButtonGroup } from 'react-native-element
 import database from '@react-native-firebase/database';
 import auth from '@react-native-firebase/auth'; 
 import { useFocusEffect } from '@react-navigation/native';
-
+ 
 
 export default function JournalDiabeteScreen(){
 	const [diabetes, setDiabetes] = useState([]);
@@ -48,8 +48,8 @@ function Item({diabete}){
 	return(
 		<View>
 			<View style={styles.haut}>
-				<Text style={styles.slogan} >{diabete.date}</Text>
-			</View>
+				<Text style={styles.slogan} >{new Date(diabete.date).toISOString().split("T")[0]}</Text>
+			</View> 
 
 			<View style={styles.bas}>
 				<View>

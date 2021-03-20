@@ -28,7 +28,7 @@ function CodeVerificationScreen({route, navigation}){
 	}
 
 	  async function verifyPhoneNumber(phoneNumber) {
-	    const confirmation = await auth().verifyPhoneNumber("+237"+phoneNumber);
+	    const confirmation = await auth().verifyPhoneNumber(phoneNumber);
 	    setConfirm(confirmation);
 	    setWaitingC(false)
 	    
@@ -45,7 +45,9 @@ function CodeVerificationScreen({route, navigation}){
       );
       console.log('credential credential credential', credential)
       let userData = await auth().currentUser.linkWithCredential(credential);
-      navigation.navigate('Main');
+      setWaitingC(false)
+      setErroC(false)
+      navigation.navigate('EditProfile');
     } catch (error) {
       setErroC(true) 
       setWaitingC(false)

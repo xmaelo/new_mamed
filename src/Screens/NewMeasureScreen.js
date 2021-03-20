@@ -19,10 +19,13 @@ export default function NewMeasureScreen({navigation}){
 	const [selectedValue, setSelectedValue] = useState(null);
 	const [selectedValue2, setSelectedValue2] = useState(null);
 	const [selectedValue3, setSelectedValue3] = useState(null);
+	const [systole, setSystole] = useState(null);
+	const [diastole, setDiastole] = useState(null);
 	const [molL, setMolL] = useState("");
 	const [glucides, setGlucides] = useState("");
 	const [nSpec, setnSpenSpec] = useState("");
 	const [nSpec2, setnSpenSpec2] = useState("");
+	const [poux, setPoux] = useState(null);
 
 	const onChangeDate = (event, selectedDate)=>{
   		if(selectedDate){
@@ -34,15 +37,32 @@ export default function NewMeasureScreen({navigation}){
 
     	const userId = auth().currentUser.uid;
     	let type, message, description;
-    	if((!selectedDate 
-    		|| !selectedTime 
-    		|| !selectedValue 
+
+    	let ob = {
+    		selectedDate:selectedDate,
+    		selectedTime :selectedTime,
+    		selectedValue :selectedValue,
+    		selectedValue2 :selectedValue2,
+    		selectedValue3 :selectedValue3,
+    		molL:molL,
+    		glucides: glucides,
+    		systole:systole,
+    		diastole :diastole,
+    		nSpec: nSpec,
+    		nSpec2:nSpec2
+    	}
+
+    	console.log('ob ob===>', ob)
+    	if((  !selectedValue 
     		|| !selectedValue2 
     		|| !selectedValue3 
     		|| molL&&molL.trim()==="" 
     		|| glucides&&glucides.trim()==="" 
+    		|| systole&&systole.trim()==="" 
+    		|| diastole&&diastole.trim()==="" 
     		|| nSpec&&nSpec.trim()==="" 
-    		|| nSpec2&&nSpec2.trim()==="")){
+    		|| nSpec2&&nSpec2.trim()===""
+    		|| poux&&poux.trim()==="")){
 			const message = {
 	            message: "Erreur",
 	            description: "Tous les champs n'ont pas été fourni !",
@@ -60,15 +80,18 @@ export default function NewMeasureScreen({navigation}){
 
     	try{
     		await database().ref('mesures/'+userId).push({
-				date: new Date(selectedDate).toISOString().split("T")[0],
-				time: selectedTime.toLocaleTimeString(),
+				date: new Date().toISOString(),
+				time: new Date().toLocaleTimeString(),
 				cathegorie: selectedValue,
 				glycemie: molL,
 				glucide: glucides,
-				nSpec: nSpec,
-				nSpec2: nSpec2,
+				insuline: nSpec,
+				hba1: nSpec2,
+				systole: systole,
+				diastole: diastole,
 				medicament: selectedValue2,
-				rapel: selectedValue3
+				rapel: selectedValue3,
+				freqenceCoeur: poux
 			})
     		message = "Succès";
     		type =  'success';
@@ -98,6 +121,7 @@ export default function NewMeasureScreen({navigation}){
 	return(
 		<ScrollView style={styles.container}>
 			<View>
+			{/*
 				<View style={{...styles.row, ...styles.content3}}>
 					<View style={{ ...styles.row, ...styles.content2, width: wp('45%')}}>
 						<Ionicons
@@ -134,9 +158,8 @@ export default function NewMeasureScreen({navigation}){
 						<Text>{selectedDate && selectedDate.toISOString().split("T")[0]}</Text>
 					</View>
 				</View>
- 
+ 			
 
-			{/*bbbbbbbbbbbbbbbbb*/}
 				<View style={{...styles.row, ...styles.content3, marginTop: hp('2%')}}>
 					<View style={{ ...styles.row, ...styles.content2, width: wp('45%')}}>
 						<Ionicons
@@ -181,11 +204,12 @@ export default function NewMeasureScreen({navigation}){
 						<Text>{selectedTime && selectedTime.toLocaleTimeString()}</Text>
 					</View>
 				</View>
-				<View style={styles.ligne}/>
+			*/}
+				
 
 				<View style={{marginTop: hp('2%'), ...styles.row, ...styles.content3, justifyContent: "space-around"}} >
 					<Ionicons
-						name="barcode-outline"
+						name="timer-outline"
 						size={28}
 						color="black"
 					/>
@@ -195,15 +219,20 @@ export default function NewMeasureScreen({navigation}){
 					        style={{ height: 30, width: wp("80%"), color: "black", padding: "auto" }}
 					        onValueChange={(itemValue, itemIndex) => setSelectedValue(itemValue)}
 					      >
-					        <Picker.Item label="Cathégorie" value={null} />
-					        <Picker.Item label="Avant Repas" value="avant repas" />
-					        <Picker.Item label="Apres repas" value="apres repas" />
-					        <Picker.Item label="Avant Midi" value="avant midi" />
+					        <Picker.Item label="Créneau" value={null} />
+					        <Picker.Item label="Au lever" value="Au lever" />
+					        <Picker.Item label="Avant le petit dejeuner" value="Avant le petit dejeuner" />
+					        <Picker.Item label="Après le petit dejeuner" value="Après le petit dejeuner" />
+					        <Picker.Item label="Avant le dejeuner" value="Avant le dejeuner" />
+					        <Picker.Item label="Après le dejeuner" value="Après le dejeuner" />
+					        <Picker.Item label="Avant le dîner" value="Avant le dîner" />
+					        <Picker.Item label="Après le dîner" value="Après le dîner" />
+					        <Picker.Item label="Au coucher" value="Au coucher" />
 					      </Picker>
 					</View>
 				</View>
 
-
+				<View style={styles.ligne}/>
 				<View style={{...styles.row, ...styles.content3}}>
 					<View style={{ ...styles.row, ...styles.content2, width: wp('45%')}}>
 						<Ionicons
@@ -229,8 +258,10 @@ export default function NewMeasureScreen({navigation}){
 					</View>
 					<View style={{width: wp("47%"), marginTop: hp("2%")}} >
 						<Input
+						   keyboardType="numeric"
 						   placeholder='00.0'
 						   value={molL}
+						   keyboardType="numeric"
 						   onChangeText={value => setMolL(value)}
 						   rightIcon={
 						    <Text>mmol/L</Text>
@@ -264,6 +295,7 @@ export default function NewMeasureScreen({navigation}){
 					</View>
 					<View style={{width: wp("47%"), marginTop: hp("2%")}} >
 						<Input
+						   keyboardType="numeric"
 						   placeholder='000'
 						   value={glucides}
 						   onChangeText={value => setGlucides(value)}
@@ -299,11 +331,84 @@ export default function NewMeasureScreen({navigation}){
 					</View>
 					<View style={{width: wp("38%"), marginTop: hp("2%")}} >
 						<Input
+						   keyboardType="numeric"
 						   placeholder='000'
 						   value={nSpec}
 						   onChangeText={value => setnSpenSpec(value)}
 						   rightIcon={
 						    <Text>U</Text>
+						  }
+						/>
+					</View>
+				</View>
+
+				<View style={{...styles.row, ...styles.content3, marginTop: -hp("3%"), justifyContent: "space-between"}}>
+					<View style={{ ...styles.row, ...styles.content2, width: wp('45%')}}>
+						<Ionicons
+					      name='pulse-outline'
+					      size={24}
+					      color='black'
+					    />
+					    <View style={{marginLeft: wp("1%"),}}>
+							<Button
+							icon={
+								<Ionicons
+									name="chevron-down"
+									size={13}
+									color="black"
+								/>
+							}
+							buttonStyle={{paddingHorizontal: 20, backgroundColor: "#F0F0F0"}}
+							titleStyle={{color: "black"}}
+							iconRight
+							title="Systole "
+						/>
+					    </View>
+					</View>
+					<View style={{width: wp("38%"), marginTop: hp("2%")}} >
+						<Input
+						   keyboardType="numeric"
+						   placeholder='000'
+						   value={systole}
+						   onChangeText={value => setSystole(value)}
+						   rightIcon={
+						    <Text>mmHg</Text>
+						  }
+						/>
+					</View>
+				</View>
+
+				<View style={{...styles.row, ...styles.content3, marginTop: -hp("3%"), justifyContent: "space-between"}}>
+					<View style={{ ...styles.row, ...styles.content2, width: wp('45%')}}>
+						<Ionicons
+					      name='pulse-outline'
+					      size={24}
+					      color='black'
+					    />
+					    <View style={{marginLeft: wp("1%"),}}>
+							<Button
+							icon={
+								<Ionicons
+									name="chevron-down"
+									size={13}
+									color="black"
+								/>
+							}
+							buttonStyle={{paddingHorizontal: 20, backgroundColor: "#F0F0F0"}}
+							titleStyle={{color: "black"}}
+							iconRight
+							title="Diastole "
+						/>
+					    </View>
+					</View>
+					<View style={{width: wp("38%"), marginTop: hp("2%")}} >
+						<Input
+						   keyboardType="numeric"
+						   placeholder='000'
+						   value={diastole}
+						   onChangeText={value => setDiastole(value)}
+						   rightIcon={
+						    <Text>mmHg</Text>
 						  }
 						/>
 					</View>
@@ -327,17 +432,54 @@ export default function NewMeasureScreen({navigation}){
 							buttonStyle={{paddingHorizontal: 20, backgroundColor: "#F0F0F0"}}
 							titleStyle={{color: "black"}}
 							iconRight
-							title="Non spécifique "
+							title="HBA1 "
 						/>
 					    </View>
 					</View>
 					<View style={{width: wp("38%"), marginTop: hp("2%")}} >
 						<Input
+						   keyboardType="numeric"
 						   placeholder='000'
 						   value={nSpec2}
 						   onChangeText={value => setnSpenSpec2(value)}
 						   rightIcon={
-						    <Text>U</Text>
+						    <Text>g/l</Text>
+						  }
+						/>
+					</View>
+				</View>
+
+				<View style={{...styles.row, ...styles.content3, marginTop: -hp("3%"), justifyContent: "space-between"}}>
+					<View style={{ ...styles.row, ...styles.content2, width: wp('45%')}}>
+						<Ionicons
+					      name='attach-outline'
+					      size={24}
+					      color='black'
+					    />
+					    <View style={{marginLeft: wp("1%"),}}>
+							<Button
+							icon={
+								<Ionicons
+									name="chevron-down"
+									size={13}
+									color="black"
+								/>
+							}
+							buttonStyle={{paddingHorizontal: 20, backgroundColor: "#F0F0F0"}}
+							titleStyle={{color: "black"}}
+							iconRight
+							title="Frequence cardiaque "
+						/>
+					    </View>
+					</View>
+					<View style={{width: wp("38%"), marginTop: hp("2%")}} >
+						<Input
+						   keyboardType="numeric"
+						   placeholder='000'
+						   value={poux}
+						   onChangeText={value => setPoux(value)}
+						   rightIcon={
+						    <Text>cpm</Text>
 						  }
 						/>
 					</View>
@@ -356,9 +498,8 @@ export default function NewMeasureScreen({navigation}){
 					        onValueChange={(itemValue, itemIndex) => setSelectedValue2(itemValue)}
 					      >
 					        <Picker.Item label="Medicament" value={null} />
-					        <Picker.Item label="Avant Repas" value="avant repas" />
-					        <Picker.Item label="Apres repas" value="apres repas" />
-					        <Picker.Item label="Avant Midi" value="avant midi" />
+					        <Picker.Item label="Oui" value={true} />
+					        <Picker.Item label="Non" value={false} />
 					      </Picker>
 					</View>
 				</View>
@@ -393,6 +534,7 @@ export default function NewMeasureScreen({navigation}){
 	            </View>
 			</View>
 			<View style={{height: hp('6%')}} />
+			
 		</ScrollView>
 	)
 }

@@ -12,7 +12,8 @@ import { showMessage, hideMessage } from "react-native-flash-message";
 import { useFocusEffect } from '@react-navigation/native';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import storage from '@react-native-firebase/storage';
-
+ 
+const avatar = require('../../assets/imgs/avatar.jpg')
 export default function EditProfile({navigation, route}){
 	const [phone, setPhone] = useState("");
 	const [email, setMail] = useState("");
@@ -54,6 +55,7 @@ export default function EditProfile({navigation, route}){
 
 	async function onUpdateProfil(){
 		let type, message, description;
+		let ob;
 		try{
 			const userId = auth().currentUser.uid;
 			let toU = {};
@@ -78,11 +80,18 @@ export default function EditProfile({navigation, route}){
 			if(date){
 				toU.date = new Date(date).toISOString().split("T")[0]
 			}
-			await database().ref('users/'+userId).update(toU);
-			message = "Succès";
-    		type =  'success';
-    		description="Sauvegarde effectuée !"
-    		setDisabled(true)
+			if((Object.entries(toU)).length < 7){
+				ob = true;
+				message = "Error";
+	    		type =  'danger';
+	    		description="Vous n'avez pas definir tous les champs !"
+			}else{
+    			setDisabled(true)
+				await database().ref('users/'+userId).update(toU);
+				message = "Succès";
+	    		type =  'success';
+	    		description="Sauvegarde effectuée !"
+	    	}
 		}catch(e){
 			console.log('error saving foto', e);
 			message = "Error";
@@ -99,10 +108,14 @@ export default function EditProfile({navigation, route}){
 	        onPress: () => {
 	          hideMessage();
 	        },
-	    }; 
+	    };
      	showMessage(mess);
      	setDisabled(false)
-     	navigation.navigate('ProfileScreen');
+
+	    if(ob){
+	       return; 
+	    }
+	    navigation.navigate('Main');
 	}
 
 	const upload = async (pathToFile) => {
@@ -136,9 +149,11 @@ export default function EditProfile({navigation, route}){
 		<ScrollView>
 		<View  style={styles.container}>
 			<View style={[styles.container2, {flexDirection: "row", justifyContent: 'center', alignItems: 'center', marginTop: 15}]}>
-	           <Image style={{ width: 120, height: 120, borderRadius: 100}} source={{
+	           <Image style={{ width: 120, height: 120, borderRadius: 100}} 
+	           source={images ? {
 	           		uri: images
-	            }} width={100} height={100}/>
+	            }: avatar} 
+	           width={100} height={100}/>
 	            
                 <TouchableOpacity 
 	                style={styles.edite}
@@ -205,9 +220,10 @@ export default function EditProfile({navigation, route}){
 				  } 
 				/>
 				<Input
-				  placeholder='poids'
+				  placeholder='poids (Kg)'
 				  onChangeText={value => setPoids(value)}
 				  value={poids}
+				  keyboardType="numeric"
 				  leftIcon={
 				    <Ionicons
 				      name='locate-outline'
@@ -217,7 +233,8 @@ export default function EditProfile({navigation, route}){
 				  }
 				/>
 				<Input
-				  placeholder='Taille'
+				  placeholder='Taille (m)'
+				  keyboardType="numeric"
 				  onChangeText={value => setTaille(value)}
 				  value={taille}
 				  leftIcon={
@@ -248,7 +265,7 @@ export default function EditProfile({navigation, route}){
 			      		}
 			      		{!show &&
 			      			<Button
-							  title={!date ?"Date de naissance" : "Changer la date"}
+							  title={!date ?"Date de naissance" : "Changer la date de naissance"}
 							  type="outline"
 							  onPress={()=>setShow({show: true})}
 							/>

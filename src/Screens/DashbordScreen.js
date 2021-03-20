@@ -5,11 +5,11 @@ import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-nativ
 import { Text, Input, Button } from 'react-native-elements';
 import auth from '@react-native-firebase/auth';
 import database from '@react-native-firebase/database';
-
+import { useFocusEffect } from '@react-navigation/native';
 export default function DashbordScreen(props) {
     const chart = {
     	chart1: {
-		    type: 'angulargauge',
+		    type: 'angulargauge', 
 		    renderAt: 'chart-container',
 		    width: wp("94%"),
 		    height: hp("31.5%"),
@@ -47,9 +47,7 @@ export default function DashbordScreen(props) {
 		        }]
 		      },
 		      "dials": {
-		        "dial": [{
-		          "value": "23"
-		        }]
+		        "dial": [{}]
 		      }
 		    }
 		},
@@ -78,36 +76,29 @@ export default function DashbordScreen(props) {
 		          },
 		          {
 		            "label": "Mer"
+		          },
+		          {
+		            "label": "Jeu"
+		          },
+		          {
+		            "label": "Ven"
+		          },
+		          {
+		            "label": "Sam"
+		          },
+		          {
+		            "label": "dim"
 		          }
 		        ]
 		      }],
 
 		  "dataset": [{
-		      "seriesname": "",
-		      "data": [
-		        {
-		          "value": "5"
-		        },
-		        {
-		          "value": "2"
-		        },
-		        {
-		          "value": "4"
-		        }
-		      ]
+		      "seriesname": "Systole",
+		      "data": []
 		    },
 		    {
-		      "seriesname": "",
-		      "data": [{
-		          "value": "3"
-		        },
-		        {
-		          "value": "5"
-		        },
-		        {
-		          "value": "1"
-		        }
-		      ]
+		      "seriesname": "Diastole",
+		      "data": []
 		    }
 		  ]
 		}
@@ -127,47 +118,84 @@ export default function DashbordScreen(props) {
 		        "numberPrefix": "",
 		        "theme": "fusion"
 		      },
-		      "data": [
-		        {
-		          "label": "Lun",
-		          "value": "2"
-		        },
-		        {
-		          "label": "Mar",
-		          "value": "4"
-		        },
-		        {
-		          "label": "Mer",
-		          "value": "3"
-		        },
-		        {
-		          "label": "Jeu",
-		          "value": "1"
-		        },
-		        {
-		          "label": "Ven",
-		          "value": "5"
-		        }
-		      ]
+		      "data": []
 		    }
 		}
 	}
 
+	const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 	const [state, setState] = useState(chart);
 	const [user, setUser] = useState(null);
 
-	useEffect(() => {
-    (async()  =>{
-      const userId = auth().currentUser.uid;
-      let user = database().ref('users/'+userId);
-      user.on('value', (snapshot) => {
-      	const t = snapshot.val();
-      	setUser(snapshot.val());
-      	chart.chart1.dataSource.dials.dial[0].value = parseFloat(t.poids)/(parseFloat(t.taille)*parseFloat(t.taille));
-      	setState(chart)
-      })
-    })();
-  }, []);
+	useFocusEffect(
+	    React.useCallback(() => {
+			async function get() {
+		      const userId = auth().currentUser.uid;
+		      let user = database().ref('users/'+userId);
+		      user.on('value', (snapshot) => {
+		      	const t = snapshot.val();
+		      	setUser(snapshot.val());
+		      	chart.chart1.dataSource.dials.dial[0].value = parseFloat(t.poids)/(parseFloat(t.taille)*parseFloat(t.taille));
+		      	setState(chart)
+		      })
+
+		      let diabetes = database().ref('mesures/'+userId).limitToLast(7);
+		      let dataSystole = [];
+		      let dataDias = [];
+		      let freq = [];
+		      diabetes.on('value', (snapshot) => {
+		      	    if(snapshot && snapshot.val()){
+						for (const [key, value] of Object.entries(snapshot.val())) {
+							let sys = {value: value.systole, date: value.date}
+							let dias = {value: value.diastole, date: value.date}
+							const b = new Date(value.date)
+							let f = {value: parseInt(value.freqenceCoeur), label:  days[b.getDay()], date: value.date}
+							freq.push(f);
+							dataSystole.push(sys)
+							dataDias.push(dias)
+						}
+						console.log('dataSystole ===>', dataDias)
+						chart.chart2.dataSource.dataset[0].data = []
+						chart.chart2.dataSource.dataset[1].data = []
+
+						dataSystole = dataSystole.sort(function(a,b){
+						  return new Date(b.date) - new Date(a.date);
+						});
+						chart.chart2.dataSource.dataset[0].data = dataSystole
+
+						dataDias = dataDias.sort(function(a,b){
+						  return new Date(b.date) - new Date(a.date);
+						});
+						chart.chart2.dataSource.dataset[1].data = dataDias
+
+						freq = freq.sort(function(a,b){
+						  return new Date(b.date) - new Date(a.date);
+						});
+
+						const result = freq.filter((val, i)=>{
+						  let s =  freq.filter(vals=>vals.label === val.label);
+						  if(s.length>1){
+						    s = s.sort((a,b) => b.value - a.value)
+						    if(s[0].value === val.value){
+						      return true
+						    }
+						  }else{
+						    return true;
+						  }
+						})
+					    chart.chart3.dataSource.data = result
+
+						setState(chart)
+						console.log('chart.chart2.dataSource.dataset[1].data', state.chart2.dataSource.dataset[1].data)
+					}
+				});	
+		    }
+		    get();
+		    return;
+		  }, []
+		)
+	);
+
 
 
     const libraryPath = Platform.select({
@@ -230,3 +258,6 @@ const styles = StyleSheet.create({
     height: 200
   }
 });
+
+
+

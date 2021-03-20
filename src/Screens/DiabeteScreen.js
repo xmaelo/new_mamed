@@ -17,10 +17,12 @@ export default function DiabeteScreen(props){
 				const userId =  auth().currentUser.uid;
 				let mesure = database().ref('mesures/'+userId).limitToLast(1);
 				mesure.on('value', (snapshot) => {
-					for (const [key, value] of Object.entries(snapshot.val())) {
-						setDiabete({...value});
+					if(snapshot && snapshot.val()){
+						for (const [key, value] of Object.entries(snapshot.val())) {
+							setDiabete({...value});
+						}
+						console.log('value===========ddh====>', diabete);
 					}
-					console.log('value===========ddh====>', diabete);
 				});	
 		    }
 		    get();
@@ -62,19 +64,22 @@ export default function DiabeteScreen(props){
 								</View>
 								<View><Text style={styles.minime}>mmol/L</Text></View>
 							</View>
-							<View><Text style={styles.slogan}>N/A</Text></View>
+							<View><Text style={styles.slogan}>Glycemie</Text></View>
 						</View>
 						<View style={styles.center}>
 							<View style={{...styles.rounded2, ...styles.center}}>
 								<View style={{...styles.rounded3, ...styles.center}}>
 									<View style={{...styles.rounded, ...styles.col, ...styles.center}}>	
-										<View><Text style={styles.minime}>Est</Text></View>
+										<View><Text style={styles.minime}>g/l</Text></View>
 										<View >
+											{!diabete['hba1'] ?
 											<Ionicons
-										      name='remove-outline'
-										      size={19}
-										      color='white'
-										    />
+											      name='remove-outline'
+											      size={19}
+											      color='white'
+											    /> : 
+											<Text style={styles.minime}>{diabete.hba1}</Text>
+											}
 										</View>
 										<View><Text style={styles.minime}>HbA1c</Text></View>
 									</View>
@@ -86,9 +91,9 @@ export default function DiabeteScreen(props){
 							<View style={{...styles.rounded, ...styles.col, ...styles.center}}>
 								<View></View>
 								<View >
-									<Text style={{...styles.minime, fontWeight: "bold"}}>{diabete.nSpec}</Text>
+									<Text style={{...styles.minime, fontWeight: "bold"}}>{diabete.insuline}</Text>
 								</View>
-								<View><Text style={styles.minime}>u</Text></View>
+								<View><Text style={styles.minime}>ml</Text></View>
 							</View>
 							<View><Text style={styles.slogan}>Insuline active</Text></View>
 						</View>
@@ -170,10 +175,66 @@ export default function DiabeteScreen(props){
 				<View>
 					<View style={{ ...styles.row, justifyContent: "space-around", marginTop: hp('1.5%')}}>
 						<View style={{...styles.column2}}>
-							<View><Text style={styles.slogan} >Glu.</Text></View>
-							<View><Text style={styles.slogan} >Non Spéciique</Text></View>
-							<View><Text style={styles.slogan} >Non Spéciique</Text></View>
+							<View><Text style={styles.slogan} >Créneau.</Text></View>
+							<View><Text style={styles.slogan} >Glucides.</Text></View>
+							<View><Text style={styles.slogan} >Systole</Text></View>
+							<View><Text style={styles.slogan} >Disatole</Text></View>
+							<View><Text style={styles.slogan} >Médicaments</Text></View>
 						</View>
+						<View style={{...styles.column2}}>
+							<View>
+								{diabete.cathegorie ?
+									<Text>{diabete.cathegorie}</Text> :
+									<Ionicons
+								      name='remove-outline'
+								      size={19}
+								      color='black'
+								    />
+							    }
+
+							</View>
+							<View>
+								{diabete.glucide ?
+									<Text>{diabete.glucide}</Text> :
+									<Ionicons
+								      name='remove-outline'
+								      size={19}
+								      color='black'
+								    />
+								}
+							</View>
+							<View>
+							{diabete.systole ?
+									<Text>{diabete.systole}</Text> :
+									<Ionicons
+								      name='remove-outline'
+								      size={19}
+								      color='black'
+								    />
+						    }
+							</View>
+							<View>
+							{diabete.diastole ?
+									<Text>{diabete.diastole}</Text> :
+									<Ionicons
+								      name='remove-outline'
+								      size={19}
+								      color='black'
+								    />
+						    }
+							</View>
+							<View>
+							{diabete.medicament ?
+									<Text>{"Oui"}</Text> :
+									<Ionicons
+								      name='remove-outline'
+								      size={19}
+								      color='black'
+								    />
+						    }
+							</View>
+						</View>
+
 						<View style={{...styles.column2}}>
 							<View><Ionicons
 								      name='remove-outline'
@@ -187,14 +248,6 @@ export default function DiabeteScreen(props){
 								      color='black'
 								    />
 							</View>
-							<View><Ionicons
-								      name='remove-outline'
-								      size={19}
-								      color='black'
-								    />
-							</View>
-						</View>
-						<View style={{...styles.column2}}>
 							<View><Ionicons
 								      name='remove-outline'
 								      size={19}
@@ -216,6 +269,7 @@ export default function DiabeteScreen(props){
 						</View>
 					</View>
 				</View>
+				<View style={{height: 22}}/>
 			</ScrollView>	
 		</View>
 	)

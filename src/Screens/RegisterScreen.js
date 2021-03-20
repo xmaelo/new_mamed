@@ -42,6 +42,22 @@ function RegisterScreen ({ navigation }){
 
   // Handle create account button press
   async function createAccount() {
+    if (phone&&phone.slice(0, 1)!=="+") {
+      const sc = {
+        message: "Attention !",
+        description: "Le numéro de téléphone est au format international ex: +237xxxxxx",
+        icon: { icon: "auto", position: "left" },
+        type: 'info',
+        onPress: () => {
+          hideMessage();
+        },
+      };
+    showMessage(sc);
+
+       return;
+      console.log('incorresct phone');
+    }
+
     if(passwordCheck !== password){
       const message = {
         message: "Erreur fatale",
@@ -160,6 +176,7 @@ function RegisterScreen ({ navigation }){
                        inputStyle={{marginTop: 5}}
                        containerStyle={{marginTop: -20, marginBottom: -10}}
                        label="Numéro de teléphone"
+                       placeholder="+xxx xxxxxxx"
                        labelStyle={{color: "red", transform: [{ translateY: 20 }]}}
                        onChangeText={value => setPhone(value)}
                        value={phone}

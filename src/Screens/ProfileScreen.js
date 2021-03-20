@@ -1,5 +1,5 @@
 import React, { useState, useEffect }from 'react';
-import { View, StyleSheet, SafeAreaView, Image, StatusBar, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, SafeAreaView, Image, Alert, StatusBar, TouchableOpacity } from 'react-native';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -29,7 +29,7 @@ const list = [
 
 
 
-
+const avatar = require('../../assets/imgs/avatar.jpg')
 export default function ProfileScreen({navigation}){
   const userId = auth().currentUser.uid;
   let users = database().ref('users/'+userId);
@@ -38,6 +38,20 @@ export default function ProfileScreen({navigation}){
   const [taille, setTaille] = useState(null);
   const [poids, setPoids] = useState(null);
   const [date, setDate] = useState(null);
+
+  const createTwoButtonAlert = () =>
+    Alert.alert(
+      "Confirmation",
+      "Vous souhaitez vous déconnecter ?",
+      [
+        {
+          text: "Cancel",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel"
+        },
+        { text: "OK", onPress: () => auth().signOut().then(() => navigation.navigate("LoginScreen")) }
+      ]
+    );
 
   useEffect(() => {
     (async()  =>{
@@ -57,9 +71,12 @@ export default function ProfileScreen({navigation}){
 	        <View style={styles.container_all_profile}>
 
 	          <View style={[styles.container2, { borderRadius: 50}]}>
-		           <Image style={{ width: 100, height: 100,}} source={{
-		           		uri: profile
-		            }} width={100} height={100}/>
+		           <Image style={{ width: 100, height: 100}}
+                source={profile ? {
+                  uri: profile
+                }: avatar}  
+
+                width={100} height={100}/>
 		        </View>
 
 	          <View style={styles.container_name_lieu}>
@@ -109,6 +126,13 @@ export default function ProfileScreen({navigation}){
 			      </ListItem>
 			    ))
 			  }
+          <ListItem bottomDivider onPress={createTwoButtonAlert}>
+            <Ionicons name={"log-out"} size={23}/>
+            <ListItem.Content>
+              <ListItem.Title>{"Déconnexion"}</ListItem.Title>
+            </ListItem.Content>
+            <ListItem.Chevron />
+          </ListItem>
 
     		</View>
     	</View>

@@ -306,11 +306,12 @@ const App: () => React$Node = () => {
               },
               headerLeft: null,
               headerRight: () => (
-                <View style={{marginRight: 10}}>
+                <View style={{marginRight: 20, flexDirection: "row"}}>
                   <Ionicons
                     onPress={() => alert('This is a button!')}
-                    name="notifications"  size={25}
+                    name="notifications-outline"  size={25}
                   />
+
                 </View>
               ),
             }}
@@ -356,7 +357,7 @@ const App: () => React$Node = () => {
           <Stack.Screen name="SymtomeScreen" component={SymtomeScreen} options={{headerTransparent: true,  title: ""}}/>
           <Stack.Screen name="SearchDoctorScreen" component={SearchDoctorScreen} options={{headerTransparent: true,  title: ""}}/>
           <Stack.Screen name="AntecedentsMedical" component={AntecedentsMedical} options={{headerTransparent: false,  title: "Mes antecedents Médicaux"}}/>
-          <Stack.Screen name="EditProfile" component={EditProfile} options={{headerTransparent: false,  title: "Modifier Mon Profile"}}/>
+          <Stack.Screen name="EditProfile" component={EditProfile} options={{headerTransparent: false,  title: "Mettre a jour mes données"}}/>
         </Stack.Navigator>
       </NavigationContainer>
       <FlashMessage position="top" />
