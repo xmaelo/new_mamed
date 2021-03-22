@@ -54,8 +54,6 @@ export default function NewMeasureScreen({navigation}){
 
     	console.log('ob ob===>', ob)
     	if((  !selectedValue 
-    		|| !selectedValue2 
-    		|| !selectedValue3 
     		|| molL&&molL.trim()==="" 
     		|| glucides&&glucides.trim()==="" 
     		|| systole&&systole.trim()==="" 
@@ -80,8 +78,8 @@ export default function NewMeasureScreen({navigation}){
 
     	try{
     		await database().ref('mesures/'+userId).push({
-				date: new Date().toISOString(),
-				time: new Date().toLocaleTimeString(),
+				date: selectedDate ? new Date(selectedDate).toISOString(): new Date().toISOString(),
+				time: selectedTime ? new Date(selectedTime).toLocaleTimeString():   new Date().toLocaleTimeString(),
 				cathegorie: selectedValue,
 				glycemie: molL,
 				glucide: glucides,
@@ -121,7 +119,6 @@ export default function NewMeasureScreen({navigation}){
 	return(
 		<ScrollView style={styles.container}>
 			<View>
-			{/*
 				<View style={{...styles.row, ...styles.content3}}>
 					<View style={{ ...styles.row, ...styles.content2, width: wp('45%')}}>
 						<Ionicons
@@ -204,7 +201,6 @@ export default function NewMeasureScreen({navigation}){
 						<Text>{selectedTime && selectedTime.toLocaleTimeString()}</Text>
 					</View>
 				</View>
-			*/}
 				
 
 				<View style={{marginTop: hp('2%'), ...styles.row, ...styles.content3, justifyContent: "space-around"}} >
@@ -487,25 +483,6 @@ export default function NewMeasureScreen({navigation}){
 
 				<View style={{marginTop: hp('1%'), ...styles.row, ...styles.content3, justifyContent: "space-around"}} >
 					<Ionicons
-						name="eyedrop-outline"
-						size={28}
-						color="black"
-					/>
-					<View style={{ backgroundColor: "#F0F0F0", justifyContent: "flex-start"}}>
-						<Picker
-					        selectedValue={selectedValue2}
-					        style={{ height: 30, width: wp("80%"), color: "black", padding: "auto" }}
-					        onValueChange={(itemValue, itemIndex) => setSelectedValue2(itemValue)}
-					      >
-					        <Picker.Item label="Medicament" value={null} />
-					        <Picker.Item label="Oui" value={true} />
-					        <Picker.Item label="Non" value={false} />
-					      </Picker>
-					</View>
-				</View>
-
-				<View style={{marginTop: hp('1%'), ...styles.row, ...styles.content3, justifyContent: "space-around"}} >
-					<Ionicons
 						name="alarm-outline"
 						size={28}
 						color="black"
@@ -523,6 +500,17 @@ export default function NewMeasureScreen({navigation}){
 					      </Picker>
 					</View>
 				</View>
+
+				<View style={{...styles.row, ...styles.content3, marginTop: hp('1%'),}}>
+						<Input
+						   placeholder='Medicament'
+						   value={selectedValue2}
+						   onChangeText={value => setSelectedValue2(value)}
+						   
+						/>
+				</View>
+
+
 				<View style={{marginTop: 15}}> 
 					<Button
 	                  buttonStyle={{backgroundColor: "#009BD9", borderRadius: 20}}

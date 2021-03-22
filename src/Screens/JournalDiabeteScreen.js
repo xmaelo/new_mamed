@@ -18,13 +18,16 @@ export default function JournalDiabeteScreen(){
 				const userId =  auth().currentUser.uid;
 				let tab = [];
 				let mesure = database().ref('mesures/'+userId);
-				mesure.on('value', (snapshot) => {
-					for (const [key, value] of Object.entries(snapshot.val())) {
-						tab.push(value)
-					}
-					setDiabetes(tab);
-					console.log('value===========ddh====>', diabetes);
-				});	
+					mesure.once('value', (snapshot) => {
+						if(snapshot.val()){
+								for (const [key, value] of Object.entries(snapshot.val())) {
+									tab.push(value)
+								}
+								setDiabetes(tab);
+								console.log('value===========ddh====>', diabetes);
+
+						}
+					});	
 		    }
 		    get();
 		    return;

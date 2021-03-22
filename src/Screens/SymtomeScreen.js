@@ -5,14 +5,86 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { SearchBar } from 'react-native-elements';
 import { Text, Input, Button, CheckBox } from 'react-native-elements';
+import database from '@react-native-firebase/database';
+import auth from '@react-native-firebase/auth'; 
+import { showMessage, hideMessage } from "react-native-flash-message";
  
+		const label= {
+						Fever: "Fever",
+						Throat: "Throat Pain",
+						Gaz: "Gaz",
+						High: "High BP",
+						Blocked: "Blocked nose",
+						Headache: "Headache",
+						Couth: "Couth",
+						Loose: "Loose Motion",
+						Low: "Low BP",
+						Migraine: "Migraine",
+						Runny: "Runny nose",
+						Constipation: "Constipation",
+						Diabetes: "Diabetes",
+						vaumiting: "vaumiting"
+					}
 
-
-export default function SymtomeScreen(props){
+export default function SymtomeScreen({navigation}){
 	const [selectedValue, setSelectedValue] = useState("java");
+
+	const [object, setObject] = useState({});
+	const [disabled, setDisabled] = useState(false);
+
+	const onPress = (x) => {
+		let y = {...object}
+		if(!object[x]){
+			y = {...y, [x]: true}
+		}else{
+			delete y[x]
+		}
+		setObject(y);
+	}
+	const onSave = async () => {
+		let message, type, description;
+		let success;
+		try{
+			const userId = auth().currentUser.uid;
+			if(Object.entries(object).length !== 0){
+				setDisabled(true)
+				await database().ref('symtomes/'+userId).push(object);
+				message = "Succès";
+	    		type =  'success';
+	    		description="Sauvegarde effectuée !"
+	    		success = true;
+			}else{
+				message = "Info !";
+	    		type: 'info',
+	    		description="Rien à enregistrer !"
+			}
+
+		}catch(e){
+			console.log('error saving foto', e);
+			message = "Error";
+    		type =  'danger';
+    		description="Votre profile n'as pas été mise a jour!"
+			console.log('error saving on firebase');
+		}
+
+		const mess = {
+	        message: message,
+	        description: description,
+	        icon: { icon: "auto", position: "left" },
+	        type: type,
+	        onPress: () => {
+	          hideMessage();
+	        },
+	    };
+     	showMessage(mess);
+     	setDisabled(false)
+     		if(success){
+	    		navigation.navigate('Main');
+     		}
+	}
 	return(
-		<ScrollView>
-			<View style={styles.container}>
+		<ScrollView style={{backgroundColor: "white"}}>
+			<View style={styles.container}> 
 				<View style={styles.center}>
 				  <Text h4 style={{ ...styles.slogan}}>Analyse des symptômes</Text>
 				</View>
@@ -35,52 +107,48 @@ export default function SymtomeScreen(props){
 				</View>
 
 				<View style={{...styles.center, marginTop: 16}}>
-					<View style={{...styles.displayRow}}>
-						<Button
-							icon={
-								<Icon
-									name="times"
-									size={13}
-									color="white"
+					<ScrollView horizontal>
+						<View style={{...styles.displayRow}}>
+						    {Object.entries(object).map((item, i)=>
+								<Button
+									icon={
+										<Icon
+											name="times"
+											size={13}
+											color="white"
+										/>
+									}
+									buttonStyle={{borderRadius: 20, paddingHorizontal: 20, backgroundColor: "#009BD9"}}
+									iconRight
+									onPress={()=>{
+										delete object[item[0]]
+										setObject({...object})
+									}}
+									title={label[item[0]]+" "}
 								/>
-							}
-							buttonStyle={{borderRadius: 20, paddingHorizontal: 20, backgroundColor: "red"}}
-							iconRight
-							title="Fever  "
-						/>
-						<Button
-							icon={
-								<Icon
-									name="times"
-									size={13}
-									color="white"
-								/>
-							}
-							buttonStyle={{borderRadius: 20, paddingHorizontal: 20, backgroundColor: "red"}}
-							iconRight
-							title="Couth  "
-						/>
-					</View>
+							)}
+						</View>
+					</ScrollView>
 				</View>
 				<View style={styles.form}>
 					<View style={{ ...styles.displayRow2}}>
 						<View style={{...styles.center2}}>
-							<Card name="Fever" icon="person"/>
-							<Card name="Throat Pain" icon="person"/>
-							<Card name="Gaz" icon="person"/>
-							<Card name="High BP" icon="person"/>
-							<Card name="Blocked nose" icon="person"/>
-							<Card name="Headache" icon="person"/>
-							<Card name="vaumiting/Nausea" icon="person"/>
+							<Card st="Fever" name="Fever" icon="person" onPress={onPress} />
+							<Card st="Throat" name="Throat Pain" icon="person" onPress={onPress}/>
+							<Card st="Gaz" name="Gaz" icon="person" onPress={onPress}/>
+							<Card st="High" name="High BP" icon="person" onPress={onPress}/>
+							<Card st="Blocked" name="Blocked nose" icon="person" onPress={onPress}/>
+							<Card st="Headache" name="Headache" icon="person" onPress={onPress}/>
+							<Card st="vaumiting" name="vaumiting/Nausea" icon="person" onPress={onPress}/>
 						</View>
 						<View style={{...styles.center2}}>
-							<Card name="Couth" icon="person"/>
-							<Card name="Loose Motion" icon="person"/>
-							<Card name="Low BP" icon="person"/>
-							<Card name="Migraine" icon="person"/>
-							<Card name="Runny nose" icon="person"/>
-							<Card name="Constipation" icon="person"/>
-							<Card name="Diabetes" icon="person"/>
+							<Card st="Couth" name="Couth" icon="person" onPress={onPress}/>
+							<Card st="Loose" name="Loose Motion" icon="person" onPress={onPress}/>
+							<Card st="Low" name="Low BP" icon="person" onPress={onPress}/>
+							<Card st="Migraine" name="Migraine" icon="person" onPress={onPress}/>
+							<Card st="Runny" name="Runny nose" icon="person" onPress={onPress}/>
+							<Card st="Constipation" name="Constipation" icon="person" onPress={onPress}/>
+							<Card st="Diabetes" name="Diabetes" icon="person" onPress={onPress}/>
 						</View>
 					</View>
 				</View>
@@ -89,9 +157,11 @@ export default function SymtomeScreen(props){
 			</View>
 			<View style={styles.center}>
 				<Button
-                      buttonStyle={{backgroundColor: "red", borderRadius: 5, width: wp('80%')}}
-                      
-                      title="Enregister cette mesure"
+                      buttonStyle={{backgroundColor: "#009BD9", borderRadius: 5, width: wp('80%')}}
+                      onPress={onSave}
+                      title="Enregister"
+                      disabled={disabled}
+	                   loading={disabled}
                     />
             </View>
 			<View style={{height: hp("10%")}}>
@@ -100,9 +170,9 @@ export default function SymtomeScreen(props){
 	)
 }
 
-function Card({icon, name}){
+function Card({icon, name, st, onPress}){
 	return(
-		<TouchableOpacity>
+		<TouchableOpacity onPress={()=>onPress(st)} >
 			<View style={{...styles.displayRow, ...styles.center}}>
 				<View style={styles.card}>
 					<Ionicons

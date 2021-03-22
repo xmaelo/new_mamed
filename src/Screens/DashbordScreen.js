@@ -6,13 +6,17 @@ import { Text, Input, Button } from 'react-native-elements';
 import auth from '@react-native-firebase/auth';
 import database from '@react-native-firebase/database';
 import { useFocusEffect } from '@react-navigation/native';
+
+
 export default function DashbordScreen(props) {
+
+	const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
     const chart = {
     	chart1: {
 		    type: 'angulargauge', 
 		    renderAt: 'chart-container',
-		    width: wp("94%"),
-		    height: hp("31.5%"),
+		    width: wp("95%"),
+		    height: hp("37.5%"),
 		    dataFormat: 'json',
 		    dataSource: {
 		      "chart": {
@@ -20,7 +24,8 @@ export default function DashbordScreen(props) {
 		        "subcaption": "Calcul d'IMC",
 		        "lowerLimit": "0",
 		        "upperLimit": "",
-		         "showValue": "1",
+		        "showValue": "1",
+		        "chartBottomMargin": "50",
 		        "theme": "fusion"
 		      },
 		      "colorRange": {
@@ -48,6 +53,37 @@ export default function DashbordScreen(props) {
 		      },
 		      "dials": {
 		        "dial": [{}]
+		      },
+		      "annotations": {
+		        "origw": "450",
+		        "origh": "300",
+		        "autoscale": "1",
+		        "showBelow": "0",
+		        "groups": [{
+		          "id": "arcs",
+		          "items": [
+		            {
+		              "id": "store-cs-bg",
+		              "type": "rectangle",
+		              "x": "$chartCenterX-100",
+		              "y": "$chartEndY - 22",
+		              "tox": "$chartCenterX + 100",
+		              "toy": "$chartEndY - 45",
+		              "fillcolor": "#0075c2",
+		              "align": "justify",
+		            },
+		            {
+		              "id": "state-cs-text",
+		              "type": "Text",
+		              "color": "#ffffff",
+		              "label": "",
+		              "fontSize": "13",
+		              "align": "justify",
+		              "x": "$chartCenterX +30",
+		              "y": "$chartEndY - 32"
+		            }
+		          ]
+		        }]
 		      }
 		    }
 		},
@@ -68,7 +104,11 @@ export default function DashbordScreen(props) {
 		        "xAxisLineColor": "#999999"
 		      },
 		      "categories": [{
-		        "category": [{
+		        "category": [
+		          {
+		            "label": "Dim"
+		          },
+		          {
 		            "label": "Lun"
 		          },
 		          {
@@ -85,9 +125,6 @@ export default function DashbordScreen(props) {
 		          },
 		          {
 		            "label": "Sam"
-		          },
-		          {
-		            "label": "dim"
 		          }
 		        ]
 		      }],
@@ -123,7 +160,6 @@ export default function DashbordScreen(props) {
 		}
 	}
 
-	const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 	const [state, setState] = useState(chart);
 	const [user, setUser] = useState(null);
 
@@ -135,7 +171,29 @@ export default function DashbordScreen(props) {
 		      user.on('value', (snapshot) => {
 		      	const t = snapshot.val();
 		      	setUser(snapshot.val());
-		      	chart.chart1.dataSource.dials.dial[0].value = parseFloat(t.poids)/(parseFloat(t.taille)*parseFloat(t.taille));
+
+		      	let imc = parseFloat(t.poids)/(parseFloat(t.taille)*parseFloat(t.taille));
+		      	let couleur, text;
+				if(imc>0 && imc <= 18.5){
+					couleur = "#9AC01D"
+					text= "Maigreur"
+				}else if(imc>18.5 && imc <= 24.9){
+					couleur = "#41A72A"
+					text= "Normal"
+				}else if(imc>24.9 && imc <= 29.9){
+					couleur = "Surpoids"
+					text= "Obésité"
+				}else if(imc>29.9 && imc <= 40){
+					couleur = "#E6521B"
+					text= "Obésité"
+				}else{
+					couleur = "#561A1C"
+					text= "Obésité Massive"
+				}
+				chart.chart1.dataSource.annotations.groups[0].items[0].fillcolor = couleur
+				chart.chart1.dataSource.annotations.groups[0].items[1].label = ""+text
+
+		      	chart.chart1.dataSource.dials.dial[0].value = imc;
 		      	setState(chart)
 		      })
 
@@ -143,50 +201,111 @@ export default function DashbordScreen(props) {
 		      let dataSystole = [];
 		      let dataDias = [];
 		      let freq = [];
+		      let max = {};
 		      diabetes.on('value', (snapshot) => {
 		      	    if(snapshot && snapshot.val()){
 						for (const [key, value] of Object.entries(snapshot.val())) {
-							let sys = {value: value.systole, date: value.date}
-							let dias = {value: value.diastole, date: value.date}
-							const b = new Date(value.date)
-							let f = {value: parseInt(value.freqenceCoeur), label:  days[b.getDay()], date: value.date}
-							freq.push(f);
-							dataSystole.push(sys)
-							dataDias.push(dias)
+								const b = new Date(value.date)
+							if(!isNaN(parseInt(value.systole))){
+								let sys = {value: value.systole, date: value.date, label:  days[b.getDay()]}
+								dataSystole.push(sys)
+							}
+							if(!isNaN(parseInt(value.diastole))){
+								let dias = {value: value.diastole, date: value.date, label:  days[b.getDay()]}
+								dataDias.push(dias)
+							}
+
+							if(!isNaN(parseInt(value.freqenceCoeur))){
+								let f = {value: parseInt(value.freqenceCoeur), label:  days[b.getDay()], date: value.date}
+								freq.push(f);
+							}
 						}
+
 						console.log('dataSystole ===>', dataDias)
-						chart.chart2.dataSource.dataset[0].data = []
-						chart.chart2.dataSource.dataset[1].data = []
 
-						dataSystole = dataSystole.sort(function(a,b){
-						  return new Date(b.date) - new Date(a.date);
-						});
-						chart.chart2.dataSource.dataset[0].data = dataSystole
+						let result3 = [];
+						const resultx = dataSystole.filter((val, i)=>{
+							if(val.value){
+							    let s =  dataSystole.filter(vals=>vals.label === val.label);
+							    if(s.length>1){
+							    	//s = s.sort((a,b) => a.value - b.value)
+							    	if(!result3.find(o => o.label === val.label)){
+							    	   let max = Math.max.apply(Math, s.map(function(o) { return o.value; }))
+							    	   result3.push({value: max, label: val.label})
+							    	   return true
+							    	}
+							    	
+							    }else{
+							    	if(!result3.find(o => o.label === val.label)){
+							    	  result3.push(val);
+							        }
+							        return true;
+							    }
+							}else{
 
-						dataDias = dataDias.sort(function(a,b){
-						  return new Date(b.date) - new Date(a.date);
-						});
-						chart.chart2.dataSource.dataset[1].data = dataDias
+								return false;
+							}
+						})
+
+						chart.chart2.dataSource.dataset[0].data = result3.reverse()
+
+
+						let result4 = [];
+						dataDias.filter((val, i)=>{
+							if(val.value){
+							    let s =  dataDias.filter(vals=>vals.label === val.label);
+							    if(s.length>1){
+							    	//s = s.sort((a,b) => a.value - b.value)
+							    	if(!result4.find(o => o.label === val.label)){
+							    	   let max = Math.max.apply(Math, s.map(function(o) { return o.value; }))
+							    	   result4.push({value: max, label: val.label})
+							    	   return true
+							    	}
+							    	
+							    }else{
+							    	if(!result4.find(o => o.label === val.label)){
+							    		result4.push(val);
+							    	}
+							        return true;
+							    }
+							}else{
+
+								return false;
+							}
+						})
+						chart.chart2.dataSource.dataset[1].data = result4.reverse();
 
 						freq = freq.sort(function(a,b){
 						  return new Date(b.date) - new Date(a.date);
 						});
 
+						let result2 = [];
 						const result = freq.filter((val, i)=>{
-						  let s =  freq.filter(vals=>vals.label === val.label);
-						  if(s.length>1){
-						    s = s.sort((a,b) => b.value - a.value)
-						    if(s[0].value === val.value){
-						      return true
-						    }
-						  }else{
-						    return true;
-						  }
+							if(val.value){
+							    let s =  freq.filter(vals=>vals.label === val.label);
+							    if(s.length>1){
+							    	//s = s.sort((a,b) => a.value - b.value)
+							    	if(!result2.find(o => o.label === val.label)){
+							    	   let max = Math.max.apply(Math, s.map(function(o) { return o.value; }))
+							    	   result2.push({value: max, label: val.label})
+							    	   return true
+							    	}
+							    	
+							    }else{
+							    	if(!result2.find(o => o.label === val.label)){
+							    		result2.push(val);
+							    	}
+							        return true;
+							    }
+							}else{
+
+								return false;
+							}
 						})
-					    chart.chart3.dataSource.data = result
+					    chart.chart3.dataSource.data = result2.reverse()
 
 						setState(chart)
-						console.log('chart.chart2.dataSource.dataset[1].data', state.chart2.dataSource.dataset[1].data)
+						console.log('result2========>', result2)
 					}
 				});	
 		    }
@@ -205,7 +324,7 @@ export default function DashbordScreen(props) {
     return (
     	<ScrollView style={styles.container1}>
 	      <View style={styles.container}>
-	        <View style={styles.chartContainer}>
+	        <View style={styles.chartContainer1}>
 	          <FusionCharts
 	            type={state.chart1.type}
 	            width={state.chart1.width}
@@ -254,8 +373,11 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: 10
   },
+  chartContainer1: {
+    height: hp('40%')
+  },
   chartContainer: {
-    height: 200
+    height: hp('40%')
   }
 });
 
