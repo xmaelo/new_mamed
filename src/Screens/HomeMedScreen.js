@@ -1,11 +1,12 @@
-import React, { useState }from 'react';
+import React, { useEffect, useState }from 'react';
 import { View, StyleSheet, SafeAreaView, Image, StatusBar, TouchableOpacity, ScrollView } from 'react-native';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { SearchBar } from 'react-native-elements';
 import { Text, Input, Button, CheckBox } from 'react-native-elements';
-import Carousel from 'react-native-snap-carousel';
+import auth from '@react-native-firebase/auth';
+import database from '@react-native-firebase/database';
 
  const img = require('../../assets/imgs/logo.png')
 
@@ -13,6 +14,22 @@ import Carousel from 'react-native-snap-carousel';
  
 
 export default function HomeMedScreen(props){
+	const [users, setUsers] = useState([]);
+    const [filteredUsers, setFilteredUsers] = useState([]);
+
+    useEffect(() => {
+	    (async()  =>{
+	      let users = database().ref('users');
+	      let tab = [];
+	      users.once('value', (snapshot) => {
+				for (const [key, value] of Object.entries(snapshot.val())) {
+			    	tab.push({...value, key: key})
+				}
+				console.log('tabb tab', tab)
+				setUsers(tab);
+			});
+	    })();
+	  }, []);
 	return(
 		<ScrollView style={{backgroundColor: "white"}}>
 			<StatusBar style="auto" backgroundColor="white" />
@@ -79,8 +96,12 @@ export default function HomeMedScreen(props){
 	                	<View style={{...styles.container_card_profile, paddingTop: 15, justifyContent: "center"}}>
 	                		<View style={{...styles.row, justifyContent: "space-around"}}>
 						       <View style={{...styles.col}}>
-						       		<Text style={styles.paddingTop}>Mes Patients</Text>
+						       		<TouchableOpacity
+						       			onPress={()=>props.navigation.navigate('MyPatientList')}
+						       		>
+						       			<Text style={styles.paddingTop}>Mes Patients</Text>
 						       		
+						       		</TouchableOpacity>
 						       		<TouchableOpacity
 						       			onPress={()=>props.navigation.navigate('PatientListScreen')}
 						       		>
@@ -89,8 +110,8 @@ export default function HomeMedScreen(props){
 						       </View>
 
 						       <View style={{...styles.col, alignItems: "center"}}>
-						       		<Text  style={{color: "#4793CC", fontSize: 17, ...styles.paddingTop}}>3</Text>
-						       		<Text  style={{color: "#4793CC", fontSize: 17}}>210</Text>
+						       		<Text  style={{color: "#4793CC", fontSize: 17, ...styles.paddingTop}}>0</Text>
+						       		<Text  style={{color: "#4793CC", fontSize: 17}}>{users.length}</Text>
 						       </View>
 						    </View>
 					    </View>

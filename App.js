@@ -48,6 +48,7 @@ import ProfileScreen from './src/Screens/ProfileScreen';
 import AddCasContact from './src/Screens/AddCasContact';
 import ContactUrgence from './src/Screens/ContactUrgence';
 import DashbordScreen from './src/Screens/DashbordScreen';
+import MyPatientList from './src/Screens/MyPatientList';
 import RendezVousScreen from './src/Screens/RendezVousScreen';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -358,6 +359,7 @@ const App: () => React$Node = () => {
           <Stack.Screen name="SearchDoctorScreen" component={SearchDoctorScreen} options={{headerTransparent: true,  title: ""}}/>
           <Stack.Screen name="AntecedentsMedical" component={AntecedentsMedical} options={{headerTransparent: false,  title: "Mes antecedents Médicaux"}}/>
           <Stack.Screen name="EditProfile" component={EditProfile} options={{headerTransparent: false,  title: "Mettre a jour mes données"}}/>
+          <Stack.Screen name="MyPatientList" component={MyPatientList} options={{headerTransparent: false,  title: "Mes Patients"}}/>
         </Stack.Navigator>
       </NavigationContainer>
       <FlashMessage position="top" />

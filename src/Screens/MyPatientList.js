@@ -18,25 +18,25 @@ import auth from '@react-native-firebase/auth';
 import database from '@react-native-firebase/database';
 import { showMessage, hideMessage } from "react-native-flash-message";
 
-export default function PatientListScreen(props){
+export default function MyPatientList(props){
 	const [searchText, setSearchText] = useState('');
     const [users, setUsers] = useState([]);
     const [filteredUsers, setFilteredUsers] = useState([]);
 
-    useEffect(() => {
-	    (async()  =>{
-	      let users = database().ref('users');
-	      let tab = [];
-	      users.once('value', (snapshot) => {
-				for (const [key, value] of Object.entries(snapshot.val())) {
-			    	tab.push({...value, key: key})
-				}
-				console.log('tabb tab', tab)
-				setUsers(tab);
-				setFilteredUsers(tab);
-			});
-	    })();
-	  }, []);
+   //  useEffect(() => {
+	  //   (async()  =>{
+	  //     let users = database().ref('users');
+	  //     let tab = [];
+	  //     users.once('value', (snapshot) => {
+			// 	for (const [key, value] of Object.entries(snapshot.val())) {
+			//     	tab.push({...value, key: key})
+			// 	}
+			// 	console.log('tabb tab', tab)
+			// 	setUsers(tab);
+			// 	setFilteredUsers(tab);
+			// });
+	  //   })();
+	  // }, []);
 
     function onSendDemande(key){
     	try{
@@ -141,11 +141,11 @@ export default function PatientListScreen(props){
 	          </ScrollView>
 	        ) : searchText.length > 0 ? (
 	          <View style={styles.messageBox}>
-	            <Text style={styles.messageBoxText}>No user found</Text>
+	            <Text style={styles.messageBoxText}>Aucun patient trouver</Text>
 	          </View>
 	        ) : (
 	          <View style={styles.messageBox}>
-	            <Text style={styles.messageBoxText}>Search for users</Text>
+	            <Text style={styles.messageBoxText}>Vous n'avez pas de patient</Text>
 	          </View>
 	        )}
 	      </View>

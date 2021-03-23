@@ -9,7 +9,7 @@ import database from '@react-native-firebase/database';
 import auth from '@react-native-firebase/auth';
 import { useFocusEffect } from '@react-navigation/native';
 
-export default function AntecedentsMedical({navigation}){
+export default function AntecedentsMedical({navigation, route}){
 
 	
 	const [obj, setObj] = useState({
@@ -21,10 +21,17 @@ export default function AntecedentsMedical({navigation}){
 		hyperTenion: false
 	})
 
+	const [editable, setEditable] = useState(false);
 	useFocusEffect(
 	    React.useCallback(() => {
 			async function get() {
-					const userId =  auth().currentUser.uid;
+					let userId;
+					if(route.params?.userId){
+					  userId =  route.params.userId;
+					}else{
+					  userId =  auth().currentUser.uid;
+					  setEditable(true)
+					}
 					let user = database().ref('antecedents/'+userId);
 					user.on('value', (snapshot) => {
 						if(snapshot.val()){
@@ -40,11 +47,13 @@ export default function AntecedentsMedical({navigation}){
 
 	async function onSave(key){
 		try{
-			const userId =  auth().currentUser.uid;
 			let obj2 = obj;
 			obj2[key] = !obj2[key]
 			setObj(obj2)
-			await database().ref('antecedents/'+userId).update(obj2);
+			if(editable){
+				const userId =  auth().currentUser.uid;
+				await database().ref('antecedents/'+userId).update(obj2);
+			}
 		}catch(r){
 			console.log('error saving===>', r)
 		}

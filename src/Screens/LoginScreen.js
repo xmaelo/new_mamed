@@ -154,7 +154,7 @@ function LoginScreen ({ navigation }){
                 </View>
                 <View style={{flexDirection: 'row', justifyContent: 'space-between', marginTop: hp('3.7%')}}>
                     <TouchableOpacity
-                       // onPress={()=>navigation.navigate("TabBarMed")}
+                       onPress={()=>navigation.navigate("TabBarMed")}
                     >
                         <Text style={styles.slogan}>
                           Forgot password ?

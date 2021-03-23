@@ -104,29 +104,7 @@ export default function DashbordScreen(props) {
 		        "xAxisLineColor": "#999999"
 		      },
 		      "categories": [{
-		        "category": [
-		          {
-		            "label": "Dim"
-		          },
-		          {
-		            "label": "Lun"
-		          },
-		          {
-		            "label": "Mar"
-		          },
-		          {
-		            "label": "Mer"
-		          },
-		          {
-		            "label": "Jeu"
-		          },
-		          {
-		            "label": "Ven"
-		          },
-		          {
-		            "label": "Sam"
-		          }
-		        ]
+		        "category": []
 		      }],
 
 		  "dataset": [{
@@ -197,11 +175,12 @@ export default function DashbordScreen(props) {
 		      	setState(chart)
 		      })
 
-		      let diabetes = database().ref('mesures/'+userId).limitToLast(7);
+		      let diabetes = database().ref('mesures/'+userId).limitToLast(100);
 		      let dataSystole = [];
 		      let dataDias = [];
 		      let freq = [];
 		      let max = {};
+		      let category = [];
 		      diabetes.on('value', (snapshot) => {
 		      	    if(snapshot && snapshot.val()){
 						for (const [key, value] of Object.entries(snapshot.val())) {
@@ -209,6 +188,9 @@ export default function DashbordScreen(props) {
 							if(!isNaN(parseInt(value.systole))){
 								let sys = {value: value.systole, date: value.date, label:  days[b.getDay()]}
 								dataSystole.push(sys)
+								if(!category.find(o => o.label === days[b.getDay()])){
+								   category.push({label: days[b.getDay()]});
+								}
 							}
 							if(!isNaN(parseInt(value.diastole))){
 								let dias = {value: value.diastole, date: value.date, label:  days[b.getDay()]}
@@ -248,6 +230,7 @@ export default function DashbordScreen(props) {
 						})
 
 						chart.chart2.dataSource.dataset[0].data = result3.reverse()
+						chart.chart2.dataSource.categories[0].category = category.reverse()
 
 
 						let result4 = [];

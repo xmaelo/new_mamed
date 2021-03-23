@@ -14,9 +14,10 @@ import {
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import { ListItem, Icon , Badge} from 'react-native-elements'
+import auth from '@react-native-firebase/auth';
+import database from '@react-native-firebase/database';
 
-
-const list = [
+const lists = [
   {
     title: 'Medical/Family History',
     icon: 'history'
@@ -24,7 +25,8 @@ const list = [
   {
     title: 'Antécédents Médicaux',
     icon: 'folder-outline',
-    no: true
+    no: true,
+    nav: "AntecedentsMedical"
   },
   {
     title: 'Visualisation des signes vitaux',
@@ -57,7 +59,27 @@ const list = [
 ]
 
 
-export default function PatientDataScreen(props){
+export default function PatientDataScreen({navigation, route}){
+
+    const [user, setUser] = useState({});
+    const [antecedents, setAntedent] = useState({});
+    const [list, setList] = useState(lists);
+
+    useEffect(() => {
+	    (async()  =>{
+	      let user = database().ref('users/'+route.params.userId);
+	      let antecedents = database().ref('antecedents/'+route.params.userId);
+	      user.once('value', (snapshot) => {
+				setUser(snapshot.val());
+			});
+	      antecedents.once('value', (snapshot) => {
+				setAntedent(snapshot.val());
+			    lists[1].length = Object.entries(snapshot.val()).length
+			    setList(lists);
+			});
+	    })();
+	}, []);
+
 	return(
 		<ScrollView style={{...styles.container, paddingBottom: 35}}>
 			<View style={{
@@ -71,13 +93,16 @@ export default function PatientDataScreen(props){
 				<View style={styles.container_all_profile}>
 
 		          <View style={[styles.container2, { borderRadius: 50}]}>
-			           <Image style={{ width: 80, height: 80,}} source={{
-			           		uri: "https://randomuser.me/api/portraits/women/11.jpg"
-			            }} width={100} height={100}/>
+			           <Image style={{ width: 80, height: 80,}} 
+			           source={user.profile ? {
+		           			uri: user.profile
+		                }: require('../../assets/imgs/doc.jpg')}
+
+			            width={100} height={100}/>
 			        </View>
 
 		          <View style={styles.container_name_lieu}>
-		            <Text style={styles.name}>Ismael Foletia</Text>
+		            <Text style={styles.name}>{user.nom_complet}</Text>
 		            <Text style={styles.lieu}>Yaoundé, Cameroun</Text>
 		          </View>
 		        </View>
@@ -158,7 +183,7 @@ export default function PatientDataScreen(props){
 						Email
 					</Text>
 					<Text style={styles.value}>
-						ismael@Ismael.com
+						{user.email}
 					</Text>
 				</View>
 				<View>
@@ -177,7 +202,7 @@ export default function PatientDataScreen(props){
 						  	Téléphone
 						  </Text>
 						  <Text style={styles.value}>
-						  	695930773
+						  	{user.phone}
 						  </Text>
 						</View>
 						<View>
@@ -185,7 +210,7 @@ export default function PatientDataScreen(props){
 						  	Birthdate
 						  </Text>
 						  <Text style={styles.value}>
-						  	jan 04, 2000
+						  	{user.date}
 						  </Text>
 						</View>
 						<View>
@@ -220,7 +245,7 @@ export default function PatientDataScreen(props){
 						  	Gender
 						  </Text>
 						  <Text style={styles.value}>
-						  	Male
+						  	{user.sexe}
 						  </Text>
 						</View>
 						<View>
@@ -247,23 +272,28 @@ export default function PatientDataScreen(props){
 				<View>
 				  {
 				    list.map((item, i) => (
-				      <ListItem key={i} bottomDivider>
-				        {!item.no ?
-				        	<Icon name={item.icon} /> :
-				        	<Ionicons name={item.icon} size={23} />
-				        }	
-				        <ListItem.Content>
-				          <ListItem.Title>{item.title}</ListItem.Title>
-				        </ListItem.Content>
-				        <View style={styles.row}>
-				        	<Badge value={3} status="primary" />
-				        	<Ionicons
-				        		name="chevron-forward"
-				        		size={20}
-				        		color="#4765C3"
-				        	/>
-				        </View>
-				      </ListItem>
+				    	<TouchableOpacity
+				    	 key={i}
+				    	 onPress={()=>item.nav ? navigation.navigate(item.nav, {userId: route.params.userId}) : null}
+				    	>
+					      <ListItem  bottomDivider>
+					        {!item.no ?
+					        	<Icon name={item.icon} /> :
+					        	<Ionicons name={item.icon} size={23} />
+					        }	
+					        <ListItem.Content>
+					          <ListItem.Title>{item.title}</ListItem.Title>
+					        </ListItem.Content>
+					        <View style={styles.row}>
+					        	<Badge value={item.length || 3} status="primary" />
+					        	<Ionicons
+					        		name="chevron-forward"
+					        		size={20}
+					        		color="#4765C3"
+					        	/>
+					        </View>
+					      </ListItem>
+					    </TouchableOpacity>
 				    ))
 				  }
 				</View>
