@@ -79,7 +79,15 @@ function RegisterScreen ({ navigation }){
         email,
         password
       );
-      const userId = auth().currentUser.uid;
+     const userId = auth().currentUser.uid;
+
+      // const { userId } = await admin.auth().createUser({
+      //      displayName,
+      //      password,
+      //      email
+      //  })
+      //await admin.auth().setCustomUserClaims(userId, { doctor: true })
+
       console.log('User account created & signed in!');
 
         

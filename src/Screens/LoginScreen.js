@@ -42,8 +42,18 @@ function LoginScreen ({ navigation }){
             }
             setDisabled(true)
             const confirmation = await auth().signInWithEmailAndPassword(username, password);
-            setDisabled(false)
-            navigation.navigate('Main');
+            
+            let regs = await auth().currentUser.getIdTokenResult();
+
+            console.log('tock tock====>reg', regs)
+            if(!!regs.claims.doctor){
+                setDisabled(false)
+                navigation.navigate('TabBarMed');
+            }else{
+                setDisabled(false)
+                navigation.navigate('Main');
+            }
+
         }catch(e){
             setDisabled(false)
             console.log('error signin', e);

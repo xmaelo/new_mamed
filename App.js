@@ -49,6 +49,8 @@ import AddCasContact from './src/Screens/AddCasContact';
 import ContactUrgence from './src/Screens/ContactUrgence';
 import DashbordScreen from './src/Screens/DashbordScreen';
 import MyPatientList from './src/Screens/MyPatientList';
+import ChatScreen from './src/Screens/ChatScreen';
+import ListMessagesDocScreen from './src/Screens/ListMessagesDocScreen';
 import RendezVousScreen from './src/Screens/RendezVousScreen';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -209,6 +211,16 @@ function TabBarMed(){
           }}
         />
         <MedNav.Screen 
+          name="ListMessagesDocScreen" 
+          component={ListMessagesDocScreen} 
+          options={{
+            tabBarLabel: '',
+            tabBarIcon: ({ color }) => (
+              <Ionicons name="chatbubble" color={color} size={26} />
+            ),
+          }}
+        />
+        <MedNav.Screen 
           name="PatientListScreen" 
           component={PatientListScreen} 
           options={{
@@ -258,26 +270,23 @@ const App: () => React$Node = () => {
   const [nom_complet, setNom] = useState("");
   useEffect(() => {
     (async()  =>{
-      const userId = await getData();
+      const currentUser = auth().currentUser;
+      if(currentUser&&currentUser.userId){
+        let userId = currentUser.userId;
+        let tock = await currentUser.getIdTokenResult();
+        console.log('tock tock====>AppJs', tock)
+        if(!!tock.claims.doctor){
+          setInitialRoute('TabBarMed')
+        }else{
+          let user = database().ref('users/'+userId);
+          await user.once('value', (snapshot) => {
+              setNom(snapshot.val().nom_complet)
+          });
 
-      if(userId){
-        let user = database().ref('users/'+userId);
-        await user.on('value', (snapshot) => {
-            setNom(snapshot.val().nom_complet)
-        });
-
-        setInitialRoute('Main')
-      }else{
-        let users = database().ref('users');
-         users.once('value', (snapshot) => {
-            const currentUser =  auth().currentUser;
-            if(currentUser && currentUser.uid){
-              let user = database().ref('users/'+currentUser.uid);
-               user.on('value', (snapshot) => {
-                  setNom(snapshot.val().nom_complet)
-              });
-            }
-        });
+          setInitialRoute('Main')
+        }
+      }
+      else{
         setInitialRoute('LoginScreen')
       }
       SplashScreen.hide();
@@ -360,6 +369,7 @@ const App: () => React$Node = () => {
           <Stack.Screen name="AntecedentsMedical" component={AntecedentsMedical} options={{headerTransparent: false,  title: "Mes antecedents Médicaux"}}/>
           <Stack.Screen name="EditProfile" component={EditProfile} options={{headerTransparent: false,  title: "Mettre a jour mes données"}}/>
           <Stack.Screen name="MyPatientList" component={MyPatientList} options={{headerTransparent: false,  title: "Mes Patients"}}/>
+          <Stack.Screen name="ChatScreen" component={ChatScreen} options={{headerTransparent: false,  title: "Ismael Bienvenu"}}/>
         </Stack.Navigator>
       </NavigationContainer>
       <FlashMessage position="top" />

@@ -81,9 +81,12 @@ export default function HomeScreen({navigation}){
 
   useEffect(() => {
     (async()  =>{
-      const userId = auth().currentUser.uid;
-      let user = database().ref('users/'+userId);
-      user.on('value', (snapshot) => {})
+      const userId = await auth().currentUser.getIdTokenResult();
+      console.log('auth().currentUser=====>', userId)
+      //let user = database().ref('users/'+userId);
+      // user.on('value', (snapshot) => {
+
+      // })
     })();
   }, []);
 
